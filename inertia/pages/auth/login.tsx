@@ -1,13 +1,7 @@
 import { Form } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardPanel,
-} from "~/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle, CardPanel } from '~/components/ui/card'
 import { Field, FieldError, FieldLabel } from '~/components/ui/field'
 
 export default function Login() {
