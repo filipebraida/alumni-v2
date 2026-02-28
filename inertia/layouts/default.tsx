@@ -18,8 +18,8 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 
   return (
     <>
-      <header>
-        <div>
+      <header className="bg-white border-b border-neutral-900 px-5">
+        <div className="container mx-auto flex h-18 py-4 items-center justify-between">
           <div>
             <Link route="home">
               <svg
@@ -37,7 +37,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
             </Link>
           </div>
           <div>
-            <nav>
+            <nav className="flex gap-5 text-neutral-500">
               {children.props.user ? (
                 <>
                   <span>{children.props.user.initials}</span>
@@ -47,8 +47,12 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
                 </>
               ) : (
                 <>
-                  <Link route="new_account.create">Signup</Link>
-                  <Link route="session.create">Login</Link>
+                  <Link route="new_account.create">
+                    Signup
+                  </Link>
+                  <Link route="session.create">
+                    Login
+                  </Link>
                 </>
               )}
             </nav>

@@ -1,39 +1,46 @@
 import { Form } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardPanel,
+} from "~/components/ui/card"
 import { Field, FieldError, FieldLabel } from '~/components/ui/field'
 
 export default function Login() {
   return (
-    <div className="form-container">
-      <div>
-        <h1> Login </h1>
-        <p>Enter your details below to login to your account</p>
-      </div>
+    <Card className="w-full max-w-sm mx-auto mt-20">
+      <CardHeader className="border-b">
+        <CardTitle>Login</CardTitle>
+        <CardDescription>Enter your details below to login to your account</CardDescription>
+      </CardHeader>
 
-      <div>
+      <CardPanel>
         <Form route="session.store">
           {({ processing }) => (
-            <>
+            <div className="flex flex-col gap-4">
               <Field name="email">
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input type="email" id="email" autoComplete="username" required />
+                <Input type="email" id="email" autoComplete="username" />
                 <FieldError />
               </Field>
 
               <Field name="password">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input type="password" id="password" autoComplete="current-password" required />
+                <Input type="password" id="password" autoComplete="current-password" />
                 <FieldError />
               </Field>
 
-              <Button disabled={processing} type="submit">
-                Signup
+              <Button className="w-full mt-4" disabled={processing} type="submit">
+                Login
               </Button>
-            </>
+            </div>
           )}
         </Form>
-      </div>
-    </div>
+      </CardPanel>
+    </Card>
   )
 }

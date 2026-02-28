@@ -92,3 +92,7 @@
   --warning: var(--color-amber-500);
   --warning-foreground: var(--color-amber-400);
 }
+
+* {
+  border-color: var(--border);
+}

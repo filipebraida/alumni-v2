@@ -1,35 +1,42 @@
 import { Form } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardPanel,
+} from "~/components/ui/card"
 import { Field, FieldError, FieldLabel } from '~/components/ui/field'
 
 export default function Signup() {
   return (
-    <div className="form-container">
-      <div>
-        <h1> Signup </h1>
-        <p>Enter your details below to create your account</p>
-      </div>
+    <Card className="w-full max-w-sm mx-auto mt-20">
+      <CardHeader className='border-b'>
+        <CardTitle>Signup</CardTitle>
+        <CardDescription>Enter your details below to create your account</CardDescription>
+      </CardHeader>
 
-      <div>
+      <CardPanel>
         <Form route="new_account.store">
           {({ processing }) => (
-            <>
+            <div className="flex flex-col gap-4">
               <Field name="fullName">
                 <FieldLabel htmlFor="fullName">Full name</FieldLabel>
-                <Input type="text" id="fullName" required />
+                <Input type="text" id="fullName" placeholder="Enter fullname" />
                 <FieldError />
               </Field>
 
               <Field name="email">
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input type="email" id="email" autoComplete="email" required />
+                <Input type="email" id="email" autoComplete="email" placeholder="Enter email" />
                 <FieldError />
               </Field>
 
               <Field name="password">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input type="password" id="password" autoComplete="new-password" required />
+                <Input type="password" id="password" autoComplete="new-password" placeholder="Enter password" />
                 <FieldError />
               </Field>
 
@@ -39,18 +46,18 @@ export default function Signup() {
                   type="password"
                   id="passwordConfirmation"
                   autoComplete="new-password"
-                  required
+                  placeholder="Enter confirm password" 
                 />
                 <FieldError />
               </Field>
 
-              <Button disabled={processing} type="submit">
+              <Button className="w-full mt-4" disabled={processing} type="submit">
                 Signup
               </Button>
-            </>
+            </div>  
           )}
         </Form>
-      </div>
-    </div>
+      </CardPanel>
+    </Card>
   )
 }
