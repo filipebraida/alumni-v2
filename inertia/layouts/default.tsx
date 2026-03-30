@@ -14,6 +14,13 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
         description: children.props.flash.error,
       })
     }
+    if (children.props.flash.success) {
+      toastManager.add({
+        type: 'success',
+        title: 'Success',
+        description: children.props.flash.success,
+      })
+    }
   }, [children.props.flash])
 
   return (
@@ -47,12 +54,8 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
                 </>
               ) : (
                 <>
-                  <Link route="new_account.create">
-                    Signup
-                  </Link>
-                  <Link route="session.create">
-                    Login
-                  </Link>
+                  <Link route="new_account.create">Signup</Link>
+                  <Link route="session.create">Login</Link>
                 </>
               )}
             </nav>

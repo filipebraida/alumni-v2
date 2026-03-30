@@ -1,19 +1,13 @@
 import { Form } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardPanel,
-} from "~/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle, CardPanel } from '~/components/ui/card'
 import { Field, FieldError, FieldLabel } from '~/components/ui/field'
 
 export default function Signup() {
   return (
     <Card className="w-full max-w-sm mx-auto mt-20">
-      <CardHeader className='border-b'>
+      <CardHeader className="border-b">
         <CardTitle>Signup</CardTitle>
         <CardDescription>Enter your details below to create your account</CardDescription>
       </CardHeader>
@@ -36,7 +30,12 @@ export default function Signup() {
 
               <Field name="password">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input type="password" id="password" autoComplete="new-password" placeholder="Enter password" />
+                <Input
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  placeholder="Enter password"
+                />
                 <FieldError />
               </Field>
 
@@ -46,7 +45,7 @@ export default function Signup() {
                   type="password"
                   id="passwordConfirmation"
                   autoComplete="new-password"
-                  placeholder="Enter confirm password" 
+                  placeholder="Enter confirm password"
                 />
                 <FieldError />
               </Field>
@@ -54,7 +53,7 @@ export default function Signup() {
               <Button className="w-full mt-4" disabled={processing} type="submit">
                 Signup
               </Button>
-            </div>  
+            </div>
           )}
         </Form>
       </CardPanel>
