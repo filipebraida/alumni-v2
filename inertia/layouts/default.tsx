@@ -99,17 +99,23 @@ function ThemeFooter() {
               value={theme}
               onValueChange={(value) => setTheme(value as 'light' | 'dark' | 'system')}
             >
-              <MenuRadioItem value="light">
-                <Sun className="size-4" />
-                Light
+              <MenuRadioItem value="light" className={theme !== 'light' ? 'text-muted-foreground' : ''}>
+                <span className="inline-flex items-center gap-2">
+                  <Sun className="size-4" />
+                  Light
+                </span>
               </MenuRadioItem>
-              <MenuRadioItem value="dark">
-                <Moon className="size-4" />
-                Dark
+              <MenuRadioItem value="dark" className={theme !== 'dark' ? 'text-muted-foreground' : ''}>
+                <span className="inline-flex items-center gap-2">
+                  <Moon className="size-4" />
+                  Dark
+                </span>
               </MenuRadioItem>
-              <MenuRadioItem value="system">
-                <Monitor className="size-4" />
-                System
+              <MenuRadioItem value="system" className={theme !== 'system' ? 'text-muted-foreground' : ''}>
+                <span className="inline-flex items-center gap-2">
+                  <Monitor className="size-4" />
+                  System
+                </span>
               </MenuRadioItem>
             </MenuRadioGroup>
           </MenuPopup>
