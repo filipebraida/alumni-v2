@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import { ThemeProvider } from '~/hooks/use_theme'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 
@@ -22,7 +23,9 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(
       <TuyauProvider client={client}>
-        <App {...props} />
+        <ThemeProvider>
+          <App {...props} />
+        </ThemeProvider>
       </TuyauProvider>
     )
   },
