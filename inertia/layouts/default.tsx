@@ -2,7 +2,16 @@ import { Data } from '@generated/data'
 import { usePage } from '@inertiajs/react'
 import { ReactElement, useEffect } from 'react'
 import { Form, Link } from '@adonisjs/inertia/react'
+import { Sun, Moon, Monitor } from 'lucide-react'
+import { useTheme } from '~/hooks/use_theme'
 import { AnchoredToastProvider, ToastProvider, toastManager } from '~/components/ui/toast'
+import {
+  Menu,
+  MenuTrigger,
+  MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+} from '~/components/ui/menu'
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   useEffect(() => {}, [usePage().url])
@@ -25,7 +34,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 
   return (
     <>
-      <header className="bg-white border-b border-neutral-900 px-5">
+      <header className="bg-card border-b border-border px-5">
         <div className="container mx-auto flex h-18 py-4 items-center justify-between">
           <div>
             <Link route="home">
@@ -44,7 +53,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
             </Link>
           </div>
           <div>
-            <nav className="flex gap-5 text-neutral-500">
+            <nav className="flex gap-5 text-muted-foreground">
               {children.props.user ? (
                 <>
                   <span>{children.props.user.initials}</span>
@@ -64,9 +73,48 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
       </header>
       <ToastProvider position="top-center">
         <AnchoredToastProvider>
-          <main>{children}</main>
+          <main className="flex-1">{children}</main>
         </AnchoredToastProvider>
       </ToastProvider>
+      <ThemeFooter />
     </>
+  )
+}
+
+function ThemeFooter() {
+  const { theme, setTheme } = useTheme()
+
+  return (
+    <footer className="border-t px-5 py-4">
+      <div className="container mx-auto flex items-center justify-end">
+        <Menu>
+          <MenuTrigger className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+            {theme === 'light' && <Sun className="size-4" />}
+            {theme === 'dark' && <Moon className="size-4" />}
+            {theme === 'system' && <Monitor className="size-4" />}
+            <span className="capitalize">{theme}</span>
+          </MenuTrigger>
+          <MenuPopup side="top" align="end">
+            <MenuRadioGroup
+              value={theme}
+              onValueChange={(value) => setTheme(value as 'light' | 'dark' | 'system')}
+            >
+              <MenuRadioItem value="light">
+                <Sun className="size-4" />
+                Light
+              </MenuRadioItem>
+              <MenuRadioItem value="dark">
+                <Moon className="size-4" />
+                Dark
+              </MenuRadioItem>
+              <MenuRadioItem value="system">
+                <Monitor className="size-4" />
+                System
+              </MenuRadioItem>
+            </MenuRadioGroup>
+          </MenuPopup>
+        </Menu>
+      </div>
+    </footer>
   )
 }
