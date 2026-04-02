@@ -1,3 +1,5 @@
+import MinimalLayout from '~/layouts/minimal'
+
 export default function NotFound() {
   return (
     <>
@@ -5,3 +7,5 @@ export default function NotFound() {
     </>
   )
 }
+
+NotFound.layout = (page: React.ReactElement) => <MinimalLayout>{page}</MinimalLayout>

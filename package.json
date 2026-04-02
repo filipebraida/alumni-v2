@@ -37,7 +37,7 @@
     "#config/*": "./config/*.js"
   },
   "devDependencies": {
-    "@adonisjs/assembler": "^8.3.0",
+    "@adonisjs/assembler": "^8.4.0",
     "@adonisjs/eslint-config": "^3.0.0",
     "@adonisjs/prettier-config": "^1.4.5",
     "@adonisjs/tsconfig": "^2.0.0",
@@ -66,7 +66,7 @@
     "@adonisjs/core": "^7.3.0",
     "@adonisjs/cors": "^3.0.0",
     "@adonisjs/inertia": "^4.2.0",
-    "@adonisjs/lucid": "^22.4.0",
+    "@adonisjs/lucid": "^22.4.1",
     "@adonisjs/session": "^8.0.0",
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",
@@ -81,6 +81,7 @@
     "edge.js": "^6.5.0",
     "lucide-react": "^1.7.0",
     "luxon": "^3.7.2",
+    "radix-ui": "^1.4.3",
     "react": "^19.2.4",
     "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.4",
