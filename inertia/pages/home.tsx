@@ -1,5 +1,6 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import DefaultLayout from '~/layouts/default'
 import { Book, MessageCircle, Video } from 'lucide-react'
+import { Card, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 
 export default function Home() {
   return (
@@ -56,3 +57,5 @@ export default function Home() {
     </div>
   )
 }
+
+Home.layout = (page: React.ReactElement) => <DefaultLayout>{page}</DefaultLayout>

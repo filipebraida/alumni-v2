@@ -1,3 +1,5 @@
+import MinimalLayout from '~/layouts/minimal'
+
 export default function ServerError() {
   return (
     <>
@@ -5,3 +7,5 @@ export default function ServerError() {
     </>
   )
 }
+
+ServerError.layout = (page: React.ReactElement) => <MinimalLayout>{page}</MinimalLayout>

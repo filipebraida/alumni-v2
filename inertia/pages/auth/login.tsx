@@ -1,3 +1,5 @@
+import MinimalLayout from '~/layouts/minimal'
+import { Link } from '@adonisjs/inertia/react'
 import { Form } from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
@@ -6,7 +8,7 @@ import { Field, FieldError, FieldLabel } from '~/components/ui/field'
 
 export default function Login() {
   return (
-    <Card className="w-full max-w-sm mx-auto mt-20">
+    <Card className="w-full max-w-sm">
       <CardHeader className="border-b">
         <CardTitle>Login</CardTitle>
         <CardDescription>Enter your details below to login to your account</CardDescription>
@@ -35,6 +37,14 @@ export default function Login() {
           )}
         </Form>
       </CardPanel>
+      <div className="px-6 py-4 text-center text-sm text-muted-foreground">
+        Don't have an account?{' '}
+        <Link route="new_account.create" className="text-foreground underline underline-offset-4">
+          Signup
+        </Link>
+      </div>
     </Card>
   )
 }
+
+Login.layout = (page: React.ReactElement) => <MinimalLayout>{page}</MinimalLayout>

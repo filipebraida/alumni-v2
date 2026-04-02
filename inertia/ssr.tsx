@@ -1,7 +1,4 @@
 import { client } from '~/client'
-import { ReactElement } from 'react'
-import Layout from '~/layouts/default'
-import { Data } from '@generated/data'
 import ReactDOMServer from 'react-dom/server'
 import { createInertiaApp } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
@@ -14,8 +11,7 @@ export default function render(page: any) {
     resolve: (name) => {
       return resolvePageComponent(
         `./pages/${name}.tsx`,
-        import.meta.glob('./pages/**/*.tsx', { eager: true }),
-        (page: ReactElement<Data.SharedProps>) => <Layout children={page} />
+        import.meta.glob('./pages/**/*.tsx', { eager: true })
       )
     },
     setup: ({ App, props }) => {
