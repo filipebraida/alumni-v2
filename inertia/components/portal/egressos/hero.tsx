@@ -1,12 +1,14 @@
-import { ArrowRight, User } from 'lucide-react'
 import { Link } from '@adonisjs/inertia/react'
-import { SoftBadge } from '~/components/portal/soft-badge'
-import { Passaporte } from '~/components/portal/egressos/passaporte'
+import { ArrowRight, User } from 'lucide-react'
+import { PortalContainer } from '~/components/portal/container'
+import { EgressosPassaporte } from '~/components/portal/egressos/passaporte'
+import { SectionHeading } from '~/components/portal/section_heading'
+import { SoftBadge } from '~/components/portal/soft_badge'
 
 export function EgressosHero() {
   return (
     <section className="relative overflow-hidden border-b">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.35]">
+      <div className="pointer-events-none absolute inset-0 opacity-35">
         <svg width="100%" height="100%">
           <defs>
             <pattern id="egDots" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -17,8 +19,8 @@ export function EgressosHero() {
         </svg>
       </div>
 
-      <div className="relative mx-auto max-w-[1320px] px-8 pb-20 pt-16">
-        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+      <PortalContainer className="relative pb-20 pt-16">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
           <Link route="home" className="hover:text-foreground">
             SAE · UFRRJ
           </Link>
@@ -33,12 +35,12 @@ export function EgressosHero() {
               Para quem se formou na Rural
             </SoftBadge>
 
-            <h1 className="text-balance font-serif font-medium text-[clamp(40px,5.2vw,68px)] leading-[1.04] tracking-[-0.015em] text-foreground">
+            <SectionHeading as="h1" className="text-4xl text-foreground sm:text-5xl lg:text-6xl">
               Você passou anos aqui. <span className="text-primary">A Rural ainda te</span>{' '}
-              <span className="font-normal text-foreground/85 italic">deve uma coisa.</span>
-            </h1>
+              <span className="font-normal italic text-foreground/85">deve uma coisa.</span>
+            </SectionHeading>
 
-            <div className="max-w-[600px] space-y-4 text-pretty text-[17px] leading-relaxed text-muted-foreground">
+            <div className="max-w-xl space-y-4 text-pretty text-lg leading-relaxed text-muted-foreground">
               <p>
                 Te deve a leitura honesta de pra onde foi a sua turma. Te deve uma rede de quem
                 passou pelos mesmos corredores que você. Te deve um canal direto pra quando você
@@ -65,10 +67,10 @@ export function EgressosHero() {
           </div>
 
           <aside className="col-span-12 md:col-span-5 md:pl-4">
-            <Passaporte />
+            <EgressosPassaporte />
           </aside>
         </div>
-      </div>
+      </PortalContainer>
     </section>
   )
 }

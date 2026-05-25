@@ -1,6 +1,8 @@
 import { ArrowRight, Eye, Leaf } from 'lucide-react'
-import { LoginCard } from '~/components/portal/entrada/login-card'
-import { SoftBadge } from '~/components/portal/soft-badge'
+import { PortalContainer } from '~/components/portal/container'
+import { EntradaLoginCard } from '~/components/portal/entrada/login_card'
+import { SectionHeading } from '~/components/portal/section_heading'
+import { SoftBadge } from '~/components/portal/soft_badge'
 import { cn } from '~/lib/utils'
 
 function Stat({ n, label, muted = false }: { n: string; label: string; muted?: boolean }) {
@@ -8,7 +10,7 @@ function Stat({ n, label, muted = false }: { n: string; label: string; muted?: b
     <div>
       <div
         className={cn(
-          'font-serif font-medium text-[34px] leading-none tracking-[-0.01em] tabular-nums',
+          'font-serif text-3xl font-medium leading-none tracking-tight tabular-nums',
           muted ? 'text-foreground/85' : 'text-primary'
         )}
       >
@@ -22,7 +24,7 @@ function Stat({ n, label, muted = false }: { n: string; label: string; muted?: b
 export function EntradaHero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.35]">
+      <div className="pointer-events-none absolute inset-0 opacity-35">
         <svg width="100%" height="100%">
           <defs>
             <pattern id="portalDots" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -33,27 +35,27 @@ export function EntradaHero() {
         </svg>
       </div>
 
-      <div className="relative mx-auto grid max-w-330 grid-cols-12 gap-10 px-8 pb-20 pt-16">
+      <PortalContainer className="relative grid grid-cols-12 gap-10 pb-20 pt-16">
         <div className="col-span-12 flex flex-col gap-6 pt-2 md:col-span-7">
           <div className="flex flex-wrap items-center gap-2">
             <SoftBadge>
               <Leaf className="size-3" />
               Programa institucional · UFRRJ
             </SoftBadge>
-            <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">
               Em conformidade com o MEC
             </span>
           </div>
 
-          <h1 className="font-serif font-medium text-[clamp(40px,5.5vw,72px)] leading-[1.04] tracking-[-0.015em] text-foreground">
+          <SectionHeading as="h1" className="text-4xl text-foreground sm:text-5xl lg:text-6xl">
             Você se formou.
             <br />
             <span className="text-primary">A UFRRJ continua</span>
             <br />
-            <span className="font-normal text-foreground/85 italic">com você.</span>
-          </h1>
+            <span className="font-normal italic text-foreground/85">com você.</span>
+          </SectionHeading>
 
-          <p className="max-w-xl text-pretty text-[17px] leading-relaxed text-muted-foreground">
+          <p className="max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
             O <strong className="font-medium text-foreground">SAE</strong> — Serviço de
             Acompanhamento de Egressos — é como a Rural mantém contato com quem passou por aqui.
             Você atualiza <strong className="font-medium text-foreground">8 dados</strong> uma vez
@@ -69,7 +71,7 @@ export function EntradaHero() {
 
           <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
             <a
-              href="#como-funciona"
+              href="#passos"
               className="inline-flex items-center gap-1 text-foreground underline-offset-4 hover:underline"
             >
               Como funciona <ArrowRight className="size-3.5" />
@@ -81,9 +83,9 @@ export function EntradaHero() {
         </div>
 
         <div id="login" className="col-span-12 md:col-span-5">
-          <LoginCard />
+          <EntradaLoginCard />
         </div>
-      </div>
+      </PortalContainer>
     </section>
   )
 }

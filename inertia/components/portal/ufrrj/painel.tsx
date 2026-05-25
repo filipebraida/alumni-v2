@@ -1,16 +1,16 @@
 import { ArrowUpRight } from 'lucide-react'
-import { SoftBadge } from '~/components/portal/soft-badge'
+import { SoftBadge } from '~/components/portal/soft_badge'
 import { cn } from '~/lib/utils'
 
 function DPKpi({ label, value, up = false }: { label: string; value: string; up?: boolean }) {
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
+      <div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
       <div className="mt-1 flex items-baseline gap-1.5">
-        <span className="font-serif font-medium text-[22px] leading-none text-foreground tabular-nums">
+        <span className="font-serif text-2xl font-medium leading-none text-foreground tabular-nums">
           {value}
         </span>
-        {up && <span className="text-[10px] font-medium text-success">↑</span>}
+        {up && <span className="text-xs font-medium text-success">↑</span>}
       </div>
     </div>
   )
@@ -18,21 +18,21 @@ function DPKpi({ label, value, up = false }: { label: string; value: string; up?
 
 function DPBar({ label, pct, muted = false }: { label: string; pct: number; muted?: boolean }) {
   return (
-    <div className="grid grid-cols-[28px_1fr_28px] items-center gap-3 text-[11px]">
-      <span className="font-medium text-foreground">{label}</span>
-      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+    <div className="flex items-center gap-3 text-xs">
+      <span className="w-7 shrink-0 font-medium text-foreground">{label}</span>
+      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
         <div
           className={cn('h-full', muted ? 'bg-muted-foreground/40' : 'bg-primary')}
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-right text-muted-foreground tabular-nums">{pct}%</span>
+      <span className="w-7 shrink-0 text-right text-muted-foreground tabular-nums">{pct}%</span>
     </div>
   )
 }
 
 /** Editorial mock of the Coordenação dashboard. */
-export function DashboardPreview() {
+export function UfrrjPainel() {
   return (
     <div className="relative">
       <div
@@ -47,20 +47,20 @@ export function DashboardPreview() {
             <span className="size-2.5 rounded-full bg-muted-foreground/30" />
             <span className="size-2.5 rounded-full bg-muted-foreground/30" />
           </div>
-          <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">
             Painel da Coordenação
           </div>
-          <SoftBadge className="text-[10px]">
+          <SoftBadge>
             <span className="inline-block size-1.5 rounded-full bg-success" />
             Ao vivo
           </SoftBadge>
         </div>
 
         <div className="p-6">
-          <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">
             Agronomia · Seropédica
           </div>
-          <h3 className="mt-1 font-serif font-medium text-[20px] leading-tight tracking-[-0.01em]">
+          <h3 className="mt-1 font-serif text-xl font-medium leading-tight tracking-tight">
             Coorte 2018–2024 · panorama
           </h3>
 
@@ -72,10 +72,10 @@ export function DashboardPreview() {
 
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
-              <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
+              <div className="text-xs uppercase tracking-wider text-muted-foreground">
                 Onde estão · top 5 estados
               </div>
-              <div className="text-[10px] text-muted-foreground tabular-nums">n=384</div>
+              <div className="text-xs text-muted-foreground tabular-nums">n=384</div>
             </div>
             <div className="mt-3 space-y-2.5">
               <DPBar label="RJ" pct={62} />
@@ -87,13 +87,10 @@ export function DashboardPreview() {
           </div>
 
           <div className="mt-6 flex items-center justify-between border-t pt-4">
-            <div className="text-[11px] text-muted-foreground">
+            <div className="text-xs text-muted-foreground">
               Atualizado em <span className="text-foreground">12/mai</span>
             </div>
-            <a
-              href="#"
-              className="inline-flex items-center gap-1 text-[11px] font-medium text-primary"
-            >
+            <a href="#" className="inline-flex items-center gap-1 text-xs font-medium text-primary">
               Abrir relatório <ArrowUpRight className="size-3" />
             </a>
           </div>

@@ -1,10 +1,9 @@
-'use client'
-
 import { Link } from '@adonisjs/inertia/react'
 import { Menu } from 'lucide-react'
 import { ReactNode, useState } from 'react'
+import { PortalContainer } from '~/components/portal/container'
 import { PortalLogo } from '~/components/portal/logo'
-import { Button } from '~/components/ui/button'
+import { Button, buttonVariants } from '~/components/ui/button'
 import {
   Sheet,
   SheetContent,
@@ -71,7 +70,7 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
 
   return (
     <header className="border-b bg-background/80 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-330 items-center gap-4 px-5 md:gap-8 md:px-8">
+      <PortalContainer className="flex h-16 items-center gap-4 md:gap-8">
         <Link route="home" className="flex items-center gap-2.5">
           <PortalLogo />
           <span className="font-semibold text-sm tracking-tight">
@@ -109,12 +108,9 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
           >
             ufrrj.br ↗
           </a>
-          <a
-            href="/#login"
-            className="inline-flex h-9 items-center rounded-md border bg-background px-3 font-medium text-sm hover:bg-muted/50"
-          >
+          <Link href="/#login" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
             Entrar
-          </a>
+          </Link>
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -164,7 +160,7 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
             </SheetContent>
           </Sheet>
         </div>
-      </div>
+      </PortalContainer>
     </header>
   )
 }

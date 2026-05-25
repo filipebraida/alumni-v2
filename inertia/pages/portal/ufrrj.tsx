@@ -1,23 +1,23 @@
 import { Head } from '@inertiajs/react'
 import { ReactElement } from 'react'
 import PortalLayout from '~/layouts/portal'
-import { UFRRJHero } from '~/components/portal/ufrrj/hero'
-import { OQueDevolve } from '~/components/portal/ufrrj/o-que-devolve'
-import { PapeisInstitucionais } from '~/components/portal/ufrrj/papeis-institucionais'
-import { IntegracaoSistemas } from '~/components/portal/ufrrj/integracao-sistemas'
-import { CalendarioAcademico } from '~/components/portal/ufrrj/calendario-academico'
-import { UFRRJCTA } from '~/components/portal/ufrrj/cta'
+import { UfrrjHero } from '~/components/portal/ufrrj/hero'
+import { UfrrjContrapartida } from '~/components/portal/ufrrj/contrapartida'
+import { UfrrjPapeis } from '~/components/portal/ufrrj/papeis'
+import { UfrrjIntegracoes } from '~/components/portal/ufrrj/integracoes'
+import { UfrrjCalendario } from '~/components/portal/ufrrj/calendario'
+import { UfrrjCta } from '~/components/portal/ufrrj/cta'
 
 export default function UFRRJ() {
   return (
     <>
       <Head title="Para a UFRRJ" />
-      <UFRRJHero />
-      <OQueDevolve />
-      <PapeisInstitucionais />
-      <IntegracaoSistemas />
-      <CalendarioAcademico />
-      <UFRRJCTA />
+      <UfrrjHero />
+      <UfrrjContrapartida />
+      <UfrrjPapeis />
+      <UfrrjIntegracoes />
+      <UfrrjCalendario />
+      <UfrrjCta />
     </>
   )
 }

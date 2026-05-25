@@ -1,4 +1,4 @@
-import { SoftBadge } from '~/components/portal/soft-badge'
+import { SoftBadge } from '~/components/portal/soft_badge'
 import { cn } from '~/lib/utils'
 
 const items: { label: string; value: string; sub: string; tone?: 'primary' | 'success' }[] = [
@@ -13,11 +13,11 @@ const items: { label: string; value: string; sub: string; tone?: 'primary' | 'su
   { label: 'Pedidos LAI no ano', value: '12', sub: '11 atendidos · 1 indeferido' },
 ]
 
-export function IndicadoresAoVivo() {
+export function TransparenciaIndicadores() {
   return (
     <div className="rounded-2xl border bg-card p-6 shadow-sm">
       <div className="flex items-center justify-between">
-        <div className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Ao vivo</div>
+        <div className="text-xs uppercase tracking-widest text-muted-foreground">Ao vivo</div>
         <SoftBadge>
           <span className="inline-block size-1.5 animate-pulse rounded-full bg-success" />
           Atualizado agora
@@ -28,15 +28,15 @@ export function IndicadoresAoVivo() {
         {items.map((it) => (
           <li
             key={it.label}
-            className="grid grid-cols-[1fr_auto] items-baseline gap-3 py-3.5 first:pt-1 last:pb-1"
+            className="flex items-baseline justify-between gap-3 py-3.5 first:pt-1 last:pb-1"
           >
             <div>
-              <div className="text-[12px] text-muted-foreground">{it.label}</div>
-              <div className="mt-0.5 text-[11px] text-muted-foreground/80">{it.sub}</div>
+              <div className="text-xs text-muted-foreground">{it.label}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground/80">{it.sub}</div>
             </div>
             <div
               className={cn(
-                'font-serif font-medium text-[26px] leading-none tracking-[-0.01em] tabular-nums',
+                'font-serif text-2xl font-medium leading-none tracking-tight tabular-nums',
                 it.tone === 'primary'
                   ? 'text-primary'
                   : it.tone === 'success'

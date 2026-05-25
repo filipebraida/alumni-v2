@@ -1,10 +1,11 @@
 import { ReactNode } from 'react'
+import { PortalContainer } from '~/components/portal/container'
 import { PortalLogo } from '~/components/portal/logo'
 
 function FooterCol({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="col-span-6 md:col-span-2">
-      <div className="text-[11px] uppercase tracking-[0.16em] text-white/40">{title}</div>
+      <div className="text-xs uppercase tracking-widest text-white/40">{title}</div>
       <ul className="mt-3 space-y-2 text-sm">{children}</ul>
     </div>
   )
@@ -24,7 +25,7 @@ function FooterLink({ children }: { children: ReactNode }) {
 export function PortalFooter() {
   return (
     <footer className="border-t bg-portal-ink text-portal-ink-foreground">
-      <div className="mx-auto max-w-330 px-8 py-12">
+      <PortalContainer className="py-12">
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-12 md:col-span-5">
             <div className="flex items-center gap-2.5">
@@ -66,7 +67,7 @@ export function PortalFooter() {
           <span>© 2026 UFRRJ · Pró-Reitoria de Graduação</span>
           <span>Versão 2.4 · publicado em maio/2026</span>
         </div>
-      </div>
+      </PortalContainer>
     </footer>
   )
 }

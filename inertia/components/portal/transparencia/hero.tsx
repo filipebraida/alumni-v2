@@ -1,12 +1,14 @@
-import { ArrowRight, Eye } from 'lucide-react'
 import { Link } from '@adonisjs/inertia/react'
-import { SoftBadge } from '~/components/portal/soft-badge'
-import { IndicadoresAoVivo } from '~/components/portal/transparencia/indicadores-ao-vivo'
+import { ArrowRight, Eye } from 'lucide-react'
+import { PortalContainer } from '~/components/portal/container'
+import { SectionHeading } from '~/components/portal/section_heading'
+import { SoftBadge } from '~/components/portal/soft_badge'
+import { TransparenciaIndicadores } from '~/components/portal/transparencia/indicadores'
 
-export function TransHero() {
+export function TransparenciaHero() {
   return (
     <section className="relative overflow-hidden border-b">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.35]">
+      <div className="pointer-events-none absolute inset-0 opacity-35">
         <svg width="100%" height="100%">
           <defs>
             <pattern id="trDots" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -17,8 +19,8 @@ export function TransHero() {
         </svg>
       </div>
 
-      <div className="relative mx-auto max-w-[1320px] px-8 pb-16 pt-16">
-        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+      <PortalContainer className="relative pb-16 pt-16">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
           <Link route="home" className="hover:text-foreground">
             SAE · UFRRJ
           </Link>
@@ -33,12 +35,12 @@ export function TransHero() {
               Prestação de contas pública
             </SoftBadge>
 
-            <h1 className="text-balance font-serif font-medium text-[clamp(40px,5.2vw,68px)] leading-[1.04] tracking-[-0.015em] text-foreground">
+            <SectionHeading as="h1" className="text-4xl text-foreground sm:text-5xl lg:text-6xl">
               A <span className="text-primary">cozinha aberta</span>{' '}
-              <span className="font-normal text-foreground/85 italic">do SAE.</span>
-            </h1>
+              <span className="font-normal italic text-foreground/85">do SAE.</span>
+            </SectionHeading>
 
-            <div className="max-w-[600px] space-y-4 text-pretty text-[17px] leading-relaxed text-muted-foreground">
+            <div className="max-w-xl space-y-4 text-pretty text-lg leading-relaxed text-muted-foreground">
               <p>
                 Programa público se faz na vitrine, não no fundo da sala. Aqui ficam os relatórios
                 anuais, a regra exata de como agregamos seus dados, quem tem acesso a o quê, e cada
@@ -73,23 +75,23 @@ export function TransHero() {
           </div>
 
           <aside className="col-span-12 md:col-span-4">
-            <IndicadoresAoVivo />
+            <TransparenciaIndicadores />
           </aside>
         </div>
-      </div>
+      </PortalContainer>
 
       {/* Cycle identity strip */}
       <div className="border-t bg-muted/30">
-        <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-3 px-8 py-4 text-[12px]">
+        <PortalContainer className="flex flex-wrap items-center justify-between gap-3 py-4 text-xs">
           <div className="flex items-center gap-2 text-muted-foreground">
             <span className="inline-block size-1.5 animate-pulse rounded-full bg-success" />
-            <span className="text-[11px] uppercase tracking-[0.16em]">Ciclo 2026 · em coleta</span>
+            <span className="uppercase tracking-widest">Ciclo 2026 · em coleta</span>
           </div>
-          <div className="font-mono text-[11px] text-muted-foreground">
+          <div className="font-mono text-muted-foreground">
             Última sincronização com SIGAA:{' '}
             <span className="text-foreground">24/mai/2026 · 03:12 BRT</span>
           </div>
-        </div>
+        </PortalContainer>
       </div>
     </section>
   )

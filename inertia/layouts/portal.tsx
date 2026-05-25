@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
-import { PortalFooter } from '~/components/portal/portal-footer'
-import { PortalHeader, PortalNavKey } from '~/components/portal/portal-header'
+import { PortalFooter } from '~/components/portal/portal_footer'
+import { PortalHeader, PortalNavKey } from '~/components/portal/portal_header'
 import { AnchoredToastProvider, ToastProvider } from '~/components/ui/toast'
 import { useFlashToasts } from '~/hooks/use_flash'
 
@@ -20,7 +20,7 @@ export default function PortalLayout({
   useFlashToasts()
 
   return (
-    <div className="portal-theme flex min-h-screen flex-col bg-background font-sans text-foreground tracking-[-0.005em] antialiased">
+    <div className="portal-theme flex min-h-screen flex-col bg-background font-sans text-foreground antialiased">
       <PortalHeader active={active} />
       <ToastProvider position="top-center">
         <AnchoredToastProvider>
