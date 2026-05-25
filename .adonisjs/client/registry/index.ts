@@ -12,6 +12,30 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['home']['types'],
   },
+  'portal.egressos': {
+    methods: ["GET","HEAD"],
+    pattern: '/para-egressos',
+    tokens: [{"old":"/para-egressos","type":0,"val":"para-egressos","end":""}],
+    types: placeholder as Registry['portal.egressos']['types'],
+  },
+  'portal.sobre': {
+    methods: ["GET","HEAD"],
+    pattern: '/sobre',
+    tokens: [{"old":"/sobre","type":0,"val":"sobre","end":""}],
+    types: placeholder as Registry['portal.sobre']['types'],
+  },
+  'portal.ufrrj': {
+    methods: ["GET","HEAD"],
+    pattern: '/para-a-ufrrj',
+    tokens: [{"old":"/para-a-ufrrj","type":0,"val":"para-a-ufrrj","end":""}],
+    types: placeholder as Registry['portal.ufrrj']['types'],
+  },
+  'portal.transparencia': {
+    methods: ["GET","HEAD"],
+    pattern: '/transparencia',
+    tokens: [{"old":"/transparencia","type":0,"val":"transparencia","end":""}],
+    types: placeholder as Registry['portal.transparencia']['types'],
+  },
   'new_account.create': {
     methods: ["GET","HEAD"],
     pattern: '/signup',

@@ -19,6 +19,54 @@ export interface Registry {
       errorResponse: unknown
     }
   }
+  'portal.egressos': {
+    methods: ["GET","HEAD"]
+    pattern: '/para-egressos'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'portal.sobre': {
+    methods: ["GET","HEAD"]
+    pattern: '/sobre'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'portal.ufrrj': {
+    methods: ["GET","HEAD"]
+    pattern: '/para-a-ufrrj'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'portal.transparencia': {
+    methods: ["GET","HEAD"]
+    pattern: '/transparencia'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
   'new_account.create': {
     methods: ["GET","HEAD"]
     pattern: '/signup'

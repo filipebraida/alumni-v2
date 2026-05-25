@@ -17,6 +17,10 @@ declare module '@adonisjs/inertia/types' {
     'dashboard': ExtractProps<(typeof import('../../inertia/pages/dashboard.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
-    'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
+    'portal/egressos': ExtractProps<(typeof import('../../inertia/pages/portal/egressos.tsx'))['default']>
+    'portal/entrada': ExtractProps<(typeof import('../../inertia/pages/portal/entrada.tsx'))['default']>
+    'portal/sobre': ExtractProps<(typeof import('../../inertia/pages/portal/sobre.tsx'))['default']>
+    'portal/transparencia': ExtractProps<(typeof import('../../inertia/pages/portal/transparencia.tsx'))['default']>
+    'portal/ufrrj': ExtractProps<(typeof import('../../inertia/pages/portal/ufrrj.tsx'))['default']>
   }
 }

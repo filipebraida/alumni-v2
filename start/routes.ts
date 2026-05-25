@@ -11,7 +11,15 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').renderInertia('home', {}).as('home')
+/*
+| Public portal (institutional, pre-login). All pages share PortalLayout.
+| "Portal de entrada" (login) is the site root; siblings hang off named routes.
+*/
+router.on('/').renderInertia('portal/entrada', {}).as('home')
+router.on('/para-egressos').renderInertia('portal/egressos', {}).as('portal.egressos')
+router.on('/sobre').renderInertia('portal/sobre', {}).as('portal.sobre')
+router.on('/para-a-ufrrj').renderInertia('portal/ufrrj', {}).as('portal.ufrrj')
+router.on('/transparencia').renderInertia('portal/transparencia', {}).as('portal.transparencia')
 
 router
   .group(() => {
