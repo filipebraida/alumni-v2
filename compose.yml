@@ -1,0 +1,16 @@
+services:
+  # Mailpit — local SMTP server that captures outgoing email for development.
+  # SMTP on :1025 (used by the app), web UI on :8025.
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: alumni-mailpit
+    restart: unless-stopped
+    ports:
+      # SMTP: only the app on this host talks to it — keep it on localhost.
+      - '127.0.0.1:1025:1025'
+      # Web UI: bound to all interfaces so it's reachable remotely at
+      # http://<server-ip>:8025
+      - '0.0.0.0:8025:8025'
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 'true'
+      MP_SMTP_AUTH_ALLOW_INSECURE: 'true'

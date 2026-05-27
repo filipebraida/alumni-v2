@@ -36,18 +36,6 @@ const routes = {
     tokens: [{"old":"/transparencia","type":0,"val":"transparencia","end":""}],
     types: placeholder as Registry['portal.transparencia']['types'],
   },
-  'new_account.create': {
-    methods: ["GET","HEAD"],
-    pattern: '/signup',
-    tokens: [{"old":"/signup","type":0,"val":"signup","end":""}],
-    types: placeholder as Registry['new_account.create']['types'],
-  },
-  'new_account.store': {
-    methods: ["POST"],
-    pattern: '/signup',
-    tokens: [{"old":"/signup","type":0,"val":"signup","end":""}],
-    types: placeholder as Registry['new_account.store']['types'],
-  },
   'session.create': {
     methods: ["GET","HEAD"],
     pattern: '/login',
@@ -59,6 +47,18 @@ const routes = {
     pattern: '/login',
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['session.store']['types'],
+  },
+  'codigo_acesso.store': {
+    methods: ["POST"],
+    pattern: '/login/code',
+    tokens: [{"old":"/login/code","type":0,"val":"login","end":""},{"old":"/login/code","type":0,"val":"code","end":""}],
+    types: placeholder as Registry['codigo_acesso.store']['types'],
+  },
+  'codigo_acesso.destroy': {
+    methods: ["DELETE"],
+    pattern: '/login/code',
+    tokens: [{"old":"/login/code","type":0,"val":"login","end":""},{"old":"/login/code","type":0,"val":"code","end":""}],
+    types: placeholder as Registry['codigo_acesso.destroy']['types'],
   },
   'dashboard': {
     methods: ["GET","HEAD"],

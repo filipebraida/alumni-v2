@@ -1,5 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Menu } from 'lucide-react'
+import { usePage } from '@inertiajs/react'
+import { Data } from '@generated/data'
+import { ArrowRight, Menu } from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { PortalContainer } from '~/components/portal/container'
 import { PortalLogo } from '~/components/portal/logo'
@@ -67,6 +69,7 @@ function NavTarget({
  */
 export function PortalHeader({ active }: { active?: PortalNavKey }) {
   const [open, setOpen] = useState(false)
+  const { user } = usePage<Data.SharedProps>().props
 
   return (
     <header className="border-b bg-background/80 backdrop-blur-sm">
@@ -108,9 +111,16 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
           >
             ufrrj.br ↗
           </a>
-          <Link href="/#login" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
-            Entrar
-          </Link>
+          {user ? (
+            <Link route="dashboard" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+              Meu painel
+            </Link>
+          ) : (
+            <Link route="session.create" className={buttonVariants({ size: 'sm' })}>
+              Entrar
+              <ArrowRight className="size-3.5" />
+            </Link>
+          )}
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>

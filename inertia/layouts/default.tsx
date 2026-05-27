@@ -27,10 +27,7 @@ export default function Layout({ children }: { children: ReactElement }) {
                   </Form>
                 </>
               ) : (
-                <>
-                  <Link route="new_account.create">Signup</Link>
-                  <Link route="session.create">Login</Link>
-                </>
+                <Link route="home">Login</Link>
               )}
             </nav>
           </div>

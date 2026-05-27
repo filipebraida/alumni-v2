@@ -9,10 +9,10 @@ export type ScannedRoutes = {
     'portal.sobre': { paramsTuple?: []; params?: {} }
     'portal.ufrrj': { paramsTuple?: []; params?: {} }
     'portal.transparencia': { paramsTuple?: []; params?: {} }
-    'new_account.create': { paramsTuple?: []; params?: {} }
-    'new_account.store': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
+    'codigo_acesso.store': { paramsTuple?: []; params?: {} }
+    'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
   }
@@ -22,7 +22,6 @@ export type ScannedRoutes = {
     'portal.sobre': { paramsTuple?: []; params?: {} }
     'portal.ufrrj': { paramsTuple?: []; params?: {} }
     'portal.transparencia': { paramsTuple?: []; params?: {} }
-    'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
   }
@@ -32,14 +31,16 @@ export type ScannedRoutes = {
     'portal.sobre': { paramsTuple?: []; params?: {} }
     'portal.ufrrj': { paramsTuple?: []; params?: {} }
     'portal.transparencia': { paramsTuple?: []; params?: {} }
-    'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
   }
   POST: {
-    'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
+    'codigo_acesso.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+  }
+  DELETE: {
+    'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }
   }
 }
 declare module '@adonisjs/core/types/http' {

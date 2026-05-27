@@ -10,6 +10,7 @@
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
+import { loginCodeRequestThrottle, loginCodeVerifyThrottle } from '#start/limiter'
 
 /*
 | Public portal (institutional, pre-login). All pages share PortalLayout.
@@ -23,11 +24,13 @@ router.on('/transparencia').renderInertia('portal/transparencia', {}).as('portal
 
 router
   .group(() => {
-    router.get('signup', [controllers.NewAccount, 'create'])
-    router.post('signup', [controllers.NewAccount, 'store'])
-
+    // Passwordless login. The email step lives on the home page (`/`); after a
+    // code is sent the user lands on the dedicated code page below.
     router.get('login', [controllers.Session, 'create'])
-    router.post('login', [controllers.Session, 'store'])
+    router.post('login', [controllers.Session, 'store']).use(loginCodeVerifyThrottle)
+
+    router.post('login/code', [controllers.CodigoAcesso, 'store']).use(loginCodeRequestThrottle)
+    router.delete('login/code', [controllers.CodigoAcesso, 'destroy'])
   })
   .use(middleware.guest())
 

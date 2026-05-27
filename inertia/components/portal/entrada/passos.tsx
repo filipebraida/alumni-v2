@@ -7,8 +7,8 @@ const steps: { n: string; icon: LucideIcon; title: string; copy: string }[] = [
   {
     n: '01',
     icon: User,
-    title: 'Você entra com o e-mail @ufrrj.br',
-    copy: 'Mandamos um link de acesso pro seu e-mail institucional. Sem senha pra criar nem lembrar.',
+    title: 'Você entra com seu e-mail',
+    copy: 'Enviamos um código de 6 dígitos pro seu e-mail. Sem senha pra criar nem lembrar.',
   },
   {
     n: '02',

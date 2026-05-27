@@ -1,6 +1,7 @@
 .adonisjs
 node_modules
 build
+database/schema.ts
 .flow/docs/
 .claude/skills/flow-*
 .opencode/skills/flow-*
