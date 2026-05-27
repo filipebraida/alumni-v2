@@ -1,71 +1,49 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seu código de acesso</title>
-  </head>
-  <body
-    style="margin: 0; padding: 0; background-color: #f4f4f5; font-family: Arial, Helvetica, sans-serif; color: #18181b;"
-  >
-    <table
-      role="presentation"
-      width="100%"
-      cellpadding="0"
-      cellspacing="0"
-      style="background-color: #f4f4f5; padding: 32px 0;"
-    >
-      <tr>
-        <td align="center">
-          <table
-            role="presentation"
-            width="100%"
-            cellpadding="0"
-            cellspacing="0"
-            style="max-width: 480px; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e4e4e7;"
-          >
-            <tr>
-              <td style="padding: 32px 32px 8px;">
-                <h1 style="margin: 0; font-size: 20px; font-weight: 700;">SAE UFRRJ</h1>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 32px;">
-                <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.5;">
-                  @if(fullName)
-                    Olá, {{ fullName }}.
-                  @else
-                    Olá.
-                  @end
-                </p>
-                <p style="margin: 0 0 24px; font-size: 15px; line-height: 1.5;">
-                  Use o código abaixo para acessar o Portal de Egressos. Ele é válido por
-                  {{ ttlMinutes }} minutos.
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 0 32px 24px;">
-                <div
-                  style="background-color: #f4f4f5; border: 1px solid #e4e4e7; border-radius: 10px; padding: 20px; text-align: center;"
-                >
-                  <span
-                    style="font-size: 32px; font-weight: 700; letter-spacing: 10px; font-family: 'Courier New', Courier, monospace;"
-                    >{{ code }}</span
-                  >
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 0 32px 32px;">
-                <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #71717a;">
-                  Se você não solicitou este código, pode ignorar este e-mail com segurança.
-                </p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>
+@email.layout({
+  title: 'Seu código de acesso',
+  eyebrow: 'Acesso ao SAE',
+  preview: 'Seu código de acesso ao Portal de Egressos',
+})
+  <mj-section background-color="#ffffff" padding="32px 40px 8px">
+    <mj-column>
+      <mj-text font-size="13px" color="#71717a" padding="0 0 6px 0">
+        @if(fullName)
+          Olá, {{ fullName }}.
+        @else
+          Olá.
+        @end
+      </mj-text>
+      <mj-text
+        font-family="Newsreader, Georgia, serif"
+        font-size="26px"
+        font-weight="600"
+        color="#18181b"
+        line-height="1.2"
+        padding="0 0 14px 0"
+      >
+        Seu código de acesso
+      </mj-text>
+      <mj-text font-size="15px" color="#3f3f46" line-height="1.55" padding="0">
+        Use o código abaixo para acessar o Portal de Egressos. Ele é válido por
+        {{ ttlMinutes }} minutos.
+      </mj-text>
+    </mj-column>
+  </mj-section>
+
+  <mj-section background-color="#ffffff" padding="20px 40px 24px">
+    <mj-column>
+      <mj-text align="center" padding="0">
+        <div
+          style="background:#f4f4f5;border:1px solid #e4e4e7;border-radius:10px;padding:20px 24px;font-family:'Courier New',Courier,monospace;font-size:34px;font-weight:700;color:#18181b;letter-spacing:12px;display:inline-block;"
+        >{{ code }}</div>
+      </mj-text>
+    </mj-column>
+  </mj-section>
+
+  <mj-section background-color="#ffffff" padding="0 40px 28px">
+    <mj-column>
+      <mj-text font-size="13px" color="#71717a" line-height="1.55" padding="0">
+        Se você não solicitou este código, pode ignorar este e-mail com segurança.
+      </mj-text>
+    </mj-column>
+  </mj-section>
+@end
