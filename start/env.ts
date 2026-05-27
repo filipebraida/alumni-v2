@@ -31,9 +31,16 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring the mail package
   |----------------------------------------------------------
   */
+  MAIL_DRIVER: Env.schema.enum(['smtp', 'resend'] as const),
+  MAIL_FROM: Env.schema.string(),
   SMTP_HOST: Env.schema.string({ format: 'host' }),
   SMTP_PORT: Env.schema.number(),
-  MAIL_FROM: Env.schema.string(),
+  // Authenticated SMTP (real server). Optional — Mailpit needs none of these.
+  SMTP_SECURE: Env.schema.boolean.optional(),
+  SMTP_USERNAME: Env.schema.string.optional(),
+  SMTP_PASSWORD: Env.schema.string.optional(),
+  SMTP_REJECTUNAUTHORIZED: Env.schema.boolean.optional(),
+  RESEND_API_KEY: Env.schema.string.optional(),
 
   /*
   |----------------------------------------------------------
