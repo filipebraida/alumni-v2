@@ -6,6 +6,35 @@
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
+import type { Campus } from '#enums/campus'
+import type { NivelAcademico, NivelPos } from '#enums/nivel_academico'
+import type { SituacaoMatricula } from '#enums/situacao_matricula'
+import type { FaixaSalarial } from '#enums/faixa_salarial'
+import type { StatusPos } from '#enums/status_pos'
+import type { RelacaoFormacao } from '#enums/relacao_formacao'
+import type { Setor } from '#enums/setor'
+import type { TempoPrimeiroEmprego } from '#enums/tempo_primeiro_emprego'
+
+export class EgressoSchema extends BaseModel {
+  static $columns = ['consentimentoEm', 'cpf', 'createdAt', 'emailPessoal', 'id', 'nomeCompleto', 'updatedAt', 'userId'] as const
+  $columns = EgressoSchema.$columns
+  @column.dateTime()
+  declare consentimentoEm: DateTime | null
+  @column()
+  declare cpf: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare emailPessoal: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare nomeCompleto: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare userId: number
+}
 
 export class LoginCodeSchema extends BaseModel {
   static $columns = ['attempts', 'codeHash', 'createdAt', 'email', 'expiresAt', 'id', 'ipAddress', 'updatedAt', 'usedAt', 'userAgent'] as const
@@ -32,6 +61,33 @@ export class LoginCodeSchema extends BaseModel {
   declare userAgent: string | null
 }
 
+export class MatriculaSchema extends BaseModel {
+  static $columns = ['campus', 'codigo', 'createdAt', 'curso', 'dataColacao', 'egressoId', 'id', 'nivel', 'periodoFormatura', 'situacao', 'updatedAt'] as const
+  $columns = MatriculaSchema.$columns
+  @column()
+  declare campus: Campus
+  @column()
+  declare codigo: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare curso: string
+  @column.date()
+  declare dataColacao: DateTime | null
+  @column()
+  declare egressoId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare nivel: NivelAcademico
+  @column()
+  declare periodoFormatura: string | null
+  @column()
+  declare situacao: SituacaoMatricula
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
 export class RateLimitSchema extends BaseModel {
   static $columns = ['expire', 'key', 'points'] as const
   $columns = RateLimitSchema.$columns
@@ -41,6 +97,49 @@ export class RateLimitSchema extends BaseModel {
   declare key: string
   @column()
   declare points: number
+}
+
+export class RespostaSchema extends BaseModel {
+  static $columns = ['ano', 'cargo', 'createdAt', 'egressoId', 'empregador', 'faixaSalarial', 'id', 'localizacaoCidade', 'localizacaoPais', 'localizacaoUf', 'posCurso', 'posGrau', 'posInstituicao', 'posStatus', 'registradaEm', 'relacaoFormacao', 'setor', 'tempoPrimeiroEmprego', 'updatedAt'] as const
+  $columns = RespostaSchema.$columns
+  @column()
+  declare ano: number
+  @column()
+  declare cargo: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare egressoId: number
+  @column()
+  declare empregador: string | null
+  @column()
+  declare faixaSalarial: FaixaSalarial | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare localizacaoCidade: string | null
+  @column()
+  declare localizacaoPais: string | null
+  @column()
+  declare localizacaoUf: string | null
+  @column()
+  declare posCurso: string | null
+  @column()
+  declare posGrau: NivelPos | null
+  @column()
+  declare posInstituicao: string | null
+  @column()
+  declare posStatus: StatusPos | null
+  @column.dateTime()
+  declare registradaEm: DateTime
+  @column()
+  declare relacaoFormacao: RelacaoFormacao | null
+  @column()
+  declare setor: Setor | null
+  @column()
+  declare tempoPrimeiroEmprego: TempoPrimeiroEmprego | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
 }
 
 export class UserSchema extends BaseModel {
