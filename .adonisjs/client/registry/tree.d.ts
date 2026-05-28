@@ -18,5 +18,9 @@ export interface ApiDefinition {
     store: typeof routes['codigo_acesso.store']
     destroy: typeof routes['codigo_acesso.destroy']
   }
+  onboarding: {
+    show: typeof routes['onboarding.show']
+    update: typeof routes['onboarding.update']
+  }
   dashboard: typeof routes['dashboard']
 }

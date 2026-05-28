@@ -13,6 +13,8 @@ export type ScannedRoutes = {
     'session.store': { paramsTuple?: []; params?: {} }
     'codigo_acesso.store': { paramsTuple?: []; params?: {} }
     'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }
+    'onboarding.show': { paramsTuple?: []; params?: {} }
+    'onboarding.update': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
   }
@@ -23,6 +25,7 @@ export type ScannedRoutes = {
     'portal.ufrrj': { paramsTuple?: []; params?: {} }
     'portal.transparencia': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'onboarding.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
@@ -32,11 +35,13 @@ export type ScannedRoutes = {
     'portal.ufrrj': { paramsTuple?: []; params?: {} }
     'portal.transparencia': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'onboarding.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'session.store': { paramsTuple?: []; params?: {} }
     'codigo_acesso.store': { paramsTuple?: []; params?: {} }
+    'onboarding.update': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
   }
   DELETE: {

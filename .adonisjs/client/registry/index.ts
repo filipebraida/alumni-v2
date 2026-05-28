@@ -60,6 +60,18 @@ const routes = {
     tokens: [{"old":"/login/code","type":0,"val":"login","end":""},{"old":"/login/code","type":0,"val":"code","end":""}],
     types: placeholder as Registry['codigo_acesso.destroy']['types'],
   },
+  'onboarding.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/onboarding',
+    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
+    types: placeholder as Registry['onboarding.show']['types'],
+  },
+  'onboarding.update': {
+    methods: ["POST"],
+    pattern: '/onboarding',
+    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
+    types: placeholder as Registry['onboarding.update']['types'],
+  },
   'dashboard': {
     methods: ["GET","HEAD"],
     pattern: '/dashboard',

@@ -5,5 +5,6 @@
 
 export const controllers = {
   CodigoAcesso: () => import('#controllers/codigo_acesso_controller'),
+  Onboarding: () => import('#controllers/onboarding_controller'),
   Session: () => import('#controllers/session_controller'),
 }

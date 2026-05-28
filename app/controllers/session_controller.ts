@@ -3,6 +3,7 @@ import VerificarCodigoAcesso, {
   type VerificarCodigoAcessoFalha,
 } from '#actions/verificar_codigo_acesso'
 import { verificarCodigoValidator } from '#validators/auth'
+import BuscarEgressoDoUsuario from '#queries/buscar_egresso_do_usuario'
 
 /** Session key holding the email awaiting code verification. */
 export const PENDING_EMAIL_KEY = 'pendingLoginEmail'
@@ -47,6 +48,12 @@ export default class SessionController {
 
     await auth.use('web').login(result.user)
     session.forget(PENDING_EMAIL_KEY)
+
+    // Primeiro acesso (sem consentimento) cai no onboarding "É você?".
+    const egresso = await new BuscarEgressoDoUsuario().handle({ userId: result.user.id })
+    if (egresso && !egresso.consentimentoEm) {
+      return response.redirect().toRoute('onboarding.show')
+    }
     return response.redirect().toRoute('dashboard')
   }
 

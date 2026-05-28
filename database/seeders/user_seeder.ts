@@ -18,7 +18,7 @@ export default class extends BaseSeeder {
         cpf: '12345678900',
         nomeCompleto: 'Ana Carolina Silva',
         emailPessoal: 'ana.silva@example.com',
-        consentimentoEm: DateTime.now(),
+        // Sem consentimento: primeiro acesso cai no onboarding "É você?".
       }
     )
 

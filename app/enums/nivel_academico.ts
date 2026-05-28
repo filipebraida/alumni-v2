@@ -13,3 +13,12 @@ export type NivelAcademico = (typeof NIVEIS_ACADEMICOS)[number]
 export const NIVEIS_POS = ['especializacao', 'mba', 'mestrado', 'doutorado', 'posdoc'] as const
 
 export type NivelPos = (typeof NIVEIS_POS)[number]
+
+export const NIVEL_LABELS: Record<NivelAcademico, string> = {
+  graduacao: 'Graduação',
+  especializacao: 'Especialização',
+  mba: 'MBA',
+  mestrado: 'Mestrado',
+  doutorado: 'Doutorado',
+  posdoc: 'Pós-doutorado',
+}
