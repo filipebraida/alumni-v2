@@ -40,7 +40,7 @@ router
     router.get('onboarding', [controllers.Onboarding, 'show'])
     router.post('onboarding', [controllers.Onboarding, 'update'])
 
-    router.on('/dashboard').renderInertia('dashboard', {}).as('dashboard')
+    router.get('/dashboard', [controllers.Dashboard, 'show']).as('dashboard')
     router.post('logout', [controllers.Session, 'destroy'])
   })
   .use(middleware.auth())

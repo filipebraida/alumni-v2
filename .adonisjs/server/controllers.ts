@@ -4,7 +4,8 @@
  */
 
 export const controllers = {
-  Session: () => import('#controllers/session_controller'),
   CodigoAcesso: () => import('#controllers/codigo_acesso_controller'),
+  Dashboard: () => import('#controllers/dashboard_controller'),
   Onboarding: () => import('#controllers/onboarding_controller'),
+  Session: () => import('#controllers/session_controller'),
 }
