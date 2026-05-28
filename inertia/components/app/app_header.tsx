@@ -1,10 +1,18 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Bell, Search } from 'lucide-react'
-import { ReactNode } from 'react'
+import { Bell, Menu, Search } from 'lucide-react'
+import { ReactNode, useState } from 'react'
 import { PortalContainer } from '~/components/portal/container'
 import { PortalLogo } from '~/components/portal/logo'
 import { UserMenu } from '~/components/app/user_menu'
 import { Button } from '~/components/ui/button'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetPanel,
+  SheetTitle,
+  SheetTrigger,
+} from '~/components/ui/sheet'
 import { cn } from '~/lib/utils'
 
 type NavItem = {
@@ -23,14 +31,48 @@ const navItems: NavItem[] = [
 ]
 
 /**
- * Top bar do painel do egresso: marca, navegação primária (texto puro, item
- * ativo sublinhado, "Empresas" em estado "em breve"), busca, notificações e o
- * menu do usuário (`UserMenu`, responsivo).
+ * Top bar do painel do egresso: marca, navegação primária, busca, notificações
+ * e o menu do usuário. Abaixo de `md` a navegação colapsa numa gaveta
+ * (hambúrguer) e a busca some — a barra fica enxuta. O menu do usuário
+ * (`UserMenu`) é responsivo por conta própria.
  */
 export function AppHeader() {
+  const [navOpen, setNavOpen] = useState(false)
+
   return (
     <header className="sticky top-0 z-10 border-b bg-background">
-      <PortalContainer className="flex h-16 items-center gap-6 lg:gap-8">
+      <PortalContainer className="flex h-16 items-center gap-3 sm:gap-6 lg:gap-8">
+        {/* Navegação mobile (hambúrguer) */}
+        <Sheet open={navOpen} onOpenChange={setNavOpen}>
+          <SheetTrigger
+            render={<Button variant="ghost" size="icon" className="md:hidden" />}
+            aria-label="Abrir navegação"
+          >
+            <Menu />
+          </SheetTrigger>
+          <SheetContent side="left">
+            <SheetHeader>
+              <SheetTitle className="font-sans text-sm">
+                <Link
+                  route="dashboard"
+                  onClick={() => setNavOpen(false)}
+                  className="flex items-center gap-2.5"
+                >
+                  <PortalLogo />
+                  <span className="font-semibold tracking-tight">SAE · UFRRJ</span>
+                </Link>
+              </SheetTitle>
+            </SheetHeader>
+            <SheetPanel className="pt-1">
+              <nav className="flex flex-col">
+                {navItems.map((item) => (
+                  <NavSheetLink key={item.label} item={item} onClick={() => setNavOpen(false)} />
+                ))}
+              </nav>
+            </SheetPanel>
+          </SheetContent>
+        </Sheet>
+
         <Link route="dashboard" className="flex items-center gap-2.5">
           <PortalLogo />
           <span className="font-semibold text-sm tracking-tight">
@@ -93,11 +135,44 @@ function NavLink({ item }: { item: NavItem }) {
   )
 }
 
+function NavSheetLink({ item, onClick }: { item: NavItem; onClick: () => void }) {
+  const className = cn(
+    'flex items-center justify-between rounded-md px-3 py-2.5 font-medium text-sm transition-colors',
+    item.active
+      ? 'bg-primary/10 text-primary'
+      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+  )
+
+  const content: ReactNode = (
+    <>
+      {item.label}
+      {item.soon && (
+        <span className="rounded-full bg-muted px-1.5 py-0.5 font-normal text-muted-foreground text-xs">
+          em breve
+        </span>
+      )}
+    </>
+  )
+
+  if (item.route) {
+    return (
+      <Link route={item.route} onClick={onClick} className={className}>
+        {content}
+      </Link>
+    )
+  }
+  return (
+    <a href="#" onClick={onClick} className={className}>
+      {content}
+    </a>
+  )
+}
+
 function SearchTrigger() {
   return (
     <button
       type="button"
-      className="inline-flex h-9 items-center gap-2 rounded-md border bg-background pr-1.5 pl-3 text-muted-foreground text-sm transition-colors hover:bg-muted/50 hover:text-foreground"
+      className="hidden h-9 items-center gap-2 rounded-md border bg-background pr-1.5 pl-3 text-muted-foreground text-sm transition-colors hover:bg-muted/50 hover:text-foreground md:inline-flex"
     >
       <Search className="size-4" />
       <span className="hidden md:inline">Buscar…</span>
