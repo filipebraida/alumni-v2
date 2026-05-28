@@ -9,15 +9,14 @@ import { useFlashToasts } from '~/hooks/use_flash'
  * Diferente do `PortalLayout` (público) e do antigo layout de sidebar — aqui a
  * navegação primária vive numa top bar, como na "Síntese" do design.
  *
- * O wrapper `.portal-theme` fixa a paleta clara da UFRRJ (a mesma usada no
- * portal público), já que o design da Síntese é claro. Popups portados para
- * fora desta árvore (ex.: o menu do usuário) reaplicam a classe por conta.
+ * Segue o tema escolhido pelo usuário (claro/escuro/sistema, via `ThemeProvider`
+ * + classe `html.dark`); o seletor vive no menu do usuário (`AppHeader`).
  */
 export default function AppLayout({ children }: { children: ReactElement }) {
   useFlashToasts()
 
   return (
-    <div className="portal-theme flex min-h-screen flex-col bg-background font-sans text-foreground antialiased">
+    <div className="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased">
       <AppHeader />
       <ToastProvider position="top-center">
         <AnchoredToastProvider>

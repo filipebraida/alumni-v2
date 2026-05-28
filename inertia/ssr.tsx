@@ -3,6 +3,7 @@ import ReactDOMServer from 'react-dom/server'
 import { createInertiaApp } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import { ThemeProvider } from '~/hooks/use_theme'
 
 export default function render(page: any) {
   return createInertiaApp({
@@ -17,7 +18,9 @@ export default function render(page: any) {
     setup: ({ App, props }) => {
       return (
         <TuyauProvider client={client}>
-          <App {...props} />
+          <ThemeProvider>
+            <App {...props} />
+          </ThemeProvider>
         </TuyauProvider>
       )
     },
