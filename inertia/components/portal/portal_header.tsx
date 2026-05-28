@@ -62,10 +62,9 @@ function NavTarget({
 
 /**
  * Shared institutional top bar for every public portal page. Pass `active` to
- * highlight the current section. Below `lg` the secondary links collapse into a
- * Sheet drawer (hamburger), while the "Entrar" CTA stays in the bar at every
- * size. "Entrar" jumps to the login card on the root portal page (`/#login`);
- * "Ajuda" stays a placeholder until its page lands.
+ * highlight the current section. Below `lg` the nav links AND the primary CTA
+ * (Entrar / Meu painel) collapse into a Sheet drawer (hamburger). The drawer's
+ * logo links home, same as the bar logo. "Ajuda" stays a placeholder.
  */
 export function PortalHeader({ active }: { active?: PortalNavKey }) {
   const [open, setOpen] = useState(false)
@@ -111,12 +110,23 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
           >
             ufrrj.br ↗
           </a>
+
+          {/* CTA primária — visível na barra só a partir de lg; abaixo disso vai pra gaveta */}
           {user ? (
-            <Link route="dashboard" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+            <Link
+              route="dashboard"
+              className={cn(
+                buttonVariants({ variant: 'outline', size: 'sm' }),
+                'hidden lg:inline-flex'
+              )}
+            >
               Meu painel
             </Link>
           ) : (
-            <Link route="session.create" className={buttonVariants({ size: 'sm' })}>
+            <Link
+              route="session.create"
+              className={cn(buttonVariants({ size: 'sm' }), 'hidden lg:inline-flex')}
+            >
               Entrar
               <ArrowRight className="size-3.5" />
             </Link>
@@ -132,9 +142,15 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
             </SheetTrigger>
             <SheetContent side="right">
               <SheetHeader>
-                <SheetTitle className="flex items-center gap-2.5 font-sans">
-                  <PortalLogo />
-                  <span className="font-semibold text-sm tracking-tight">SAE · UFRRJ</span>
+                <SheetTitle className="font-sans text-sm">
+                  <Link
+                    route="home"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2.5"
+                  >
+                    <PortalLogo />
+                    <span className="font-semibold tracking-tight">SAE · UFRRJ</span>
+                  </Link>
                 </SheetTitle>
               </SheetHeader>
               <SheetPanel className="pt-1">
@@ -156,12 +172,30 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
                   ))}
                 </nav>
 
-                <div className="mt-4 border-t pt-4">
+                <div className="mt-4 flex flex-col gap-3 border-t pt-4">
+                  {user ? (
+                    <Link
+                      route="dashboard"
+                      onClick={() => setOpen(false)}
+                      className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
+                    >
+                      Meu painel
+                    </Link>
+                  ) : (
+                    <Link
+                      route="session.create"
+                      onClick={() => setOpen(false)}
+                      className={cn(buttonVariants(), 'w-full')}
+                    >
+                      Entrar
+                      <ArrowRight className="size-4" />
+                    </Link>
+                  )}
                   <a
                     href="https://ufrrj.br"
                     target="_blank"
                     rel="noreferrer"
-                    className="block px-3 text-xs text-muted-foreground hover:text-foreground"
+                    className="px-1 text-xs text-muted-foreground hover:text-foreground"
                   >
                     ufrrj.br ↗
                   </a>
