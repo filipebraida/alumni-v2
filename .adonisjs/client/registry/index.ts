@@ -78,6 +78,18 @@ const routes = {
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard']['types'],
   },
+  'respostas.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/respostas/create',
+    tokens: [{"old":"/respostas/create","type":0,"val":"respostas","end":""},{"old":"/respostas/create","type":0,"val":"create","end":""}],
+    types: placeholder as Registry['respostas.create']['types'],
+  },
+  'respostas.store': {
+    methods: ["POST"],
+    pattern: '/respostas',
+    tokens: [{"old":"/respostas","type":0,"val":"respostas","end":""}],
+    types: placeholder as Registry['respostas.store']['types'],
+  },
   'session.destroy': {
     methods: ["POST"],
     pattern: '/logout',

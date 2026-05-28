@@ -151,6 +151,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
     }
   }
+  'respostas.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/respostas/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/respostas_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/respostas_controller').default['create']>>>
+    }
+  }
+  'respostas.store': {
+    methods: ["POST"]
+    pattern: '/respostas'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/resposta').registrarRespostaValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/resposta').registrarRespostaValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/respostas_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/respostas_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'session.destroy': {
     methods: ["POST"]
     pattern: '/logout'

@@ -41,6 +41,10 @@ router
     router.post('onboarding', [controllers.Onboarding, 'update'])
 
     router.get('/dashboard', [controllers.Dashboard, 'show']).as('dashboard')
+
+    // Atualizar dados = criar uma nova foto da entidade Resposta (append-only).
+    router.resource('respostas', controllers.Respostas).only(['create', 'store'])
+
     router.post('logout', [controllers.Session, 'destroy'])
   })
   .use(middleware.auth())

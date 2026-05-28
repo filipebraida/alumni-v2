@@ -6,12 +6,9 @@ import {
   GraduationCap,
   LineChart,
   MapPin,
-  Pencil,
-  Plus,
   Star,
   type LucideIcon,
 } from 'lucide-react'
-import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
 import type { CampoMec } from '~/components/dashboard/types'
 
@@ -27,17 +24,16 @@ const ICONES: Record<string, LucideIcon> = {
 }
 
 /**
- * Card de um dos 8 campos MEC. O estado (`confianca`) define o tom do ícone, o
- * texto de status e a ação: confirmar, revalidar ("Sim, ainda" / "Mudou") ou
- * adicionar quando ausente.
+ * Card somente-leitura de um dos 8 campos MEC: ícone, rótulo e o valor atual da
+ * última foto (`resposta`). Campo sem valor aparece como "não informado". A
+ * edição não acontece aqui — vai pelo fluxo de atualização.
  */
 export function MecCard({ campo }: { campo: CampoMec }) {
   const Icone = ICONES[campo.icone] ?? Check
-  const ausente = campo.confianca === 'ausente'
-  const revisar = campo.confianca === 'revisar'
+  const ausente = campo.valor === null
 
   return (
-    <div className="group bg-card p-4 transition-colors hover:bg-muted/30">
+    <div className="bg-card p-4">
       <div className="flex items-start gap-2.5">
         <div
           className={cn(
@@ -57,45 +53,9 @@ export function MecCard({ campo }: { campo: CampoMec }) {
               ausente && 'font-normal text-muted-foreground italic'
             )}
           >
-            {campo.valor}
+            {campo.valor ?? '— não informado'}
           </div>
         </div>
-        {revisar && (
-          <span
-            className="mt-1.5 size-1.5 shrink-0 rounded-full bg-warning"
-            title="precisa confirmar"
-          />
-        )}
-      </div>
-
-      <div className="mt-3 flex items-center justify-between gap-2">
-        <span className="text-muted-foreground text-xs">
-          {campo.confianca === 'confirmado' && <>atualizado há {campo.atualizado}</>}
-          {revisar && (
-            <span className="text-warning-foreground">há {campo.atualizado}, confirme</span>
-          )}
-          {ausente && 'não informado'}
-        </span>
-        {ausente ? (
-          <Button size="sm" variant="outline">
-            <Plus /> Adicionar
-          </Button>
-        ) : revisar ? (
-          <div className="flex items-center gap-1">
-            <Button size="sm">Sim, ainda</Button>
-            <Button size="sm" variant="ghost">
-              Mudou
-            </Button>
-          </div>
-        ) : (
-          <Button
-            size="sm"
-            variant="ghost"
-            className="opacity-0 transition-opacity group-hover:opacity-100"
-          >
-            <Pencil /> Editar
-          </Button>
-        )}
       </div>
     </div>
   )

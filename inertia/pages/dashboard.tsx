@@ -23,8 +23,8 @@ export default function Dashboard({
   carreira,
   experiencias,
 }: PageProps) {
-  const confirmados = camposMec.filter((c) => c.confianca === 'confirmado').length
-  const pendentes = camposMec.length - confirmados
+  const preenchidos = camposMec.filter((c) => c.valor !== null).length
+  const faltando = camposMec.length - preenchidos
   const mapeadoPct = Math.round((mapaTurma.mapeados / mapaTurma.turmaTotal) * 100)
 
   return (
@@ -33,14 +33,14 @@ export default function Dashboard({
 
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         <div className="lg:col-span-8">
-          <DashboardHero egresso={egresso} pendentes={pendentes} mapeadoPct={mapeadoPct} />
+          <DashboardHero egresso={egresso} faltando={faltando} mapeadoPct={mapeadoPct} />
         </div>
         <div className="lg:col-span-4">
-          <DashboardFrescor frescor={frescor} confirmados={confirmados} total={camposMec.length} />
+          <DashboardFrescor frescor={frescor} preenchidos={preenchidos} total={camposMec.length} />
         </div>
       </section>
 
-      <DashboardMecFields campos={camposMec} pendentes={pendentes} />
+      <DashboardMecFields campos={camposMec} faltando={faltando} />
 
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         <div className="lg:col-span-7">

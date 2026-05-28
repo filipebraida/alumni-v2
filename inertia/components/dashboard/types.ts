@@ -5,8 +5,6 @@
  * props aninhadas resolvam corretamente nas páginas Inertia.
  */
 
-export type ConfiancaCampo = 'confirmado' | 'revisar' | 'ausente'
-
 export type Egresso = {
   nome: string
   primeiroNome: string
@@ -29,9 +27,8 @@ export type CampoMec = {
   chave: string
   icone: string
   rotulo: string
-  valor: string
-  atualizado: string
-  confianca: ConfiancaCampo
+  /** `null` = não informado nesta foto (coluna nula na última `resposta`). */
+  valor: string | null
 }
 
 export type EstadoTurma = {

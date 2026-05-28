@@ -1,21 +1,23 @@
+import { Link } from '@adonisjs/inertia/react'
 import { Leaf, RefreshCw } from 'lucide-react'
 import { Avatar, AvatarFallback } from '~/components/ui/avatar'
-import { Button } from '~/components/ui/button'
+import { buttonVariants } from '~/components/ui/button'
 import { Card } from '~/components/ui/card'
 import { SoftBadge } from '~/components/portal/soft_badge'
+import { cn } from '~/lib/utils'
 import type { Egresso } from '~/components/dashboard/types'
 
 /**
- * Faixa de boas-vindas: avatar, saudação personalizada com o progresso da
- * turma e os campos pendentes, e o atalho "Revisar perfil".
+ * Faixa de boas-vindas: avatar, saudação com o progresso da turma e o que ainda
+ * falta, e o CTA de atualização (leva ao fluxo dedicado, não edita aqui).
  */
 export function DashboardHero({
   egresso,
-  pendentes,
+  faltando,
   mapeadoPct,
 }: {
   egresso: Egresso
-  pendentes: number
+  faltando: number
   mapeadoPct: number
 }) {
   return (
@@ -42,8 +44,15 @@ export function DashboardHero({
           {egresso.saudacao}, {egresso.primeiroNome}.{' '}
           <span className="font-normal text-muted-foreground">
             Sua turma já é <span className="font-medium text-foreground">{mapeadoPct}%</span>{' '}
-            mapeada — falta você confirmar{' '}
-            <span className="font-medium text-foreground">{pendentes} coisas</span>.
+            mapeada
+            {faltando > 0 ? (
+              <>
+                {' '}
+                — faltam <span className="font-medium text-foreground">{faltando} dados</span> seus.
+              </>
+            ) : (
+              '.'
+            )}
           </span>
         </h1>
 
@@ -52,9 +61,9 @@ export function DashboardHero({
         </div>
       </div>
 
-      <Button className="w-full shrink-0 sm:w-auto">
-        <RefreshCw /> Revisar perfil
-      </Button>
+      <Link route="respostas.create" className={cn(buttonVariants(), 'w-full shrink-0 sm:w-auto')}>
+        <RefreshCw /> Atualizar meus dados
+      </Link>
     </Card>
   )
 }

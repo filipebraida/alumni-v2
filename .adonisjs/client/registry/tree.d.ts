@@ -23,4 +23,8 @@ export interface ApiDefinition {
     update: typeof routes['onboarding.update']
   }
   dashboard: typeof routes['dashboard']
+  respostas: {
+    create: typeof routes['respostas.create']
+    store: typeof routes['respostas.store']
+  }
 }
