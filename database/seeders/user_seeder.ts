@@ -76,6 +76,40 @@ export default class extends BaseSeeder {
 
     await gestor.related('cursos').sync([computacao.id])
 
+    // Usuário que é egresso E gestor: exercita a troca de área pelo menu.
+    // Já consentiu → no login vai direto ao painel do egresso, com o link
+    // "Área de gestão" disponível no menu do usuário.
+    const ambosUser = await User.updateOrCreate(
+      { email: 'exaluno.coord@example.com' },
+      { email: 'exaluno.coord@example.com', fullName: 'Bruno Egresso-Coord' }
+    )
+    const ambosEgresso = await Egresso.updateOrCreate(
+      { userId: ambosUser.id },
+      {
+        userId: ambosUser.id,
+        cpf: '98765432100',
+        nomeCompleto: 'Bruno Egresso-Coord',
+        emailPessoal: 'bruno@example.com',
+        consentimentoEm: DateTime.now(),
+      }
+    )
+    await ambosEgresso.related('matriculas').updateOrCreateMany(
+      [
+        {
+          codigo: '2015100100',
+          cursoId: computacao.id,
+          periodoFormatura: '2019.1',
+          situacao: 'formado',
+        },
+      ],
+      'codigo'
+    )
+    const ambosGestor = await Gestor.updateOrCreate(
+      { userId: ambosUser.id },
+      { userId: ambosUser.id, nomeCompleto: 'Bruno Egresso-Coord', cargo: 'Coordenador' }
+    )
+    await ambosGestor.related('cursos').sync([computacao.id])
+
     // Histórico append-only: duas fotos (2023 e 2024). Só semeia se vazio.
     const [{ $extras }] = await egresso.related('respostas').query().count('* as total')
     if (Number($extras.total) === 0) {

@@ -4,9 +4,14 @@ import VerificarCodigoAcesso, {
 } from '#actions/verificar_codigo_acesso'
 import { verificarCodigoValidator } from '#validators/auth'
 import BuscarEgressoDoUsuario from '#queries/buscar_egresso_do_usuario'
+import BuscarGestorDoUsuario from '#queries/buscar_gestor_do_usuario'
 
 /** Session key holding the email awaiting code verification. */
 export const PENDING_EMAIL_KEY = 'pendingLoginEmail'
+
+/** Flags de perfil gravadas no login; lidas pelo inertia_middleware (prop `perfil`). */
+export const IS_EGRESSO_KEY = 'isEgresso'
+export const IS_GESTOR_KEY = 'isGestor'
 
 const ERROR_MESSAGES: Record<VerificarCodigoAcessoFalha, string> = {
   invalid_code: 'Código inválido. Confira e tente novamente.',
@@ -49,12 +54,32 @@ export default class SessionController {
     await auth.use('web').login(result.user)
     session.forget(PENDING_EMAIL_KEY)
 
-    // Primeiro acesso (sem consentimento) cai no onboarding "É você?".
+    // Perfis do usuário (pode ser os dois). Guardados na sessão para o shared
+    // prop `perfil` (menus) e os middlewares de área, sem reconsultar o banco a
+    // cada request. Cada área exige um vínculo real: o egresso precisa de ao
+    // menos uma matrícula; o gestor, de ao menos um curso sob coordenação.
     const egresso = await new BuscarEgressoDoUsuario().handle({ userId: result.user.id })
-    if (egresso && !egresso.consentimentoEm) {
-      return response.redirect().toRoute('onboarding.show')
+    const gestor = await new BuscarGestorDoUsuario().handle({ userId: result.user.id })
+    const podeEgresso = !!egresso && egresso.matriculas.length > 0
+    const podeGestor = !!gestor && gestor.cursos.length > 0
+    session.put(IS_EGRESSO_KEY, podeEgresso)
+    session.put(IS_GESTOR_KEY, podeGestor)
+
+    // Egresso (mesmo que também seja gestor) entra na área do egresso; só-gestor
+    // vai direto para a gestão. A troca entre áreas fica no menu do usuário.
+    if (podeEgresso) {
+      if (egresso && !egresso.consentimentoEm) {
+        return response.redirect().toRoute('onboarding.show')
+      }
+      return response.redirect().toRoute('dashboard')
     }
-    return response.redirect().toRoute('dashboard')
+    if (podeGestor) {
+      return response.redirect().toRoute('gestao.show')
+    }
+
+    // Sem vínculo em nenhuma área — não há painel a mostrar.
+    session.flash('error', 'Sua conta ainda não tem vínculo de egresso nem de gestão.')
+    return response.redirect().toRoute('home')
   }
 
   async destroy({ auth, response }: HttpContext) {

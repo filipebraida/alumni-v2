@@ -34,6 +34,10 @@ router
   })
   .use(middleware.guest())
 
+// Logout: qualquer usuário autenticado (egresso ou gestor).
+router.post('logout', [controllers.Session, 'destroy']).use(middleware.auth())
+
+// Área do egresso. Exige autenticação + perfil de egresso (vínculo com matrícula).
 router
   .group(() => {
     // Onboarding "É você?" — primeiro acesso (identidade + consentimento).
@@ -44,7 +48,14 @@ router
 
     // Atualizar dados = criar uma nova foto da entidade Resposta (append-only).
     router.resource('respostas', controllers.Respostas).only(['create', 'store'])
-
-    router.post('logout', [controllers.Session, 'destroy'])
   })
-  .use(middleware.auth())
+  .use([middleware.auth(), middleware.egresso()])
+
+// Área de gestão (coordenação de curso). O `gestor` middleware exige o perfil
+// de gestor e resolve o curso ativo (tenant) a partir da sessão.
+router
+  .group(() => {
+    router.get('/gestao', [controllers.Gestao, 'show']).as('gestao.show')
+    router.put('/gestao/curso-ativo', [controllers.CursoAtivo, 'update']).as('gestao.curso_ativo')
+  })
+  .use([middleware.auth(), middleware.gestor()])

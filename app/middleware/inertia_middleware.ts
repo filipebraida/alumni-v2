@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
+import { IS_EGRESSO_KEY, IS_GESTOR_KEY } from '#controllers/session_controller'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -22,6 +23,15 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     const success = session?.flashMessages.get('success') as string
 
     /**
+     * Perfis do usuário, gravados na sessão no login. Alimentam os menus (ex.:
+     * link para a gestão no menu do egresso) sem consultar o banco a cada page.
+     */
+    const perfil = {
+      isEgresso: (session?.get(IS_EGRESSO_KEY, false) ?? false) as boolean,
+      isGestor: (session?.get(IS_GESTOR_KEY, false) ?? false) as boolean,
+    }
+
+    /**
      * Data shared with all Inertia pages. Make sure you are using
      * transformers for rich data-types like Models.
      */
@@ -32,6 +42,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         success,
       }),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
+      perfil: ctx.inertia.always(perfil),
     }
   }
 

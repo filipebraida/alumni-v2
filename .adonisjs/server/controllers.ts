@@ -5,7 +5,9 @@
 
 export const controllers = {
   CodigoAcesso: () => import('#controllers/codigo_acesso_controller'),
+  CursoAtivo: () => import('#controllers/curso_ativo_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
+  Gestao: () => import('#controllers/gestao_controller'),
   Onboarding: () => import('#controllers/onboarding_controller'),
   Respostas: () => import('#controllers/respostas_controller'),
   Session: () => import('#controllers/session_controller'),

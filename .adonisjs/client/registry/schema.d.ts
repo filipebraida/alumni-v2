@@ -115,6 +115,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/codigo_acesso_controller').default['destroy']>>>
     }
   }
+  'session.destroy': {
+    methods: ["POST"]
+    pattern: '/logout'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+    }
+  }
   'onboarding.show': {
     methods: ["GET","HEAD"]
     pattern: '/onboarding'
@@ -175,16 +187,28 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/respostas_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'session.destroy': {
-    methods: ["POST"]
-    pattern: '/logout'
+  'gestao.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/gestao'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/gestao_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/gestao_controller').default['show']>>>
+    }
+  }
+  'gestao.curso_ativo': {
+    methods: ["PUT"]
+    pattern: '/gestao/curso-ativo'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/gestao').trocarCursoAtivoValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/gestao').trocarCursoAtivoValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/curso_ativo_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/curso_ativo_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
 }

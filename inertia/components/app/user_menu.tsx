@@ -1,6 +1,6 @@
 import { router, usePage } from '@inertiajs/react'
 import { Data } from '@generated/data'
-import { LogOut, Settings, User } from 'lucide-react'
+import { Briefcase, LogOut, Settings, User } from 'lucide-react'
 import { ReactNode } from 'react'
 import { urlFor } from '~/client'
 import { ThemeSelector } from '~/components/app/theme_selector'
@@ -23,11 +23,12 @@ import { cn } from '~/lib/utils'
  * portado não é confiável no toque. Mesma estratégia do `PortalHeader`.
  */
 export function UserMenu() {
-  const { user } = usePage<Data.SharedProps>().props
+  const { user, perfil } = usePage<Data.SharedProps>().props
   const nomeCompleto = user?.fullName ?? 'Você'
   const primeiroNome = nomeCompleto.split(' ')[0]
   const iniciais = user?.initials ?? '·'
   const sair = () => router.post(urlFor('session.destroy'))
+  const irParaGestao = () => router.visit(urlFor('gestao.show'))
 
   const fallback = (
     <AvatarFallback className="bg-primary font-semibold text-primary-foreground text-xs">
@@ -58,6 +59,14 @@ export function UserMenu() {
           <MenuItem>
             <Settings /> Configurações
           </MenuItem>
+          {perfil?.isGestor && (
+            <>
+              <MenuSeparator />
+              <MenuItem onClick={irParaGestao}>
+                <Briefcase /> Área de gestão
+              </MenuItem>
+            </>
+          )}
           <MenuSeparator />
           <div className="px-2 py-1.5">
             <p className="mb-1.5 font-medium text-muted-foreground text-xs">Tema</p>
@@ -93,6 +102,11 @@ export function UserMenu() {
           <SheetPanel className="flex flex-col gap-1 pb-8">
             <ItemSheet icon={<User className="size-4" />}>Meu perfil</ItemSheet>
             <ItemSheet icon={<Settings className="size-4" />}>Configurações</ItemSheet>
+            {perfil?.isGestor && (
+              <ItemSheet icon={<Briefcase className="size-4" />} onClick={irParaGestao}>
+                Área de gestão
+              </ItemSheet>
+            )}
             <div className="mt-2 px-1">
               <p className="mb-1.5 font-medium text-muted-foreground text-xs">Tema</p>
               <ThemeSelector />

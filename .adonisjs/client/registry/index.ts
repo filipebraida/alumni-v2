@@ -60,6 +60,12 @@ const routes = {
     tokens: [{"old":"/login/code","type":0,"val":"login","end":""},{"old":"/login/code","type":0,"val":"code","end":""}],
     types: placeholder as Registry['codigo_acesso.destroy']['types'],
   },
+  'session.destroy': {
+    methods: ["POST"],
+    pattern: '/logout',
+    tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
+    types: placeholder as Registry['session.destroy']['types'],
+  },
   'onboarding.show': {
     methods: ["GET","HEAD"],
     pattern: '/onboarding',
@@ -90,11 +96,17 @@ const routes = {
     tokens: [{"old":"/respostas","type":0,"val":"respostas","end":""}],
     types: placeholder as Registry['respostas.store']['types'],
   },
-  'session.destroy': {
-    methods: ["POST"],
-    pattern: '/logout',
-    tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
-    types: placeholder as Registry['session.destroy']['types'],
+  'gestao.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/gestao',
+    tokens: [{"old":"/gestao","type":0,"val":"gestao","end":""}],
+    types: placeholder as Registry['gestao.show']['types'],
+  },
+  'gestao.curso_ativo': {
+    methods: ["PUT"],
+    pattern: '/gestao/curso-ativo',
+    tokens: [{"old":"/gestao/curso-ativo","type":0,"val":"gestao","end":""},{"old":"/gestao/curso-ativo","type":0,"val":"curso-ativo","end":""}],
+    types: placeholder as Registry['gestao.curso_ativo']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

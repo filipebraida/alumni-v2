@@ -27,4 +27,8 @@ export interface ApiDefinition {
     create: typeof routes['respostas.create']
     store: typeof routes['respostas.store']
   }
+  gestao: {
+    show: typeof routes['gestao.show']
+    cursoAtivo: typeof routes['gestao.curso_ativo']
+  }
 }

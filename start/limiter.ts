@@ -16,7 +16,7 @@ import limiter from '@adonisjs/limiter/services/main'
  */
 export const loginCodeRequestThrottle = limiter.define('login_code_request', (ctx) => {
   return limiter
-    .allowRequests(3)
+    .allowRequests(10)
     .every('1 minute')
     .blockFor('5 mins')
     .usingKey(`login_code_req_${ctx.request.ip()}`)
