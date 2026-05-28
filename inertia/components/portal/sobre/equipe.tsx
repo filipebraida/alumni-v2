@@ -40,15 +40,15 @@ function PersonCard({
 export function SobreEquipe() {
   return (
     <PortalSection>
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-4">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-4">
           <SectionEyebrow>§ 04 · Equipe</SectionEyebrow>
           <SectionHeading className="mt-2">
             Quem mantém <span className="font-normal italic text-foreground/85">o serviço.</span>
           </SectionHeading>
           <p className="mt-4 max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
-            O SAE é uma equipe pequena dentro da PROGRAD. Trabalha em diálogo com as Coordenações dos
-            47 cursos e com um conselho consultivo de egressos e DCEs.
+            O SAE é uma equipe pequena dentro da PROGRAD. Trabalha em diálogo com as Coordenações
+            dos 47 cursos e com um conselho consultivo de egressos e DCEs.
           </p>
 
           <div className="mt-6 rounded-xl border bg-muted/40 p-5">
@@ -64,13 +64,15 @@ export function SobreEquipe() {
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="size-3.5 text-muted-foreground" />
-                <span className="text-muted-foreground">Pavilhão Central, sala 217 · Seropédica</span>
+                <span className="text-muted-foreground">
+                  Pavilhão Central, sala 217 · Seropédica
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="col-span-12 md:col-span-8">
+        <div className="md:col-span-8">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <PersonCard
               fallback="MA"
@@ -84,7 +86,12 @@ export function SobreEquipe() {
               role="Adjunto / Metodologia"
               dept="Instituto de Educação"
             />
-            <PersonCard fallback="RS" name="Renata Siqueira" role="Analista de dados" dept="DPADE" />
+            <PersonCard
+              fallback="RS"
+              name="Renata Siqueira"
+              role="Analista de dados"
+              dept="DPADE"
+            />
             <PersonCard
               fallback="LM"
               name="Lucas Maciel"

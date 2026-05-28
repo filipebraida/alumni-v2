@@ -22,7 +22,7 @@ const items: { icon: LucideIcon; title: string; copy: string }[] = [
 export function EntradaGarantias() {
   return (
     <PortalSection containerClassName="py-16">
-      <div className="grid gap-px overflow-hidden rounded-2xl border bg-border md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border bg-border md:grid-cols-3">
         {items.map(({ icon: Icon, title, copy }) => (
           <div key={title} className="bg-card p-7">
             <div className="grid size-9 place-items-center rounded-md bg-primary/10 text-primary">

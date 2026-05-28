@@ -23,15 +23,13 @@ export function SectionHeader({
   children: ReactNode
 }) {
   return (
-    <div className={cn('grid grid-cols-12 items-end gap-8 md:gap-10', className)}>
-      <div className={aside ? 'col-span-12 md:col-span-8' : 'col-span-12'}>
+    <div className={cn('grid grid-cols-1 items-end gap-8 md:grid-cols-12 md:gap-10', className)}>
+      <div className={aside ? 'md:col-span-8' : 'md:col-span-12'}>
         <SectionEyebrow>{eyebrow}</SectionEyebrow>
         <SectionHeading className={cn('mt-2', headingClassName)}>{children}</SectionHeading>
       </div>
       {aside ? (
-        <div className="col-span-12 text-sm text-muted-foreground md:col-span-4 md:text-right">
-          {aside}
-        </div>
+        <div className="text-sm text-muted-foreground md:col-span-4 md:text-right">{aside}</div>
       ) : null}
     </div>
   )

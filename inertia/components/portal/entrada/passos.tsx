@@ -27,8 +27,8 @@ const steps: { n: string; icon: LucideIcon; title: string; copy: string }[] = [
 export function EntradaPassos() {
   return (
     <PortalSection id="passos" surface="muted" border="both" containerClassName="py-16">
-      <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-12 md:col-span-4">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
+        <div className="md:col-span-4">
           <SectionEyebrow>Como funciona</SectionEyebrow>
           <SectionHeading className="mt-2 text-3xl md:text-4xl">
             Três passos.
@@ -41,7 +41,7 @@ export function EntradaPassos() {
           </p>
         </div>
 
-        <div className="col-span-12 grid gap-4 md:col-span-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:col-span-8 md:grid-cols-3">
           {steps.map(({ n, icon: Icon, title, copy }) => (
             <article key={n} className="rounded-2xl border bg-card p-6 shadow-sm">
               <div className="flex items-baseline justify-between">

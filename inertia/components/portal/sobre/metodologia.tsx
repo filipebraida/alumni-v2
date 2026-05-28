@@ -21,8 +21,8 @@ function Princ({ n, title, children }: { n: string; title: string; children: Rea
 export function SobreMetodologia() {
   return (
     <PortalSection border="top" className="bg-primary text-primary-foreground">
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-5">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-5">
           <p className="text-xs uppercase tracking-widest text-primary-foreground/60">
             § 05 · Metodologia
           </p>
@@ -37,7 +37,7 @@ export function SobreMetodologia() {
           </p>
         </div>
 
-        <div className="col-span-12 space-y-3.5 md:col-span-7">
+        <div className="space-y-3.5 md:col-span-7">
           <Princ n="A" title="Mínimo dado, máximo cuidado.">
             8 campos por egresso. Faixa salarial (nunca o valor exato). CEP (nunca o endereço).
             Ocupação textual livre — analisada por código CBO de forma anônima.
@@ -47,12 +47,12 @@ export function SobreMetodologia() {
             recorte. Abaixo disso, o dado é suprimido para evitar reidentificação.
           </Princ>
           <Princ n="C" title="Transparência ativa.">
-            Relatório anual publicado no site institucional, com microdados anonimizados em CSV. Você
-            pode ver — e baixar — o que foi feito com sua participação.
+            Relatório anual publicado no site institucional, com microdados anonimizados em CSV.
+            Você pode ver — e baixar — o que foi feito com sua participação.
           </Princ>
           <Princ n="D" title="Direito ao esquecimento.">
-            Qualquer egresso pode pedir exclusão total dos seus dados a qualquer momento, pelo painel
-            ou por e-mail. Resposta em até 10 dias úteis.
+            Qualquer egresso pode pedir exclusão total dos seus dados a qualquer momento, pelo
+            painel ou por e-mail. Resposta em até 10 dias úteis.
           </Princ>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { PortalLogo } from '~/components/portal/logo'
 
 function FooterCol({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="col-span-6 md:col-span-2">
+    <div className="col-span-1 md:col-span-2">
       <div className="text-xs uppercase tracking-widest text-white/40">{title}</div>
       <ul className="mt-3 space-y-2 text-sm">{children}</ul>
     </div>
@@ -26,8 +26,8 @@ export function PortalFooter() {
   return (
     <footer className="border-t bg-portal-ink text-portal-ink-foreground">
       <PortalContainer className="py-12">
-        <div className="grid grid-cols-12 gap-8">
-          <div className="col-span-12 md:col-span-5">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-12">
+          <div className="col-span-2 md:col-span-5">
             <div className="flex items-center gap-2.5">
               <PortalLogo onDark />
               <span className="font-semibold text-sm tracking-tight">SAE · UFRRJ</span>

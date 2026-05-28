@@ -18,7 +18,12 @@ function PassoCard({
   primary?: boolean
 }) {
   return (
-    <li className={cn('rounded-xl border p-5', primary ? 'border-primary/40 bg-primary/5' : 'bg-card')}>
+    <li
+      className={cn(
+        'rounded-xl border p-5',
+        primary ? 'border-primary/40 bg-primary/5' : 'bg-card'
+      )}
+    >
       <div className="flex items-center justify-between">
         <div
           className={cn(
@@ -39,8 +44,8 @@ function PassoCard({
 export function EgressosEsforco() {
   return (
     <PortalSection>
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-5">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-5">
           <SectionEyebrow>§ 02 · Esforço</SectionEyebrow>
           <SectionHeading className="mt-2">
             <span className="text-primary tabular-nums">30</span> segundos.{' '}
@@ -60,7 +65,7 @@ export function EgressosEsforco() {
           </div>
         </div>
 
-        <div className="col-span-12 md:col-span-7">
+        <div className="md:col-span-7">
           <ol className="grid gap-3 sm:grid-cols-3">
             <PassoCard
               tempo="~ 5s"

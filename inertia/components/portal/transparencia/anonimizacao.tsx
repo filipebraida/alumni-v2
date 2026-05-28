@@ -76,8 +76,8 @@ const rules = [
 export function TransparenciaAnonimizacao() {
   return (
     <PortalSection id="anonimizacao">
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-4">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-4">
           <SectionEyebrow>§ 02 · Anonimização</SectionEyebrow>
           <SectionHeading className="mt-2">
             Uma regra, <span className="font-normal italic text-foreground/85">sem exceção.</span>
@@ -92,7 +92,8 @@ export function TransparenciaAnonimizacao() {
             <div className="mb-2 font-semibold text-foreground">A regra, no código:</div>
             <code className="block">
               <span className="text-primary">if</span> recorte.n{' '}
-              <span className="text-primary">&lt;</span> <span className="text-brand-yellow">5</span>
+              <span className="text-primary">&lt;</span>{' '}
+              <span className="text-brand-yellow">5</span>
               :
               <br />
               {'  '}
@@ -108,7 +109,7 @@ export function TransparenciaAnonimizacao() {
           </div>
         </div>
 
-        <div className="col-span-12 md:col-span-8">
+        <div className="md:col-span-8">
           <div className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">
             Exemplo · Eng. Florestal 2019 · onde estão
           </div>

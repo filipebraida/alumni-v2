@@ -60,8 +60,8 @@ function FlowList({ title, items }: { title: string; items: { name: string; desc
 export function UfrrjIntegracoes() {
   return (
     <PortalSection surface="muted" border="both">
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-4">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-4">
           <SectionEyebrow>§ 03 · Integração</SectionEyebrow>
           <SectionHeading className="mt-2">
             Não é <span className="font-normal italic text-foreground/85">mais um sistema.</span>
@@ -79,13 +79,13 @@ export function UfrrjIntegracoes() {
               ~ 3 dias úteis
             </div>
             <div className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              Da solicitação à liberação do painel pra Coordenação. Sem instalação. Sem requisição na
-              TI.
+              Da solicitação à liberação do painel pra Coordenação. Sem instalação. Sem requisição
+              na TI.
             </div>
           </div>
         </div>
 
-        <div className="col-span-12 md:col-span-8">
+        <div className="md:col-span-8">
           <div className="relative rounded-2xl border bg-card p-8">
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
               <FlowList title="Entra" items={inputs} />

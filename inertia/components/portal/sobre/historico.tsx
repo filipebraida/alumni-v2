@@ -36,8 +36,8 @@ const marks: { year: string; title: string; copy: string; now?: boolean }[] = [
 export function SobreHistorico() {
   return (
     <PortalSection surface="muted" border="both">
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-4">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-4">
           <SectionEyebrow>§ 03 · Histórico</SectionEyebrow>
           <SectionHeading className="mt-2">
             <span className="text-primary">Doze anos</span>
@@ -50,7 +50,7 @@ export function SobreHistorico() {
           </p>
         </div>
 
-        <ol className="relative col-span-12 md:col-span-8">
+        <ol className="relative md:col-span-8">
           {/* vertical rail, centered on the 16px markers (left-2 = 8px) */}
           <div aria-hidden className="absolute bottom-2 left-2 top-2 w-px bg-border" />
 

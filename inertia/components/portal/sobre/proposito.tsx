@@ -34,8 +34,8 @@ function ReasonCard({
 export function SobreProposito() {
   return (
     <PortalSection surface="muted" border="bottom">
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-4">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-4">
           <SectionEyebrow>§ 01</SectionEyebrow>
           <SectionHeading className="mt-2">Por que o SAE existe.</SectionHeading>
           <p className="mt-4 max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
@@ -44,7 +44,7 @@ export function SobreProposito() {
           </p>
         </div>
 
-        <div className="col-span-12 grid gap-6 md:col-span-8 md:grid-cols-2">
+        <div className="grid gap-6 md:col-span-8 md:grid-cols-2">
           <ReasonCard
             eyebrow="O dever institucional"
             icon={Flag}
@@ -66,7 +66,8 @@ export function SobreProposito() {
               <>
                 Antes do MEC, era a tradição: turma de Agronomia que se reencontrava em Seropédica,
                 redes de veterinários que se ajudavam na vida profissional, os antigos auxiliando os
-                recém-formados. O SAE só dá uma forma sistemática ao que a UFRRJ já faz há um século.
+                recém-formados. O SAE só dá uma forma sistemática ao que a UFRRJ já faz há um
+                século.
               </>
             }
           />

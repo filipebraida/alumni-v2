@@ -28,8 +28,8 @@ export function UfrrjHero() {
           <span className="text-foreground">Para a UFRRJ</span>
         </div>
 
-        <div className="mt-8 grid grid-cols-12 items-start gap-10">
-          <div className="col-span-12 flex flex-col gap-7 md:col-span-7">
+        <div className="mt-8 grid grid-cols-1 items-start gap-10 md:grid-cols-12">
+          <div className="flex flex-col gap-7 md:col-span-7">
             <SoftBadge className="self-start">
               <GraduationCap className="size-3" />
               Para Coordenações, NDE, Chefias e PROGRAD
@@ -42,16 +42,16 @@ export function UfrrjHero() {
 
             <div className="max-w-xl space-y-4 text-pretty text-lg leading-relaxed text-muted-foreground">
               <p>
-                Você está revisando o PPC do seu curso. Vai pleitear renovação de reconhecimento. Vai
-                justificar uma reforma curricular ao CONSEPE. Em todos esses momentos, a pergunta
-                volta:{' '}
+                Você está revisando o PPC do seu curso. Vai pleitear renovação de reconhecimento.
+                Vai justificar uma reforma curricular ao CONSEPE. Em todos esses momentos, a
+                pergunta volta:{' '}
                 <em className="font-medium text-foreground not-italic">
                   "e os nossos egressos, como estão?"
                 </em>
               </p>
               <p>
-                O SAE existe pra que essa pergunta tenha resposta — não anedótica, não opinativa, com
-                12 anos de série histórica. Pronta pra entrar no seu relato de gestão.
+                O SAE existe pra que essa pergunta tenha resposta — não anedótica, não opinativa,
+                com 12 anos de série histórica. Pronta pra entrar no seu relato de gestão.
               </p>
             </div>
 
@@ -72,7 +72,7 @@ export function UfrrjHero() {
             </div>
           </div>
 
-          <aside className="col-span-12 md:col-span-5 md:pl-4">
+          <aside className="md:col-span-5 md:pl-4">
             <UfrrjPainel />
           </aside>
         </div>

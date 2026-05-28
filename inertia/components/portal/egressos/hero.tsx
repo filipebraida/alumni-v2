@@ -28,8 +28,8 @@ export function EgressosHero() {
           <span className="text-foreground">Para egressos</span>
         </div>
 
-        <div className="mt-8 grid grid-cols-12 items-start gap-10">
-          <div className="col-span-12 flex flex-col gap-7 md:col-span-7">
+        <div className="mt-8 grid grid-cols-1 items-start gap-10 md:grid-cols-12">
+          <div className="flex flex-col gap-7 md:col-span-7">
             <SoftBadge className="self-start">
               <User className="size-3" />
               Para quem se formou na Rural
@@ -66,7 +66,7 @@ export function EgressosHero() {
             </div>
           </div>
 
-          <aside className="col-span-12 md:col-span-5 md:pl-4">
+          <aside className="md:col-span-5 md:pl-4">
             <EgressosPassaporte />
           </aside>
         </div>

@@ -122,8 +122,8 @@ export function UfrrjPapeis() {
 
         {roles.map((r) => (
           <TabsPanel key={r.id} value={r.id} className="mt-10">
-            <div className="grid grid-cols-12 gap-8">
-              <div className="col-span-12 md:col-span-5">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
+              <div className="md:col-span-5">
                 <h3 className="text-balance font-serif text-3xl font-medium leading-tight tracking-tight">
                   {r.tagline}
                 </h3>
@@ -134,7 +134,7 @@ export function UfrrjPapeis() {
                 </dl>
               </div>
 
-              <div className="col-span-12 md:col-span-7">
+              <div className="md:col-span-7">
                 <div className="rounded-2xl border bg-card p-7">
                   <div className="text-xs uppercase tracking-widest text-muted-foreground">
                     O que aparece no painel

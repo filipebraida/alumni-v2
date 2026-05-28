@@ -88,8 +88,8 @@ const faqs: { q: string; a: ReactNode }[] = [
 export function EgressosFaq() {
   return (
     <PortalSection id="perguntas">
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 md:col-span-4">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="md:col-span-4">
           <SectionEyebrow>§ 04 · Perguntas frequentes</SectionEyebrow>
           <SectionHeading className="mt-2 text-3xl md:text-4xl">
             Tudo que a gente{' '}
@@ -107,7 +107,7 @@ export function EgressosFaq() {
           </p>
         </div>
 
-        <div className="col-span-12 md:col-span-8">
+        <div className="md:col-span-8">
           <Accordion defaultValue={[0]} className="overflow-hidden rounded-2xl border bg-card">
             {faqs.map((f, i) => (
               <AccordionItem key={f.q} value={i} className="px-7">

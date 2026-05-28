@@ -28,8 +28,8 @@ export function TransparenciaHero() {
           <span className="text-foreground">Transparência</span>
         </div>
 
-        <div className="mt-8 grid grid-cols-12 gap-10">
-          <div className="col-span-12 flex flex-col gap-7 md:col-span-8">
+        <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-12">
+          <div className="flex flex-col gap-7 md:col-span-8">
             <SoftBadge className="self-start">
               <Eye className="size-3" />
               Prestação de contas pública
@@ -74,7 +74,7 @@ export function TransparenciaHero() {
             </div>
           </div>
 
-          <aside className="col-span-12 md:col-span-4">
+          <aside className="md:col-span-4">
             <TransparenciaIndicadores />
           </aside>
         </div>

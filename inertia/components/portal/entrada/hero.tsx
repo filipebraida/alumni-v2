@@ -26,7 +26,7 @@ export function EntradaHero() {
           <rect width="100%" height="100%" fill="url(#portalDots)" />
         </svg>
       </div>
-      <div className="relative mx-auto flex max-w-5xl flex-col items-center px-6 pb-28 pt-24 text-center md:pt-32">
+      <div className="relative mx-auto flex max-w-5xl flex-col items-center px-6 pb-20 pt-16 text-center sm:pb-28 sm:pt-24 md:pt-32">
         <div className="flex flex-wrap items-center justify-center gap-3">
           <SoftBadge>
             <Leaf className="size-3" />
@@ -39,7 +39,7 @@ export function EntradaHero() {
 
         <SectionHeading
           as="h1"
-          className="mt-9 text-5xl leading-none sm:text-6xl md:text-7xl"
+          className="mt-8 text-4xl sm:text-6xl sm:leading-none md:text-7xl"
         >
           Você se formou.
           <br />

@@ -40,8 +40,8 @@ export function SobreHero() {
           <span className="text-foreground">Sobre</span>
         </div>
 
-        <div className="mt-8 grid grid-cols-12 gap-10">
-          <div className="col-span-12 flex flex-col gap-7 md:col-span-8">
+        <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-12">
+          <div className="flex flex-col gap-7 md:col-span-8">
             <SectionHeading as="h1" className="text-4xl text-foreground sm:text-5xl lg:text-6xl">
               Toda Universidade forma. <span className="text-primary">Poucas escutam</span>{' '}
               <span className="font-normal italic text-foreground/85">de volta.</span>
@@ -57,8 +57,8 @@ export function SobreHero() {
                 Não é um sistema de RH. Não é uma rede social. É um instrumento institucional de
                 escuta, mantido pela{' '}
                 <strong className="font-medium text-foreground">Pró-Reitoria de Graduação</strong>,
-                que devolve à Universidade — e aos próprios egressos — uma leitura honesta do que vem
-                depois do diploma.
+                que devolve à Universidade — e aos próprios egressos — uma leitura honesta do que
+                vem depois do diploma.
               </p>
             </div>
 
@@ -76,7 +76,7 @@ export function SobreHero() {
           </div>
 
           {/* Institutional identity card */}
-          <aside className="col-span-12 md:col-span-4">
+          <aside className="md:col-span-4">
             <div className="rounded-2xl border bg-card p-7 shadow-sm">
               <div className="flex items-center justify-between">
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">
