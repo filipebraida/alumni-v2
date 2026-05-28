@@ -102,6 +102,7 @@ function EmailStep() {
               <FieldLabel htmlFor="email">E-mail</FieldLabel>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 autoComplete="email"
                 autoFocus
