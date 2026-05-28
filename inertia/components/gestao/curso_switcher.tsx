@@ -3,6 +3,7 @@ import { Check, ChevronsUpDownIcon, GraduationCap } from 'lucide-react'
 import { urlFor } from '~/client'
 import {
   Menu,
+  MenuGroup,
   MenuGroupLabel,
   MenuItem,
   MenuPopup,
@@ -45,19 +46,21 @@ export function CursoSwitcher() {
             <ChevronsUpDownIcon className="ms-auto size-4 opacity-70" />
           </MenuTrigger>
           <MenuPopup align="start" className="min-w-56">
-            <MenuGroupLabel>Meus cursos</MenuGroupLabel>
-            {cursos.map((curso) => (
-              <MenuItem key={curso.id} onClick={() => trocar(curso.id)}>
-                <GraduationCap className="size-4 opacity-70" />
-                <div className="grid flex-1 leading-tight">
-                  <span className="truncate text-sm">{curso.nome}</span>
-                  <span className="truncate text-muted-foreground text-xs">
-                    {curso.nivel} · {curso.campus}
-                  </span>
-                </div>
-                {curso.id === cursoAtivoId && <Check className="size-4" />}
-              </MenuItem>
-            ))}
+            <MenuGroup>
+              <MenuGroupLabel>Meus cursos</MenuGroupLabel>
+              {cursos.map((curso) => (
+                <MenuItem key={curso.id} onClick={() => trocar(curso.id)}>
+                  <GraduationCap className="size-4 opacity-70" />
+                  <div className="grid flex-1 leading-tight">
+                    <span className="truncate text-sm">{curso.nome}</span>
+                    <span className="truncate text-muted-foreground text-xs">
+                      {curso.nivel} · {curso.campus}
+                    </span>
+                  </div>
+                  {curso.id === cursoAtivoId && <Check className="size-4" />}
+                </MenuItem>
+              ))}
+            </MenuGroup>
           </MenuPopup>
         </Menu>
       </SidebarMenuItem>
