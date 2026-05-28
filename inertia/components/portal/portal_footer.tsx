@@ -65,7 +65,6 @@ export function PortalFooter() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center">
           <span>© 2026 UFRRJ · Pró-Reitoria de Graduação</span>
-          <span>Versão 2.4 · publicado em maio/2026</span>
         </div>
       </PortalContainer>
     </footer>
