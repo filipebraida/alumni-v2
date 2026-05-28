@@ -8,15 +8,16 @@ import type { Opcao } from '~/components/respostas/types'
 const selectClass =
   'h-9 w-full rounded-lg border border-input bg-background px-2.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring'
 
-/** Ações comuns (Salvar / Cancelar) ao pé de um editor de texto. */
+/** Ações comuns (Salvar / Cancelar) ao pé de um editor — alinhadas à direita,
+ *  primário mais à direita, no mesmo padrão das ações do card. */
 function AcoesEditor({ onSalvar, onCancelar }: { onSalvar: () => void; onCancelar: () => void }) {
   return (
-    <div className="flex items-center gap-2">
-      <Button size="sm" onClick={onSalvar}>
-        <Check /> Salvar
-      </Button>
+    <div className="flex items-center justify-end gap-2">
       <Button size="sm" variant="ghost" onClick={onCancelar}>
         Cancelar
+      </Button>
+      <Button size="sm" onClick={onSalvar}>
+        <Check /> Salvar
       </Button>
     </div>
   )
@@ -120,9 +121,11 @@ export function EditorOpcoes({
           </button>
         )
       })}
-      <Button size="sm" variant="ghost" onClick={onCancelar}>
-        Cancelar
-      </Button>
+      <div className="flex justify-end">
+        <Button size="sm" variant="ghost" onClick={onCancelar}>
+          Cancelar
+        </Button>
+      </div>
     </div>
   )
 }
