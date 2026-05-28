@@ -5,8 +5,8 @@
  */
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import { DateTime } from 'luxon'
 import type { Campus } from '#enums/campus'
+import { DateTime } from 'luxon'
 import type { NivelAcademico, NivelPos } from '#enums/nivel_academico'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
 import type { FaixaSalarial } from '#enums/faixa_salarial'
@@ -14,6 +14,27 @@ import type { StatusPos } from '#enums/status_pos'
 import type { RelacaoFormacao } from '#enums/relacao_formacao'
 import type { Setor } from '#enums/setor'
 import type { TempoPrimeiroEmprego } from '#enums/tempo_primeiro_emprego'
+
+export class CursoSchema extends BaseModel {
+  static $columns = ['ativo', 'campus', 'codigo', 'createdAt', 'id', 'nivel', 'nome', 'updatedAt'] as const
+  $columns = CursoSchema.$columns
+  @column()
+  declare ativo: boolean
+  @column()
+  declare campus: Campus
+  @column()
+  declare codigo: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare nivel: NivelAcademico
+  @column()
+  declare nome: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
 
 export class EgressoSchema extends BaseModel {
   static $columns = ['consentimentoEm', 'cpf', 'createdAt', 'emailPessoal', 'id', 'nomeCompleto', 'updatedAt', 'userId'] as const
@@ -26,6 +47,38 @@ export class EgressoSchema extends BaseModel {
   declare createdAt: DateTime
   @column()
   declare emailPessoal: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare nomeCompleto: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare userId: number
+}
+
+export class GestorCursoSchema extends BaseModel {
+  static $columns = ['createdAt', 'cursoId', 'gestorId', 'id', 'updatedAt'] as const
+  $columns = GestorCursoSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare cursoId: number
+  @column()
+  declare gestorId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class GestoreSchema extends BaseModel {
+  static $columns = ['cargo', 'createdAt', 'id', 'nomeCompleto', 'updatedAt', 'userId'] as const
+  $columns = GestoreSchema.$columns
+  @column()
+  declare cargo: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
   @column({ isPrimary: true })
   declare id: number
   @column()
@@ -62,24 +115,20 @@ export class LoginCodeSchema extends BaseModel {
 }
 
 export class MatriculaSchema extends BaseModel {
-  static $columns = ['campus', 'codigo', 'createdAt', 'curso', 'dataColacao', 'egressoId', 'id', 'nivel', 'periodoFormatura', 'situacao', 'updatedAt'] as const
+  static $columns = ['codigo', 'createdAt', 'cursoId', 'dataColacao', 'egressoId', 'id', 'periodoFormatura', 'situacao', 'updatedAt'] as const
   $columns = MatriculaSchema.$columns
-  @column()
-  declare campus: Campus
   @column()
   declare codigo: string
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
-  declare curso: string
+  declare cursoId: number
   @column.date()
   declare dataColacao: DateTime | null
   @column()
   declare egressoId: number
   @column({ isPrimary: true })
   declare id: number
-  @column()
-  declare nivel: NivelAcademico
   @column()
   declare periodoFormatura: string | null
   @column()

@@ -2,10 +2,14 @@ import { UserSchema } from '#database/schema'
 import { hasOne } from '@adonisjs/lucid/orm'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import Egresso from '#models/egresso'
+import Gestor from '#models/gestor'
 
 export default class User extends UserSchema {
   @hasOne(() => Egresso)
   declare egresso: HasOne<typeof Egresso>
+
+  @hasOne(() => Gestor)
+  declare gestor: HasOne<typeof Gestor>
 
   get initials() {
     const [first, last] = this.fullName ? this.fullName.split(' ') : this.email.split('@')

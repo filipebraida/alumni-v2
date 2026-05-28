@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 
 import User from '#models/user'
 import Egresso from '#models/egresso'
+import Curso from '#models/curso'
 import RegistrarResposta from '#actions/registrar_resposta'
 import BuscarRespostaAtual from '#queries/buscar_resposta_atual'
 import BuscarRespostaDoAno from '#queries/buscar_resposta_do_ano'
@@ -76,27 +77,30 @@ test.group('Egresso · respostas (append-only)', (group) => {
 
   test('uma pessoa pode ter vários cursos (níveis diferentes)', async ({ assert }) => {
     const egresso = await criarEgresso()
+    const sufixo = `${contador}-${Date.now()}`
+
+    const graduacao = await Curso.create({
+      codigo: `grad-${sufixo}`,
+      nome: 'Ciência da Computação',
+      nivel: 'graduacao',
+      campus: 'seropedica',
+    })
+    const mestrado = await Curso.create({
+      codigo: `mest-${sufixo}`,
+      nome: 'Informática',
+      nivel: 'mestrado',
+      campus: 'seropedica',
+    })
+
     await egresso.related('matriculas').createMany([
-      {
-        codigo: `grad-${Date.now()}`,
-        curso: 'Ciência da Computação',
-        nivel: 'graduacao',
-        campus: 'seropedica',
-        situacao: 'formado',
-      },
-      {
-        codigo: `mest-${Date.now()}`,
-        curso: 'Informática',
-        nivel: 'mestrado',
-        campus: 'seropedica',
-        situacao: 'cursando',
-      },
+      { codigo: `m-grad-${sufixo}`, cursoId: graduacao.id, situacao: 'formado' },
+      { codigo: `m-mest-${sufixo}`, cursoId: mestrado.id, situacao: 'cursando' },
     ])
 
-    await egresso.load('matriculas')
+    await egresso.load('matriculas', (matriculas) => matriculas.preload('curso'))
     assert.lengthOf(egresso.matriculas, 2)
     assert.sameMembers(
-      egresso.matriculas.map((m) => m.nivel),
+      egresso.matriculas.map((m) => m.curso.nivel),
       ['graduacao', 'mestrado']
     )
   })

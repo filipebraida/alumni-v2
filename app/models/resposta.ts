@@ -10,6 +10,12 @@ import Egresso from '#models/egresso'
 export default class Resposta extends RespostaSchema {
   static table = 'respostas'
 
+  /**
+   * Janela de frescor: uma resposta está "em dia" se `registradaEm` cair nos
+   * últimos N meses. É a régua da métrica de gestão "% preenchido no prazo".
+   */
+  static JANELA_FRESCOR_MESES = 12
+
   @belongsTo(() => Egresso)
   declare egresso: BelongsTo<typeof Egresso>
 }

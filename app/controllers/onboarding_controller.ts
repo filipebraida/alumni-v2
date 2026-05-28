@@ -12,7 +12,7 @@ function iniciais(nome: string) {
 
 /** O vínculo mais relevante para a identidade: a graduação, ou o primeiro. */
 function vinculoPrincipal(matriculas: Matricula[]) {
-  return matriculas.find((m) => m.nivel === 'graduacao') ?? matriculas[0] ?? null
+  return matriculas.find((m) => m.curso.nivel === 'graduacao') ?? matriculas[0] ?? null
 }
 
 export default class OnboardingController {
@@ -29,9 +29,9 @@ export default class OnboardingController {
         iniciais: iniciais(egresso.nomeCompleto),
         email: user.email,
         matricula: vinculo?.codigo ?? null,
-        curso: vinculo?.curso ?? null,
-        nivel: vinculo ? NIVEL_LABELS[vinculo.nivel] : null,
-        campus: vinculo ? CAMPUS_LABELS[vinculo.campus] : null,
+        curso: vinculo?.curso.nome ?? null,
+        nivel: vinculo ? NIVEL_LABELS[vinculo.curso.nivel] : null,
+        campus: vinculo ? CAMPUS_LABELS[vinculo.curso.campus] : null,
         turma: vinculo?.periodoFormatura ?? null,
         colacao: vinculo?.dataColacao ? vinculo.dataColacao.toFormat('MM/yyyy') : null,
         outrosVinculos: Math.max(egresso.matriculas.length - 1, 0),

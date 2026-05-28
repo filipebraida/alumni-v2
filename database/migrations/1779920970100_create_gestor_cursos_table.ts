@@ -1,34 +1,30 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'matriculas'
+  protected tableName = 'gestor_cursos'
 
+  // Pivot N:M — quais cursos cada gestor gere.
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
       table
-        .integer('egresso_id')
+        .integer('gestor_id')
         .notNullable()
         .references('id')
-        .inTable('egressos')
+        .inTable('gestores')
         .onDelete('CASCADE')
       table
         .integer('curso_id')
         .notNullable()
         .references('id')
         .inTable('cursos')
-        .onDelete('RESTRICT') // não apaga vínculos de aluno ao remover um curso
-      table.string('codigo').notNullable().unique() // matrícula SIGAA — âncora imutável
-      table.string('periodo_formatura').nullable() // ex.: "2022.2"
-      table.date('data_colacao').nullable()
-      table.string('situacao').notNullable().defaultTo('formado')
+        .onDelete('CASCADE')
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()
 
-      table.index(['egresso_id'])
-      table.index(['curso_id'])
+      table.unique(['gestor_id', 'curso_id'])
     })
   }
 

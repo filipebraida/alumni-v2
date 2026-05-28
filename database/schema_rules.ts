@@ -8,7 +8,7 @@ export default {
   types: {},
   columns: {},
   tables: {
-    matriculas: {
+    cursos: {
       columns: {
         nivel: {
           tsType: 'NivelAcademico',
@@ -20,6 +20,10 @@ export default {
           decorators: [{ name: '@column' }],
           imports: [{ source: '#enums/campus', typeImports: ['Campus'] }],
         },
+      },
+    },
+    matriculas: {
+      columns: {
         situacao: {
           tsType: 'SituacaoMatricula',
           decorators: [{ name: '@column' }],

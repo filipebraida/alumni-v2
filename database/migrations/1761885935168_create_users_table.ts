@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id').notNullable()
       table.string('full_name').nullable()
       table.string('email', 254).notNullable().unique()
-      table.string('password').notNullable()
+      // Login é passwordless (código por e-mail) — sem coluna de senha.
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
