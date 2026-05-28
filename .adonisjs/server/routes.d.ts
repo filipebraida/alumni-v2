@@ -20,6 +20,7 @@ export type ScannedRoutes = {
     'respostas.create': { paramsTuple?: []; params?: {} }
     'respostas.store': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
+    'gestao.egressos': { paramsTuple?: []; params?: {} }
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
   }
   GET: {
@@ -33,6 +34,7 @@ export type ScannedRoutes = {
     'dashboard': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
+    'gestao.egressos': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -45,6 +47,7 @@ export type ScannedRoutes = {
     'dashboard': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
+    'gestao.egressos': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'session.store': { paramsTuple?: []; params?: {} }

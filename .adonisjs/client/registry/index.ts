@@ -102,6 +102,12 @@ const routes = {
     tokens: [{"old":"/gestao","type":0,"val":"gestao","end":""}],
     types: placeholder as Registry['gestao.show']['types'],
   },
+  'gestao.egressos': {
+    methods: ["GET","HEAD"],
+    pattern: '/gestao/egressos',
+    tokens: [{"old":"/gestao/egressos","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos","type":0,"val":"egressos","end":""}],
+    types: placeholder as Registry['gestao.egressos']['types'],
+  },
   'gestao.curso_ativo': {
     methods: ["PUT"],
     pattern: '/gestao/curso-ativo',

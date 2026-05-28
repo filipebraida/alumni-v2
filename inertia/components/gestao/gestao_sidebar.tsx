@@ -43,13 +43,17 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
-            {/* Próximas telas da área — estrutura visível, ligação em breve. */}
             <SidebarMenuItem>
-              <SidebarMenuButton disabled tooltip="Em breve">
+              <SidebarMenuButton
+                render={<Link href={urlFor('gestao.egressos')} />}
+                isActive={page.url.startsWith('/gestao/egressos')}
+              >
                 <Users />
                 <span>Egressos</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
+
+            {/* Próxima tela da área — estrutura visível, ligação em breve. */}
             <SidebarMenuItem>
               <SidebarMenuButton disabled tooltip="Em breve">
                 <LineChart />

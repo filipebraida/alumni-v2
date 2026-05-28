@@ -17,6 +17,7 @@ declare module '@adonisjs/inertia/types' {
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'gestao/dashboard': ExtractProps<(typeof import('../../inertia/pages/gestao/dashboard.tsx'))['default']>
+    'gestao/egressos': ExtractProps<(typeof import('../../inertia/pages/gestao/egressos.tsx'))['default']>
     'onboarding': ExtractProps<(typeof import('../../inertia/pages/onboarding.tsx'))['default']>
     'portal/egressos': ExtractProps<(typeof import('../../inertia/pages/portal/egressos.tsx'))['default']>
     'portal/entrada': ExtractProps<(typeof import('../../inertia/pages/portal/entrada.tsx'))['default']>

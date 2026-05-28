@@ -29,6 +29,7 @@ export interface ApiDefinition {
   }
   gestao: {
     show: typeof routes['gestao.show']
+    egressos: typeof routes['gestao.egressos']
     cursoAtivo: typeof routes['gestao.curso_ativo']
   }
 }

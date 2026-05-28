@@ -199,6 +199,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/gestao_controller').default['show']>>>
     }
   }
+  'gestao.egressos': {
+    methods: ["GET","HEAD"]
+    pattern: '/gestao/egressos'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/gestao').listarEgressosValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'gestao.curso_ativo': {
     methods: ["PUT"]
     pattern: '/gestao/curso-ativo'
