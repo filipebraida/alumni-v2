@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ColumnDef, RowSelectionState } from '@tanstack/react-table'
-import { EyeIcon, BellIcon, MailIcon, MoreHorizontalIcon, SearchIcon } from 'lucide-react'
+import { EyeIcon, BellIcon, MailIcon, MoreHorizontalIcon, SearchIcon, XIcon } from 'lucide-react'
 
 import { urlFor } from '~/client'
 import { cn } from '~/lib/utils'
@@ -360,6 +360,12 @@ export function EgressosTable({
     aplicarComDebounce(valor, situacao, turmaFiltro, perPage)
   }
 
+  const limparBusca = () => {
+    setBusca('')
+    if (timer.current) clearTimeout(timer.current)
+    aplicar('', situacao, turmaFiltro, perPage)
+  }
+
   const aoTrocarSituacao = (valor: SituacaoFiltro) => {
     setSituacao(valor)
     aplicar(busca, valor, turmaFiltro, perPage)
@@ -402,10 +408,34 @@ export function EgressosTable({
             <SearchIcon />
           </InputGroupAddon>
           <InputGroupInput
+            type="text"
+            name="busca-egressos"
             value={busca}
             onChange={(e) => aoBuscar(e.target.value)}
             placeholder="Buscar por nome, e-mail, matrícula…"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            data-1p-ignore="true"
+            data-lpignore="true"
+            data-bwignore="true"
+            data-form-type="other"
           />
+          {busca.length > 0 && (
+            <InputGroupAddon align="inline-end">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-xs"
+                onClick={limparBusca}
+                aria-label="Limpar busca"
+                className="text-muted-foreground hover:bg-transparent hover:text-foreground"
+              >
+                <XIcon />
+              </Button>
+            </InputGroupAddon>
+          )}
         </InputGroup>
 
         {turmas.length > 0 && (
