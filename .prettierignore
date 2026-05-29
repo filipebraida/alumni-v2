@@ -6,3 +6,6 @@ database/schema.ts
 .claude/skills/flow-*
 .opencode/skills/flow-*
 .opencode/commands/flow-*
+.cursor/skills/flow-*
+.cursor/rules/adonisjs-harness.mdc
+.agents/skills/flow-*
