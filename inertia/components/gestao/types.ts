@@ -12,3 +12,13 @@ export type GestaoShared = {
   cursoAtivoId: number | null
   cursos: CursoResumo[]
 }
+
+/** Métricas de frescor do roster do curso (ResumoEgressosDoCurso). */
+export type EgressosEstatisticas = {
+  total: number
+  emDia: number
+  desatualizado: number
+  semRegistro: number
+  pctEmDia: number
+  janelaFrescorMeses: number
+}

@@ -9,6 +9,7 @@ export interface ListarEgressosDoCursoInput {
   perPage: number
   q?: string
   situacoes?: SituacaoMatricula[]
+  turma?: string
 }
 
 /** Frescor do egresso em relação à janela de atualização (Resposta). */
@@ -24,6 +25,8 @@ export interface EgressoDoCursoRow {
   consentiu: boolean
   ultimaAtualizacao: string | null
   status: StatusFrescor
+  cargo: string | null
+  empregador: string | null
 }
 
 export interface PaginatorMeta {
@@ -52,6 +55,7 @@ export default class ListarEgressosDoCurso {
     perPage,
     q,
     situacoes,
+    turma,
   }: ListarEgressosDoCursoInput): Promise<ListarEgressosDoCursoResult> {
     const situacoesAlvo = situacoes?.length ? situacoes : ['formado', 'cursando']
 
@@ -59,6 +63,10 @@ export default class ListarEgressosDoCurso {
       .where('cursoId', cursoId)
       .whereIn('situacao', situacoesAlvo)
       .preload('egresso', (egresso) => egresso.preload('user'))
+
+    if (turma) {
+      query.where('periodoFormatura', turma)
+    }
 
     if (q) {
       const like = `%${q}%`
@@ -79,15 +87,22 @@ export default class ListarEgressosDoCurso {
     // (egresso, registradaEm) e reduzimos como DateTime, sem depender do formato
     // bruto da coluna no banco.
     const egressoIds = [...new Set(matriculas.map((matricula) => matricula.egressoId))]
-    const ultimaPorEgresso = new Map<number, DateTime>()
+    const ultimaPorEgresso = new Map<
+      number,
+      { registradaEm: DateTime; cargo: string | null; empregador: string | null }
+    >()
     if (egressoIds.length > 0) {
       const respostas = await Resposta.query()
         .whereIn('egressoId', egressoIds)
-        .select('egressoId', 'registradaEm')
+        .select('egressoId', 'registradaEm', 'cargo', 'empregador')
       for (const resposta of respostas) {
         const atual = ultimaPorEgresso.get(resposta.egressoId)
-        if (!atual || resposta.registradaEm > atual) {
-          ultimaPorEgresso.set(resposta.egressoId, resposta.registradaEm)
+        if (!atual || resposta.registradaEm > atual.registradaEm) {
+          ultimaPorEgresso.set(resposta.egressoId, {
+            registradaEm: resposta.registradaEm,
+            cargo: resposta.cargo,
+            empregador: resposta.empregador,
+          })
         }
       }
     }
@@ -99,7 +114,7 @@ export default class ListarEgressosDoCurso {
       const ultima = ultimaPorEgresso.get(matricula.egressoId) ?? null
       const status: StatusFrescor = !ultima
         ? 'sem_registro'
-        : ultima >= cutoff
+        : ultima.registradaEm >= cutoff
           ? 'em_dia'
           : 'desatualizado'
 
@@ -111,8 +126,10 @@ export default class ListarEgressosDoCurso {
         situacao: matricula.situacao,
         periodoFormatura: matricula.periodoFormatura,
         consentiu: !!egresso.consentimentoEm,
-        ultimaAtualizacao: ultima?.toISODate() ?? null,
+        ultimaAtualizacao: ultima?.registradaEm.toISODate() ?? null,
         status,
+        cargo: ultima?.cargo ?? null,
+        empregador: ultima?.empregador ?? null,
       }
     })
 

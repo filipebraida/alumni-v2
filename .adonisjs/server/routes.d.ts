@@ -21,6 +21,7 @@ export type ScannedRoutes = {
     'respostas.store': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.store': { paramsTuple?: []; params?: {} }
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
   }
   GET: {
@@ -55,6 +56,7 @@ export type ScannedRoutes = {
     'session.destroy': { paramsTuple?: []; params?: {} }
     'onboarding.update': { paramsTuple?: []; params?: {} }
     'respostas.store': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.store': { paramsTuple?: []; params?: {} }
   }
   DELETE: {
     'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }

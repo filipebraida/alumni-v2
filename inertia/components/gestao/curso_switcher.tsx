@@ -1,6 +1,7 @@
 import { router, usePage } from '@inertiajs/react'
 import { Check, ChevronsUpDownIcon, GraduationCap } from 'lucide-react'
 import { urlFor } from '~/client'
+import { cn } from '~/lib/utils'
 import {
   Menu,
   MenuGroup,
@@ -10,7 +11,31 @@ import {
   MenuTrigger,
 } from '~/components/ui/menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar'
-import type { GestaoShared } from '~/components/gestao/types'
+import type { CursoResumo, GestaoShared } from '~/components/gestao/types'
+
+function iniciaisCurso(nome: string) {
+  return nome
+    .trim()
+    .split(/\s+/)
+    .filter((palavra) => palavra.length > 2)
+    .map((palavra) => palavra[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
+}
+
+function CursoBadge({ curso, className }: { curso: CursoResumo | null; className?: string }) {
+  return (
+    <span
+      className={cn(
+        'flex size-9 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-bold text-sidebar-primary-foreground text-xs group-data-[collapsible=icon]:size-8',
+        className
+      )}
+    >
+      {curso ? iniciaisCurso(curso.nome) : <GraduationCap className="size-4" />}
+    </span>
+  )
+}
 
 /**
  * Seletor de curso no topo da sidebar (padrão "tenant/team switcher"): o curso
@@ -31,19 +56,25 @@ export function CursoSwitcher() {
     <SidebarMenu>
       <SidebarMenuItem>
         <Menu>
-          <MenuTrigger render={<SidebarMenuButton size="lg" />}>
-            <span className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <GraduationCap className="size-4" />
-            </span>
-            <div className="grid flex-1 text-left leading-tight">
-              <span className="truncate font-medium text-sm">
+          <MenuTrigger
+            render={
+              <SidebarMenuButton
+                size="lg"
+                tooltip={ativo?.nome ?? 'Selecione um curso'}
+                className="border border-sidebar-border bg-sidebar-accent hover:bg-sidebar-accent/70 group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent"
+              />
+            }
+          >
+            <CursoBadge curso={ativo} />
+            <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
+              <span className="truncate text-sidebar-foreground/55 text-xs uppercase tracking-wide">
+                {ativo?.nivel ?? 'Gestão'}
+              </span>
+              <span className="truncate font-semibold text-sm">
                 {ativo?.nome ?? 'Selecione um curso'}
               </span>
-              <span className="truncate text-muted-foreground text-xs">
-                {ativo ? `${ativo.nivel} · ${ativo.campus}` : '—'}
-              </span>
             </div>
-            <ChevronsUpDownIcon className="ms-auto size-4 opacity-70" />
+            <ChevronsUpDownIcon className="ms-auto size-4 shrink-0 opacity-70 group-data-[collapsible=icon]:hidden" />
           </MenuTrigger>
           <MenuPopup align="start" className="min-w-56">
             <MenuGroup>

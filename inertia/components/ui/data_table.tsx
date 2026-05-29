@@ -5,6 +5,7 @@ import {
   type ColumnFiltersState,
   type OnChangeFn,
   type PaginationState,
+  type RowSelectionState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -45,6 +46,10 @@ interface DataTableProps<TData, TValue> {
   emptyMessage?: string
   pageSizeOptions?: number[]
   remoteTableOptions?: RemoteTableOptions
+  /** Seleção de linhas (opt-in): controle no componente pai. */
+  rowSelection?: RowSelectionState
+  onRowSelectionChange?: OnChangeFn<RowSelectionState>
+  getRowId?: (row: TData, index: number) => string
 }
 
 export function DataTable<TData, TValue>({
@@ -53,8 +58,12 @@ export function DataTable<TData, TValue>({
   emptyMessage = 'Nenhum resultado.',
   pageSizeOptions = [10, 20, 30, 50],
   remoteTableOptions,
+  rowSelection,
+  onRowSelectionChange,
+  getRowId,
 }: DataTableProps<TData, TValue>) {
   const remote = !!remoteTableOptions
+  const selectable = !!onRowSelectionChange
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [localPagination, setLocalPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -65,14 +74,18 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getRowId,
     manualPagination: remote,
     manualFiltering: remote,
+    enableRowSelection: selectable,
     pageCount: remote ? remoteTableOptions.pageCount : undefined,
     state: {
       pagination: remote ? remoteTableOptions.state.pagination : localPagination,
       columnFilters: remote ? undefined : columnFilters,
+      ...(selectable ? { rowSelection } : {}),
     },
     onColumnFiltersChange: setColumnFilters,
+    onRowSelectionChange,
     onPaginationChange: remote ? remoteTableOptions.onPaginationChange : setLocalPagination,
     ...(remote ? {} : { getPaginationRowModel: getPaginationRowModel() }),
     getFilteredRowModel: getFilteredRowModel(),
