@@ -98,7 +98,7 @@ export function TransparenciaAnonimizacao() {
               <br />
               {'  '}
               <span className="text-primary">return</span>{' '}
-              <span className="text-foreground">"—"</span>{' '}
+              <span className="text-foreground">&quot;—&quot;</span>{' '}
               <span className="text-muted-foreground/70"># suprimido</span>
               <br />
               <span className="text-primary">else</span>:<br />
@@ -161,7 +161,7 @@ export function TransparenciaAnonimizacao() {
                 </tbody>
               </table>
               <div className="mt-4 border-t pt-4 text-xs leading-relaxed text-muted-foreground">
-                Os 6 egressos abaixo do limiar foram agregados em "Outros". Nem o estado nem o n
+                Os 6 egressos abaixo do limiar foram agregados em “Outros”. Nem o estado nem o n
                 original sobrevivem ao corte.
               </div>
             </div>

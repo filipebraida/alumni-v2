@@ -77,7 +77,9 @@ export default function Onboarding({ identidade }: OnboardingProps) {
                 )}
 
                 <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3">
-                  {identidade.matricula && <Detail label="Matrícula" value={identidade.matricula} />}
+                  {identidade.matricula && (
+                    <Detail label="Matrícula" value={identidade.matricula} />
+                  )}
                   {identidade.turma && <Detail label="Turma" value={identidade.turma} />}
                   <Detail label="E-mail" value={identidade.email} />
                   {identidade.colacao && <Detail label="Colação" value={identidade.colacao} />}

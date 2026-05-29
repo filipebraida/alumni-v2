@@ -14,12 +14,7 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('gestores')
         .onDelete('CASCADE')
-      table
-        .integer('curso_id')
-        .notNullable()
-        .references('id')
-        .inTable('cursos')
-        .onDelete('CASCADE')
+      table.integer('curso_id').notNullable().references('id').inTable('cursos').onDelete('CASCADE')
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()

@@ -46,7 +46,7 @@ export function UfrrjHero() {
                 Vai justificar uma reforma curricular ao CONSEPE. Em todos esses momentos, a
                 pergunta volta:{' '}
                 <em className="font-medium text-foreground not-italic">
-                  "e os nossos egressos, como estão?"
+                  “e os nossos egressos, como estão?”
                 </em>
               </p>
               <p>

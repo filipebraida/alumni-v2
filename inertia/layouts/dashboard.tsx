@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import { useFlashToasts } from '~/hooks/use_flash'
 import { AppSidebar } from '~/components/app_sidebar'
 import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar'

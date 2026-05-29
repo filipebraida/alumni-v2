@@ -5,7 +5,7 @@ import { ChevronsUpDownIcon, XIcon } from 'lucide-react'
 
 import { cn } from '~/lib/utils'
 import { Input } from '~/components/ui/input'
-import { ScrollArea } from '~/components/ui/scroll-area'
+import { ScrollArea } from '~/components/ui/scroll_area'
 
 const Autocomplete = AutocompletePrimitive.Root
 

@@ -64,7 +64,10 @@ export function UfrrjCalendario() {
 
       <div className="relative mt-12">
         {/* Horizontal rail aligned to the bullet centers (desktop only). */}
-        <div aria-hidden className="absolute left-0 right-0 top-13 hidden h-px bg-border md:block" />
+        <div
+          aria-hidden
+          className="absolute left-0 right-0 top-13 hidden h-px bg-border md:block"
+        />
 
         <ol className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-6">
           {milestones.map((m) => (

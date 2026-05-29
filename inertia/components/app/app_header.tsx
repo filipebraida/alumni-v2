@@ -1,6 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Bell, Menu, Search } from 'lucide-react'
-import { ReactNode, useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import { PortalContainer } from '~/components/portal/container'
 import { PortalLogo } from '~/components/portal/logo'
 import { UserMenu } from '~/components/app/user_menu'

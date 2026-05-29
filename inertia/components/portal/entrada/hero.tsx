@@ -1,6 +1,6 @@
 import { ArrowRight, Eye, Leaf } from 'lucide-react'
 import { Link } from '@adonisjs/inertia/react'
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { EightFieldsRule } from '~/components/portal/entrada/eight_fields_rule'
 import { SectionHeading } from '~/components/portal/section_heading'
 import { SoftBadge } from '~/components/portal/soft_badge'
@@ -37,10 +37,7 @@ export function EntradaHero() {
           </span>
         </div>
 
-        <SectionHeading
-          as="h1"
-          className="mt-8 text-4xl sm:text-6xl sm:leading-none md:text-7xl"
-        >
+        <SectionHeading as="h1" className="mt-8 text-4xl sm:text-6xl sm:leading-none md:text-7xl">
           Você se formou.
           <br />
           <span className="text-primary">A UFRRJ continua</span>{' '}
@@ -48,10 +45,10 @@ export function EntradaHero() {
         </SectionHeading>
 
         <p className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
-          O <strong className="font-medium text-foreground">SAE</strong> — Serviço de
-          Acompanhamento de Egressos — é como a Rural mantém contato com quem passou por aqui. Uma
-          vez por ano, você confirma <Annotated>8 dados</Annotated> e, em troca, recebe análises da
-          sua turma, reencontra colegas e ajuda a Universidade a melhorar os cursos.
+          O <strong className="font-medium text-foreground">SAE</strong> — Serviço de Acompanhamento
+          de Egressos — é como a Rural mantém contato com quem passou por aqui. Uma vez por ano,
+          você confirma <Annotated>8 dados</Annotated> e, em troca, recebe análises da sua turma,
+          reencontra colegas e ajuda a Universidade a melhorar os cursos.
         </p>
 
         <EightFieldsRule />

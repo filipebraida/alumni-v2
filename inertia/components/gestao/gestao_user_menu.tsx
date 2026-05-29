@@ -1,5 +1,5 @@
 import { router, usePage } from '@inertiajs/react'
-import { Data } from '@generated/data'
+import { type Data } from '@generated/data'
 import { ChevronDown, GraduationCap, LogOut, Settings, User } from 'lucide-react'
 
 import { urlFor } from '~/client'

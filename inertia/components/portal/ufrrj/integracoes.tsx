@@ -1,4 +1,4 @@
-import { Check, Eye, LucideIcon, RefreshCw } from 'lucide-react'
+import { Check, Eye, type LucideIcon, RefreshCw } from 'lucide-react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { SectionHeading } from '~/components/portal/section_heading'

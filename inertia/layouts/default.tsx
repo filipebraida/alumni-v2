@@ -1,5 +1,5 @@
-import { ReactElement } from 'react'
-import { Data } from '@generated/data'
+import { type ReactElement } from 'react'
+import { type Data } from '@generated/data'
 import { Logo } from '~/components/logo'
 import { usePage } from '@inertiajs/react'
 import { useFlashToasts } from '~/hooks/use_flash'

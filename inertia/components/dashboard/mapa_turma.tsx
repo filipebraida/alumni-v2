@@ -1,5 +1,5 @@
 import { Globe } from 'lucide-react'
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { Card } from '~/components/ui/card'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { BrasilMap } from '~/components/dashboard/brasil_map'

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Data } from '@generated/data'
+import { type Data } from '@generated/data'
 import { usePage } from '@inertiajs/react'
 import { LayoutDashboard } from 'lucide-react'
 import { Link, Form } from '@adonisjs/inertia/react'

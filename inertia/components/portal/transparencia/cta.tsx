@@ -19,8 +19,8 @@ export function TransparenciaCta() {
             <span className="text-brand-yellow">Lei de Acesso à Informação.</span>
           </h3>
           <p className="mt-4 max-w-lg text-pretty text-sm leading-relaxed text-primary-foreground/80">
-            A Fala.BR é o canal oficial. A UFRRJ tem 20 dias para responder, prorrogáveis por mais 10
-            com justificativa. O pedido pode ser anônimo.
+            A Fala.BR é o canal oficial. A UFRRJ tem 20 dias para responder, prorrogáveis por mais
+            10 com justificativa. O pedido pode ser anônimo.
           </p>
           <div className="mt-7 inline-flex items-center gap-2 text-sm font-semibold">
             Abrir pedido em falabr.cgu.gov.br
@@ -53,7 +53,10 @@ export function TransparenciaCta() {
           </p>
           <div className="mt-6 font-mono text-sm text-foreground">ouvidoria@ufrrj.br</div>
 
-          <span aria-hidden className="absolute right-8 top-8 size-2 rounded-full bg-brand-yellow" />
+          <span
+            aria-hidden
+            className="absolute right-8 top-8 size-2 rounded-full bg-brand-yellow"
+          />
         </a>
       </div>
     </PortalSection>

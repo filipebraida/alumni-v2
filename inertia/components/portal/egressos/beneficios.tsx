@@ -5,7 +5,7 @@ import {
   Calendar,
   Globe,
   LineChart,
-  LucideIcon,
+  type LucideIcon,
   Users,
 } from 'lucide-react'
 import { PortalSection } from '~/components/portal/section'

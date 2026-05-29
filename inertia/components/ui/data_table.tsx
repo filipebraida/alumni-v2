@@ -28,7 +28,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '~/components/ui/table'
 
 /**
  * Opções de paginação server-driven (vindas do hook useDataTable). Quando
@@ -70,6 +77,7 @@ export function DataTable<TData, TValue>({
     pageSize: 10,
   })
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- @tanstack/react-table not yet compiler-compatible
   const table = useReactTable({
     data,
     columns,
@@ -157,8 +165,8 @@ export function DataTable<TData, TValue>({
 
         <div className="flex items-center gap-3">
           <p className="text-muted-foreground text-sm">
-            Página{' '}
-            <span className="font-medium text-foreground tabular-nums">{pageIndex + 1}</span> de{' '}
+            Página <span className="font-medium text-foreground tabular-nums">{pageIndex + 1}</span>{' '}
+            de{' '}
             <span className="font-medium text-foreground tabular-nums">
               {Math.max(table.getPageCount(), 1)}
             </span>

@@ -1,14 +1,18 @@
 import { Head, usePage } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import { BellIcon, ChevronRightIcon, UploadIcon } from 'lucide-react'
 import GestaoLayout from '~/layouts/gestao'
 import { SidebarTrigger } from '~/components/ui/sidebar'
 import { Button } from '~/components/ui/button'
 import { EgressosStats } from '~/components/gestao/egressos_stats'
-import { EgressosTable, type EgressosResponse, type Situacao } from '~/components/gestao/egressos_table'
+import {
+  EgressosTable,
+  type EgressosResponse,
+  type Situacao,
+} from '~/components/gestao/egressos_table'
 import { CadastrarEgressoDialog } from '~/components/gestao/cadastrar_egresso_dialog'
 import { GestaoUserMenu } from '~/components/gestao/gestao_user_menu'
-import { InertiaProps } from '~/types'
+import { type InertiaProps } from '~/types'
 import type { EgressosEstatisticas, GestaoShared } from '~/components/gestao/types'
 
 type PageProps = InertiaProps<{

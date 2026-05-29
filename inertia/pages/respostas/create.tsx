@@ -1,13 +1,13 @@
 import { Head, useForm } from '@inertiajs/react'
 import { ArrowRight, Eye } from 'lucide-react'
-import { ReactElement, useState } from 'react'
+import { type ReactElement, useState } from 'react'
 import { urlFor } from '~/client'
 import FlowLayout from '~/layouts/flow'
 import { CampoAtualizavel } from '~/components/respostas/campo_atualizavel'
 import { FlowHeader } from '~/components/respostas/flow_header'
 import { CAMPOS } from '~/components/respostas/types'
 import { Button } from '~/components/ui/button'
-import { InertiaProps } from '~/types'
+import { type InertiaProps } from '~/types'
 import type { Opcoes, RegistrarResposta, Status } from '~/components/respostas/types'
 
 type PageProps = InertiaProps<{
@@ -54,7 +54,7 @@ export default function Atualizar({ valores, opcoes }: PageProps) {
             Confirme seus dados em ~30 segundos
           </h1>
           <p className="text-muted-foreground text-sm">
-            {total} campos · diga "Sim, ainda" no que está certo, edite o que mudou. Pode pular o
+            {total} campos · diga “Sim, ainda” no que está certo, edite o que mudou. Pode pular o
             que quiser.
           </p>
         </div>

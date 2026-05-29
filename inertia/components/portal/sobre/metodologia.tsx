@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionHeading } from '~/components/portal/section_heading'
 

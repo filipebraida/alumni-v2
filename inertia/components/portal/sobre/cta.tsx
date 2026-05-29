@@ -60,7 +60,10 @@ export function SobreCta() {
           </div>
 
           {/* Crest yellow dot */}
-          <span aria-hidden className="absolute right-8 top-8 size-2 rounded-full bg-brand-yellow" />
+          <span
+            aria-hidden
+            className="absolute right-8 top-8 size-2 rounded-full bg-brand-yellow"
+          />
         </Link>
       </div>
     </PortalSection>

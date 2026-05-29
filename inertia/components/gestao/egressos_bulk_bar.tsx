@@ -37,9 +37,7 @@ export function EgressosBulkBar({
         <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-primary px-2 font-bold text-primary-foreground text-xs tabular-nums">
           {quantidade}
         </span>
-        <span className="font-medium text-sm">
-          selecionado{quantidade === 1 ? '' : 's'}
-        </span>
+        <span className="font-medium text-sm">selecionado{quantidade === 1 ? '' : 's'}</span>
 
         <span className="mx-1.5 h-6 w-px bg-white/15" />
 

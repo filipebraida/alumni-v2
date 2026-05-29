@@ -1,4 +1,4 @@
-import { Eye, Globe, Leaf, LucideIcon } from 'lucide-react'
+import { Eye, Globe, Leaf, type LucideIcon } from 'lucide-react'
 import { PortalSection } from '~/components/portal/section'
 
 const items: { icon: LucideIcon; title: string; copy: string }[] = [

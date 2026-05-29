@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Head, router, usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
-import { Data } from '@generated/data'
+import { type Data } from '@generated/data'
 import { ArrowLeft, Mail } from 'lucide-react'
 import { PortalLogo } from '~/components/portal/logo'
 import { Form } from '~/components/ui/form'
@@ -141,9 +141,6 @@ function CodeStep({ email }: { email: string }) {
   const [cooldown, setCooldown] = useState(RESEND_SECONDS)
   const inputs = useRef<(HTMLInputElement | null)[]>([])
 
-  const code = digits.join('')
-  const complete = code.length === CODE_LENGTH && /^\d+$/.test(code)
-
   useEffect(() => {
     inputs.current[0]?.focus()
   }, [])
@@ -154,12 +151,12 @@ function CodeStep({ email }: { email: string }) {
     return () => clearTimeout(t)
   }, [cooldown])
 
-  useEffect(() => {
-    if (!complete || submitting) return
+  function submitCode(nextCode: string) {
+    if (submitting) return
     setSubmitting(true)
     router.post(
       '/login',
-      { code },
+      { code: nextCode },
       {
         onFinish: () => {
           setSubmitting(false)
@@ -168,16 +165,22 @@ function CodeStep({ email }: { email: string }) {
         },
       }
     )
-  }, [complete])
+  }
+
+  function maybeSubmit(next: string[]) {
+    const nextCode = next.join('')
+    if (nextCode.length === CODE_LENGTH && /^\d+$/.test(nextCode)) {
+      submitCode(nextCode)
+    }
+  }
 
   function setDigit(i: number, value: string) {
     const v = value.replace(/\D/g, '').slice(0, 1)
-    setDigits((prev) => {
-      const next = [...prev]
-      next[i] = v
-      return next
-    })
+    const next = [...digits]
+    next[i] = v
+    setDigits(next)
     if (v && i < CODE_LENGTH - 1) inputs.current[i + 1]?.focus()
+    maybeSubmit(next)
   }
 
   function onKeyDown(i: number, e: React.KeyboardEvent<HTMLInputElement>) {
@@ -194,6 +197,7 @@ function CodeStep({ email }: { email: string }) {
     for (let i = 0; i < text.length; i++) next[i] = text[i]
     setDigits(next)
     inputs.current[Math.min(text.length, CODE_LENGTH - 1)]?.focus()
+    maybeSubmit(next)
   }
 
   return (

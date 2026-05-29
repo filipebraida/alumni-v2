@@ -1,9 +1,9 @@
 'use client'
 
 import { cn } from '~/lib/utils'
-import { routes } from '@generated/registry'
+import { type routes } from '@generated/registry'
 import { Form as FormPrimitive } from '@base-ui/react/form'
-import { FormProps, Form as InertiaForm } from '@adonisjs/inertia/react'
+import { type FormProps, Form as InertiaForm } from '@adonisjs/inertia/react'
 
 function Form<Route extends keyof typeof routes>({
   className,

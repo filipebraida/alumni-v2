@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import { AppHeader } from '~/components/app/app_header'
 import { PortalContainer } from '~/components/portal/container'
 import { AnchoredToastProvider, ToastProvider } from '~/components/ui/toast'

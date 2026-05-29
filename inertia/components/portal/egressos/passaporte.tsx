@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { PortalLogo } from '~/components/portal/logo'
 import { SoftBadge } from '~/components/portal/soft_badge'
 import { Avatar, AvatarFallback } from '~/components/ui/avatar'

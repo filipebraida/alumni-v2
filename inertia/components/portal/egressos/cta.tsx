@@ -40,8 +40,8 @@ export function EgressosCta() {
           <div className="col-span-12 flex flex-col bg-primary p-10 text-primary-foreground md:col-span-5 md:p-12">
             <Leaf className="size-6 text-brand-yellow" />
             <blockquote className="mt-6 text-pretty font-serif text-2xl leading-snug tracking-tight">
-              "Tem coisa que só faz sentido se a gente continuar contando. A UFRRJ tem mais de cem
-              anos. Vamos seguir contando juntos."
+              “Tem coisa que só faz sentido se a gente continuar contando. A UFRRJ tem mais de cem
+              anos. Vamos seguir contando juntos.”
             </blockquote>
             <div className="mt-auto border-t border-primary-foreground/15 pt-8">
               <div className="text-sm font-semibold">Profa. Marília Almeida</div>

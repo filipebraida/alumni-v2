@@ -60,9 +60,9 @@ function Calendar({
 
   const defaultComponents = {
     Chevron: ({
-      className,
+      className: chevronClassName,
       orientation,
-      ...props
+      ...chevronProps
     }: {
       className?: string
       orientation?: 'left' | 'right' | 'up' | 'down'
@@ -70,8 +70,8 @@ function Calendar({
       if (orientation === 'left') {
         return (
           <ChevronLeftIcon
-            className={cn(className, 'rtl:rotate-180')}
-            {...props}
+            className={cn(chevronClassName, 'rtl:rotate-180')}
+            {...chevronProps}
             aria-hidden="true"
           />
         )
@@ -80,14 +80,16 @@ function Calendar({
       if (orientation === 'right') {
         return (
           <ChevronRightIcon
-            className={cn(className, 'rtl:rotate-180')}
-            {...props}
+            className={cn(chevronClassName, 'rtl:rotate-180')}
+            {...chevronProps}
             aria-hidden="true"
           />
         )
       }
 
-      return <ChevronsUpDownIcon className={className} {...props} aria-hidden="true" />
+      return (
+        <ChevronsUpDownIcon className={chevronClassName} {...chevronProps} aria-hidden="true" />
+      )
     },
   }
 

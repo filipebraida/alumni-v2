@@ -1,4 +1,4 @@
-import { BookOpen, LineChart, LucideIcon, Sparkles, Users } from 'lucide-react'
+import { BookOpen, LineChart, type LucideIcon, Sparkles, Users } from 'lucide-react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionHeader } from '~/components/portal/section_header'
 
@@ -36,8 +36,7 @@ export function SobreAtuacao() {
         eyebrow="§ 02 · O que fazemos"
         aside="Tudo o que está fora dessa lista, o SAE não faz — por escolha, não por falta."
       >
-        Quatro coisas.{' '}
-        <span className="font-normal italic text-primary">Sem mais, sem menos.</span>
+        Quatro coisas. <span className="font-normal italic text-primary">Sem mais, sem menos.</span>
       </SectionHeader>
 
       <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border bg-border md:grid-cols-2">

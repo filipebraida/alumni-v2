@@ -10,7 +10,7 @@ import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Checkbox } from '~/components/ui/checkbox'
 import { DataTable } from '~/components/ui/data_table'
-import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input-group'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '~/components/ui/menu'
 import {
   Select,
@@ -124,7 +124,7 @@ function exportarEgressosCsv(egressos: EgressoRow[]) {
     .map((colunas) => colunas.map(escaparCsv).join(','))
     .join('\n')
 
-  const blob = new Blob([`﻿${conteudo}`], { type: 'text/csv;charset=utf-8;' })
+  const blob = new Blob([`\ufeff${conteudo}`], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -229,7 +229,9 @@ const colunas: ColumnDef<EgressoRow>[] = [
     cell: ({ row }) => (
       <div className="leading-tight">
         <div className="text-sm tabular-nums">{row.original.periodoFormatura ?? '—'}</div>
-        <div className="font-mono text-muted-foreground text-xs">{row.original.matriculaCodigo}</div>
+        <div className="font-mono text-muted-foreground text-xs">
+          {row.original.matriculaCodigo}
+        </div>
       </div>
     ),
   },
@@ -302,7 +304,12 @@ export function EgressosTable({
   const perPage = egressos.metadata.perPage
 
   const aplicar = useCallback(
-    (proxBusca: string, proxSituacao: SituacaoFiltro, proxTurma: string, itensPorPagina: number) => {
+    (
+      proxBusca: string,
+      proxSituacao: SituacaoFiltro,
+      proxTurma: string,
+      itensPorPagina: number
+    ) => {
       router.get(
         urlFor('gestao.egressos'),
         {
@@ -324,9 +331,17 @@ export function EgressosTable({
 
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const aplicarComDebounce = useCallback(
-    (proxBusca: string, proxSituacao: SituacaoFiltro, proxTurma: string, itensPorPagina: number) => {
+    (
+      proxBusca: string,
+      proxSituacao: SituacaoFiltro,
+      proxTurma: string,
+      itensPorPagina: number
+    ) => {
       if (timer.current) clearTimeout(timer.current)
-      timer.current = setTimeout(() => aplicar(proxBusca, proxSituacao, proxTurma, itensPorPagina), 300)
+      timer.current = setTimeout(
+        () => aplicar(proxBusca, proxSituacao, proxTurma, itensPorPagina),
+        300
+      )
     },
     [aplicar]
   )
@@ -334,10 +349,13 @@ export function EgressosTable({
 
   // Seleção é por página (dados paginados no servidor): zera quando a página de
   // resultados muda, evitando ids selecionados que não estão mais visíveis.
+  // Padrão do React docs para "adjusting state on prop changes" — sem useEffect.
   const idsVisiveis = egressos.data.map((egresso) => egresso.egressoId).join(',')
-  useEffect(() => {
+  const [idsAnteriores, setIdsAnteriores] = useState(idsVisiveis)
+  if (idsAnteriores !== idsVisiveis) {
+    setIdsAnteriores(idsVisiveis)
     setSelecionados({})
-  }, [idsVisiveis])
+  }
 
   const remoteTableOptions = useDataTable({
     data: egressos,
@@ -455,7 +473,9 @@ export function EgressosTable({
         )}
 
         <div className="text-muted-foreground text-sm sm:ml-auto">
-          <span className="font-medium text-foreground tabular-nums">{egressos.metadata.total}</span>{' '}
+          <span className="font-medium text-foreground tabular-nums">
+            {egressos.metadata.total}
+          </span>{' '}
           de <span className="tabular-nums">{totalCurso}</span>
         </div>
       </div>

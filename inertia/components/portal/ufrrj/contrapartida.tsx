@@ -1,4 +1,4 @@
-import { BookOpen, LineChart, LucideIcon, RefreshCw, Sparkles } from 'lucide-react'
+import { BookOpen, LineChart, type LucideIcon, RefreshCw, Sparkles } from 'lucide-react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionHeader } from '~/components/portal/section_header'
 

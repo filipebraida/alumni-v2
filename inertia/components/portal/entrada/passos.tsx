@@ -1,4 +1,4 @@
-import { Check, LineChart, LucideIcon, User } from 'lucide-react'
+import { Check, LineChart, type LucideIcon, User } from 'lucide-react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { SectionHeading } from '~/components/portal/section_heading'

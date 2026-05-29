@@ -1,4 +1,4 @@
-import { Check, LineChart, LucideIcon, Mail, Sparkles } from 'lucide-react'
+import { Check, LineChart, type LucideIcon, Mail, Sparkles } from 'lucide-react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { SectionHeading } from '~/components/portal/section_heading'
@@ -53,7 +53,7 @@ export function EgressosEsforco() {
           </SectionHeading>
           <p className="mt-5 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground">
             A gente sabe que você tem outras coisas pra fazer. Por isso o cadastro é desenhado pra
-            caber no intervalo de um café. Você só responde "ainda" pros campos que não mudaram — e
+            caber no intervalo de um café. Você só responde “ainda” pros campos que não mudaram — e
             edita os que mudaram.
           </p>
 
@@ -76,7 +76,7 @@ export function EgressosEsforco() {
             <PassoCard
               tempo="~ 20s"
               titulo="Confirmar 8 dados"
-              copy={'Tocar "ainda" ou editar. Sem campos abertos longos.'}
+              copy="Tocar “ainda” ou editar. Sem campos abertos longos."
               icon={Check}
               primary
             />

@@ -18,8 +18,8 @@ export function UfrrjCta() {
             Manual da Coordenação.
           </h3>
           <p className="mt-3 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground">
-            52 páginas. Como acessar, ler e exportar do painel. Glossário Sinaes. Modelos prontos pra
-            renovação de reconhecimento. Atualizado a cada novembro.
+            52 páginas. Como acessar, ler e exportar do painel. Glossário Sinaes. Modelos prontos
+            pra renovação de reconhecimento. Atualizado a cada novembro.
           </p>
           <div className="mt-6 flex items-center gap-4 text-sm font-medium">
             <span className="inline-flex items-center gap-2">
@@ -52,7 +52,10 @@ export function UfrrjCta() {
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
           </div>
 
-          <span aria-hidden className="absolute right-8 top-8 size-2 rounded-full bg-brand-yellow" />
+          <span
+            aria-hidden
+            className="absolute right-8 top-8 size-2 rounded-full bg-brand-yellow"
+          />
         </a>
       </div>
     </PortalSection>

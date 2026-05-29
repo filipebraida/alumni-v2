@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import PortalLayout from '~/layouts/portal'
 import { EntradaHero } from '~/components/portal/entrada/hero'
 import { EntradaPassos } from '~/components/portal/entrada/passos'

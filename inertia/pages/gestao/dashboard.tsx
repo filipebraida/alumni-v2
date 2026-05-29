@@ -1,8 +1,8 @@
 import { Head, usePage } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import GestaoLayout from '~/layouts/gestao'
 import { SidebarTrigger } from '~/components/ui/sidebar'
-import { InertiaProps } from '~/types'
+import { type InertiaProps } from '~/types'
 import type { GestaoShared } from '~/components/gestao/types'
 
 type Estatisticas = {
@@ -53,7 +53,7 @@ export default function GestaoDashboard({ estatisticas }: PageProps) {
               <Stat rotulo="Formados" valor={`${estatisticas?.totalFormados ?? 0}`} />
             </div>
             <p className="text-muted-foreground text-sm">
-              "Em dia" = egresso com questionário atualizado nos últimos 12 meses.
+              “Em dia” = egresso com questionário atualizado nos últimos 12 meses.
             </p>
           </div>
         )}

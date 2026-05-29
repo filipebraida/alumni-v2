@@ -1,4 +1,13 @@
-const FIELDS = ['situação', 'ocupação', 'setor', 'vínculo', 'salário', 'município', 'pós-grad', 'contato']
+const FIELDS = [
+  'situação',
+  'ocupação',
+  'setor',
+  'vínculo',
+  'salário',
+  'município',
+  'pós-grad',
+  'contato',
+]
 
 /**
  * Typographic "ruler" of the 8 MEC fields. Hints at the once-a-year gesture of

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { PortalContainer } from '~/components/portal/container'
 import { cn } from '~/lib/utils'
 

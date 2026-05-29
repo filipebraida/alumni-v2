@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import AppLayout from '~/layouts/app'
 import { DashboardHero } from '~/components/dashboard/hero'
 import { DashboardFrescor } from '~/components/dashboard/frescor'
@@ -10,7 +10,7 @@ import { DashboardFaixaSalarial } from '~/components/dashboard/faixa_salarial'
 import { DashboardTempoEmprego } from '~/components/dashboard/tempo_emprego'
 import { DashboardTrajetoria } from '~/components/dashboard/trajetoria'
 import type { DashboardData } from '~/components/dashboard/types'
-import { InertiaProps } from '~/types'
+import { type InertiaProps } from '~/types'
 
 type PageProps = InertiaProps<DashboardData>
 

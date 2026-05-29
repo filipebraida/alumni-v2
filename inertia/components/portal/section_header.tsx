@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { SectionHeading } from '~/components/portal/section_heading'
 import { cn } from '~/lib/utils'

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { SectionHeading } from '~/components/portal/section_heading'
@@ -17,7 +17,7 @@ const faqs: { q: string; a: ReactNode }[] = [
         A forma mais simples é tentar entrar com seu e-mail{' '}
         <code className="rounded bg-muted px-1.5 py-0.5 text-xs">@ufrrj.br</code>. Se você já está
         cadastrado, o link de acesso chega em segundos. Se não estiver, a tela vai oferecer o botão{' '}
-        <em className="font-medium text-foreground not-italic">"Solicitar vínculo"</em> — é só
+        <em className="font-medium text-foreground not-italic">“Solicitar vínculo”</em> — é só
         preencher matrícula e ano de conclusão. A Coordenação aprova em até 5 dias úteis.
       </>
     ),
@@ -53,7 +53,7 @@ const faqs: { q: string; a: ReactNode }[] = [
     a: (
       <>
         Pode, a qualquer momento, pelo seu próprio painel — opção{' '}
-        <em className="font-medium text-foreground not-italic">"Excluir meus dados"</em> nas
+        <em className="font-medium text-foreground not-italic">“Excluir meus dados”</em> nas
         configurações. O pedido é processado em até 10 dias úteis e remove tudo, exceto o registro
         mínimo de que você é egresso (matrícula e curso) — isso a UFRRJ é obrigada a manter por lei.
       </>
@@ -67,7 +67,7 @@ const faqs: { q: string; a: ReactNode }[] = [
         <em className="font-medium text-foreground not-italic">o curso X prepara pro mercado?</em>{' '}
         Sem essa informação, a Coordenação não tem como revisar o currículo de forma honesta. Por
         isso é <em className="font-medium text-foreground not-italic">faixa</em>, nunca valor exato,
-        e aparece sempre agregado por turma. Você também pode marcar "prefiro não dizer".
+        e aparece sempre agregado por turma. Você também pode marcar “prefiro não dizer”.
       </>
     ),
   },

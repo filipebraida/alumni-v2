@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import { Logo } from '~/components/logo'
 import { AnchoredToastProvider, ToastProvider } from '~/components/ui/toast'
 import { useFlashToasts } from '~/hooks/use_flash'

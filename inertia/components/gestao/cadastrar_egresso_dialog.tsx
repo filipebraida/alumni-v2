@@ -128,7 +128,9 @@ export function CadastrarEgressoDialog({ cursoNome }: { cursoNome: string }) {
               </DialogPanel>
 
               <DialogFooter>
-                <DialogClose render={<Button variant="ghost" type="button" />}>Cancelar</DialogClose>
+                <DialogClose render={<Button variant="ghost" type="button" />}>
+                  Cancelar
+                </DialogClose>
                 <Button type="submit" disabled={processing}>
                   <UserPlusIcon /> {processing ? 'Cadastrando…' : 'Cadastrar'}
                 </Button>

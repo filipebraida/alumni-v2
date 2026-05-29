@@ -6,7 +6,7 @@ import * as React from 'react'
 
 import { cn } from '~/lib/utils'
 import { Input } from '~/components/ui/input'
-import { ScrollArea } from '~/components/ui/scroll-area'
+import { ScrollArea } from '~/components/ui/scroll_area'
 
 const ComboboxContext = React.createContext<{
   chipsRef: React.RefObject<Element | null> | null

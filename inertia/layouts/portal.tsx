@@ -1,6 +1,6 @@
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import { PortalFooter } from '~/components/portal/portal_footer'
-import { PortalHeader, PortalNavKey } from '~/components/portal/portal_header'
+import { PortalHeader, type PortalNavKey } from '~/components/portal/portal_header'
 import { AnchoredToastProvider, ToastProvider } from '~/components/ui/toast'
 import { useFlashToasts } from '~/hooks/use_flash'
 

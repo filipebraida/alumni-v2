@@ -1,4 +1,4 @@
-import { Briefcase, Check, Flag, LucideIcon, User, Users } from 'lucide-react'
+import { Briefcase, Check, Flag, type LucideIcon, User, Users } from 'lucide-react'
 import { useState } from 'react'
 import { PortalSection } from '~/components/portal/section'
 import { SectionHeader } from '~/components/portal/section_header'

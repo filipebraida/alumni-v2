@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 import { useFlashToasts } from '~/hooks/use_flash'
 import { GestaoSidebar } from '~/components/gestao/gestao_sidebar'
 import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar'
