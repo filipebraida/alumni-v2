@@ -57,7 +57,13 @@ router
   .group(() => {
     router.get('/gestao', [controllers.Gestao, 'show']).as('gestao.show')
     router.get('/gestao/egressos', [controllers.Egressos, 'index']).as('gestao.egressos')
+    router
+      .get('/gestao/egressos/lookup', [controllers.Egressos, 'lookup'])
+      .as('gestao.egressos.lookup')
     router.post('/gestao/egressos', [controllers.Egressos, 'store']).as('gestao.egressos.store')
+    router
+      .post('/gestao/egressos/vinculos', [controllers.Egressos, 'vincular'])
+      .as('gestao.egressos.vincular')
     router
       .post('/gestao/egressos/importacoes', [controllers.ImportacoesEgressos, 'store'])
       .as('gestao.egressos.importacoes.store')

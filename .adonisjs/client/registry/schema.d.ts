@@ -211,6 +211,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'gestao.egressos.lookup': {
+    methods: ["GET","HEAD"]
+    pattern: '/gestao/egressos/lookup'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/gestao').lookupEgressoValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['lookup']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['lookup']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'gestao.egressos.store': {
     methods: ["POST"]
     pattern: '/gestao/egressos'
@@ -221,6 +233,18 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/gestao').cadastrarEgressoValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'gestao.egressos.vincular': {
+    methods: ["POST"]
+    pattern: '/gestao/egressos/vinculos'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/gestao').vincularEgressoValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/gestao').vincularEgressoValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['vincular']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['vincular']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'gestao.egressos.importacoes.store': {

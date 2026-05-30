@@ -17,36 +17,40 @@ export interface CadastrarEgressoNoCursoInput {
 
 export type CadastrarEgressoNoCursoResult =
   | { status: 'criado'; nome: string }
-  | { status: 'ja_no_curso'; nome: string }
+  | { status: 'cpf_em_uso' }
+  | { status: 'email_em_uso' }
+  | { status: 'matricula_em_uso' }
 
 /**
- * Adiciona um egresso direto ao roster de um curso (sem campanha/convite): liga
- * User ↔ Egresso ↔ Matrícula numa transação. Idempotente — reusa o usuário pelo
- * e-mail e o egresso pelo usuário; a matrícula é chaveada pelo código.
+ * Cria uma pessoa nova no roster do curso: User + Egresso + Matrícula em uma
+ * transação. Pressuposto: o chamador (controller) já fez o lookup por CPF e
+ * sabe que o egresso não existe. Se algum identificador único colidir (CPF,
+ * e-mail ou código de matrícula), aborta a transação com status de conflito —
+ * nunca sobrescreve identidade alheia.
  */
 export default class CadastrarEgressoNoCurso {
   async handle(input: CadastrarEgressoNoCursoInput): Promise<CadastrarEgressoNoCursoResult> {
     const cpf = input.cpf.replace(/\D/g, '')
+    const email = input.email.trim().toLowerCase()
 
     return db.transaction(async (trx) => {
-      const user = await User.updateOrCreate(
-        { email: input.email },
-        { email: input.email, fullName: input.nomeCompleto },
-        { client: trx }
-      )
+      const cpfEmUso = await Egresso.query({ client: trx }).where('cpf', cpf).first()
+      if (cpfEmUso) return { status: 'cpf_em_uso' as const }
 
-      const egresso = await Egresso.updateOrCreate(
-        { userId: user.id },
-        { userId: user.id, cpf, nomeCompleto: input.nomeCompleto, emailPessoal: input.email },
-        { client: trx }
-      )
+      const emailEmUso = await User.query({ client: trx }).where('email', email).first()
+      if (emailEmUso) return { status: 'email_em_uso' as const }
 
-      const jaNoCurso = await Matricula.query({ client: trx })
+      const matriculaEmUso = await Matricula.query({ client: trx })
         .where('codigo', input.matriculaCodigo)
         .first()
+      if (matriculaEmUso) return { status: 'matricula_em_uso' as const }
 
-      await Matricula.updateOrCreate(
-        { codigo: input.matriculaCodigo },
+      const user = await User.create({ email, fullName: input.nomeCompleto }, { client: trx })
+      const egresso = await Egresso.create(
+        { userId: user.id, cpf, nomeCompleto: input.nomeCompleto, emailPessoal: email },
+        { client: trx }
+      )
+      await Matricula.create(
         {
           codigo: input.matriculaCodigo,
           cursoId: input.cursoId,
@@ -57,10 +61,7 @@ export default class CadastrarEgressoNoCurso {
         { client: trx }
       )
 
-      return {
-        status: jaNoCurso ? 'ja_no_curso' : 'criado',
-        nome: input.nomeCompleto,
-      }
+      return { status: 'criado' as const, nome: input.nomeCompleto }
     })
   }
 }

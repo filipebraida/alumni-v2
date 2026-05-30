@@ -99,8 +99,8 @@ export function ImportarEgressosDialog({ cursoNome }: { cursoNome: string }) {
                 </Field>
 
                 <p className="text-muted-foreground text-xs">
-                  CPF já cadastrado no sistema não tem o cadastro alterado. Se já estiver no curso,
-                  a linha é ignorada e aparece no relatório.
+                  CPF já cadastrado mantém a identidade (nome/CPF/e-mail) intacta. Linhas para
+                  pessoas já neste curso atualizam apenas situação e turma.
                 </p>
               </DialogPanel>
 

@@ -21,7 +21,7 @@ export type ImportarEgressosDoCsvInput = {
   conteudo: string
 }
 
-export type LinhaComErro = {
+export type LinhaRejeitada = {
   linha: number
   motivo: string
   nome?: string
@@ -30,20 +30,23 @@ export type LinhaComErro = {
 
 export type ImportacaoEgressosRelatorio = {
   total: number
-  criados: number
+  novos: number
   vinculados: number
-  jaNoCurso: number
-  erros: LinhaComErro[]
+  atualizados: number
+  rejeitados: LinhaRejeitada[]
 }
 
 /**
  * Importa egressos de uma planilha CSV para o roster do curso. Política do CPF:
- *  - CPF inexistente → cria User + Egresso + Matricula.
- *  - CPF já cadastrado e fora do curso → cria só a Matricula (não toca no
- *    cadastro existente).
- *  - CPF já cadastrado e no curso → não faz nada e reporta `ja_no_curso`.
- * Cada linha roda em sua própria transação; uma linha quebrada não desfaz as
- * outras. O retorno descreve o que entrou, o que foi vinculado e o que falhou.
+ *  - CPF inexistente → cria User + Egresso + Matrícula (balde "novos").
+ *  - CPF já cadastrado fora do curso → cria só a Matrícula (balde "vinculados").
+ *  - CPF já cadastrado e neste curso → atualiza só `situacao` e
+ *    `periodoFormatura` da matrícula existente (balde "atualizados"). Identidade
+ *    (nome, CPF, e-mail) nunca é sobrescrita.
+ *  - Conflito de matriculaCodigo, CPF inválido ou e-mail duplicado de outro
+ *    user → rejeita a linha (balde "rejeitados"), informando o motivo.
+ * Cada linha roda em sua própria transação; uma linha rejeitada não desfaz as
+ * outras.
  */
 export default class ImportarEgressosDoCsv {
   async handle({
@@ -52,10 +55,10 @@ export default class ImportarEgressosDoCsv {
   }: ImportarEgressosDoCsvInput): Promise<ImportacaoEgressosRelatorio> {
     const relatorio: ImportacaoEgressosRelatorio = {
       total: 0,
-      criados: 0,
+      novos: 0,
       vinculados: 0,
-      jaNoCurso: 0,
-      erros: [],
+      atualizados: 0,
+      rejeitados: [],
     }
 
     let registros: Record<string, string>[]
@@ -67,7 +70,7 @@ export default class ImportarEgressosDoCsv {
         bom: true,
       }) as Record<string, string>[]
     } catch {
-      relatorio.erros.push({ linha: 0, motivo: 'CSV inválido ou mal formatado.' })
+      relatorio.rejeitados.push({ linha: 0, motivo: 'CSV inválido ou mal formatado.' })
       return relatorio
     }
 
@@ -78,7 +81,7 @@ export default class ImportarEgressosDoCsv {
       const numeroLinha = indice + 2
       const erroValidacao = validarLinha(dados)
       if (erroValidacao) {
-        relatorio.erros.push({
+        relatorio.rejeitados.push({
           linha: numeroLinha,
           motivo: erroValidacao,
           nome: dados.nomeCompleto?.trim(),
@@ -95,15 +98,31 @@ export default class ImportarEgressosDoCsv {
       const periodoFormatura = dados.periodoFormatura?.trim() || null
 
       try {
-        const status = await db.transaction(async (trx) => {
-          const egressoExistente = await Egresso.findBy('cpf', cpf, { client: trx })
+        const resultado = await db.transaction(async (trx) => {
+          const egressoExistente = await Egresso.query({ client: trx }).where('cpf', cpf).first()
 
           if (egressoExistente) {
-            const jaMatriculado = await Matricula.query({ client: trx })
+            const matriculaNoCurso = await Matricula.query({ client: trx })
               .where('egressoId', egressoExistente.id)
               .where('cursoId', cursoId)
               .first()
-            if (jaMatriculado) return 'ja_no_curso' as const
+
+            if (matriculaNoCurso) {
+              matriculaNoCurso.situacao = situacao
+              matriculaNoCurso.periodoFormatura = periodoFormatura
+              await matriculaNoCurso.useTransaction(trx).save()
+              return { balde: 'atualizados' as const }
+            }
+
+            const matriculaEmUso = await Matricula.query({ client: trx })
+              .where('codigo', matriculaCodigo)
+              .first()
+            if (matriculaEmUso) {
+              return {
+                balde: 'rejeitados' as const,
+                motivo: 'Matrícula já pertence a outro egresso.',
+              }
+            }
 
             await Matricula.create(
               {
@@ -115,14 +134,28 @@ export default class ImportarEgressosDoCsv {
               },
               { client: trx }
             )
-            return 'vinculado' as const
+            return { balde: 'vinculados' as const }
           }
 
-          const user = await User.updateOrCreate(
-            { email },
-            { email, fullName: nomeCompleto },
-            { client: trx }
-          )
+          const emailEmUso = await User.query({ client: trx }).where('email', email).first()
+          if (emailEmUso) {
+            return {
+              balde: 'rejeitados' as const,
+              motivo: 'E-mail já cadastrado para outra pessoa.',
+            }
+          }
+
+          const matriculaEmUso = await Matricula.query({ client: trx })
+            .where('codigo', matriculaCodigo)
+            .first()
+          if (matriculaEmUso) {
+            return {
+              balde: 'rejeitados' as const,
+              motivo: 'Matrícula já pertence a outro egresso.',
+            }
+          }
+
+          const user = await User.create({ email, fullName: nomeCompleto }, { client: trx })
           const egresso = await Egresso.create(
             { userId: user.id, cpf, nomeCompleto, emailPessoal: email },
             { client: trx }
@@ -137,14 +170,21 @@ export default class ImportarEgressosDoCsv {
             },
             { client: trx }
           )
-          return 'criado' as const
+          return { balde: 'novos' as const }
         })
 
-        if (status === 'criado') relatorio.criados++
-        else if (status === 'vinculado') relatorio.vinculados++
-        else relatorio.jaNoCurso++
+        if (resultado.balde === 'novos') relatorio.novos++
+        else if (resultado.balde === 'vinculados') relatorio.vinculados++
+        else if (resultado.balde === 'atualizados') relatorio.atualizados++
+        else
+          relatorio.rejeitados.push({
+            linha: numeroLinha,
+            motivo: resultado.motivo,
+            nome: nomeCompleto,
+            cpf,
+          })
       } catch (error) {
-        relatorio.erros.push({
+        relatorio.rejeitados.push({
           linha: numeroLinha,
           motivo: traduzirErro(error),
           nome: nomeCompleto,

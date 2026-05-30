@@ -5,16 +5,17 @@ import { AlertTriangleIcon, ArrowLeftIcon, CheckCircle2Icon } from 'lucide-react
 
 import GestaoLayout from '~/layouts/gestao'
 import { Button } from '~/components/ui/button'
+import { formatarCpf } from '~/lib/cpf'
 import { type InertiaProps } from '~/types'
 
-type LinhaComErro = { linha: number; motivo: string; nome?: string; cpf?: string }
+type LinhaRejeitada = { linha: number; motivo: string; nome?: string; cpf?: string }
 
 type Relatorio = {
   total: number
-  criados: number
+  novos: number
   vinculados: number
-  jaNoCurso: number
-  erros: LinhaComErro[]
+  atualizados: number
+  rejeitados: LinhaRejeitada[]
 }
 
 type PageProps = InertiaProps<{
@@ -24,8 +25,8 @@ type PageProps = InertiaProps<{
 }>
 
 export default function ImportacaoResultado({ relatorio, cursoNome, nomeArquivo }: PageProps) {
-  const aplicados = relatorio.criados + relatorio.vinculados
-  const teveErro = relatorio.erros.length > 0
+  const aplicados = relatorio.novos + relatorio.vinculados + relatorio.atualizados
+  const teveRejeicao = relatorio.rejeitados.length > 0
 
   return (
     <>
@@ -46,24 +47,28 @@ export default function ImportacaoResultado({ relatorio, cursoNome, nomeArquivo 
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <SumarioCard label="Criados" valor={relatorio.criados} />
+            <SumarioCard label="Novos" valor={relatorio.novos} />
             <SumarioCard label="Vinculados" valor={relatorio.vinculados} />
-            <SumarioCard label="Já no curso" valor={relatorio.jaNoCurso} />
-            <SumarioCard label="Com erro" valor={relatorio.erros.length} destaque={teveErro} />
+            <SumarioCard label="Atualizados" valor={relatorio.atualizados} />
+            <SumarioCard
+              label="Rejeitados"
+              valor={relatorio.rejeitados.length}
+              destaque={teveRejeicao}
+            />
           </div>
 
-          {!teveErro && (
+          {!teveRejeicao && (
             <div className="flex items-start gap-2 rounded-md border border-border bg-muted/40 p-3 text-sm">
               <CheckCircle2Icon className="mt-0.5 size-4 text-emerald-600" />
-              <p>Todas as linhas foram processadas sem erros.</p>
+              <p>Todas as linhas foram processadas sem rejeições.</p>
             </div>
           )}
 
-          {teveErro && (
+          {teveRejeicao && (
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <AlertTriangleIcon className="size-4 text-amber-600" />
-                Linhas com erro
+                Linhas rejeitadas
               </div>
               <div className="overflow-auto rounded-md border border-border">
                 <table className="w-full text-sm">
@@ -75,16 +80,18 @@ export default function ImportacaoResultado({ relatorio, cursoNome, nomeArquivo 
                     </tr>
                   </thead>
                   <tbody>
-                    {relatorio.erros.map((erro, idx) => (
-                      <tr key={`${erro.linha}-${idx}`} className="border-t border-border">
-                        <td className="px-3 py-2 align-top tabular-nums">{erro.linha}</td>
+                    {relatorio.rejeitados.map((rejeicao, idx) => (
+                      <tr key={`${rejeicao.linha}-${idx}`} className="border-t border-border">
+                        <td className="px-3 py-2 align-top tabular-nums">{rejeicao.linha}</td>
                         <td className="px-3 py-2 align-top text-muted-foreground">
-                          {erro.nome ?? '—'}
-                          {erro.cpf && (
-                            <span className="block text-xs tabular-nums">{erro.cpf}</span>
+                          {rejeicao.nome ?? '—'}
+                          {rejeicao.cpf && (
+                            <span className="block text-xs tabular-nums">
+                              {formatarCpf(rejeicao.cpf)}
+                            </span>
                           )}
                         </td>
-                        <td className="px-3 py-2 align-top">{erro.motivo}</td>
+                        <td className="px-3 py-2 align-top">{rejeicao.motivo}</td>
                       </tr>
                     ))}
                   </tbody>

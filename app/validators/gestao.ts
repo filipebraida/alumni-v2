@@ -20,11 +20,24 @@ export const listarEgressosValidator = vine.create({
   order: vine.enum(['asc', 'desc'] as const).optional(),
 })
 
-/** Valida o cadastro direto de um egresso no roster do curso ativo. */
+/** Valida o lookup de egresso por CPF na busca antes do cadastro. */
+export const lookupEgressoValidator = vine.create({
+  cpf: vine.string().trim().minLength(11).maxLength(14),
+})
+
+/** Valida o cadastro de um egresso NOVO no roster do curso ativo. */
 export const cadastrarEgressoValidator = vine.create({
   nomeCompleto: vine.string().trim().minLength(3).maxLength(255),
   email: vine.string().trim().toLowerCase().email().maxLength(255),
   cpf: vine.string().trim().minLength(11).maxLength(14),
+  matriculaCodigo: vine.string().trim().minLength(3).maxLength(30),
+  situacao: vine.enum(SITUACOES_MATRICULA),
+  periodoFormatura: vine.string().trim().minLength(1).maxLength(20).optional(),
+})
+
+/** Valida o vínculo de um egresso EXISTENTE ao curso ativo. */
+export const vincularEgressoValidator = vine.create({
+  egressoId: vine.number().withoutDecimals().positive(),
   matriculaCodigo: vine.string().trim().minLength(3).maxLength(30),
   situacao: vine.enum(SITUACOES_MATRICULA),
   periodoFormatura: vine.string().trim().minLength(1).maxLength(20).optional(),

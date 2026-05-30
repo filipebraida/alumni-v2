@@ -108,11 +108,23 @@ const routes = {
     tokens: [{"old":"/gestao/egressos","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos","type":0,"val":"egressos","end":""}],
     types: placeholder as Registry['gestao.egressos']['types'],
   },
+  'gestao.egressos.lookup': {
+    methods: ["GET","HEAD"],
+    pattern: '/gestao/egressos/lookup',
+    tokens: [{"old":"/gestao/egressos/lookup","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/lookup","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/lookup","type":0,"val":"lookup","end":""}],
+    types: placeholder as Registry['gestao.egressos.lookup']['types'],
+  },
   'gestao.egressos.store': {
     methods: ["POST"],
     pattern: '/gestao/egressos',
     tokens: [{"old":"/gestao/egressos","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos","type":0,"val":"egressos","end":""}],
     types: placeholder as Registry['gestao.egressos.store']['types'],
+  },
+  'gestao.egressos.vincular': {
+    methods: ["POST"],
+    pattern: '/gestao/egressos/vinculos',
+    tokens: [{"old":"/gestao/egressos/vinculos","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/vinculos","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/vinculos","type":0,"val":"vinculos","end":""}],
+    types: placeholder as Registry['gestao.egressos.vincular']['types'],
   },
   'gestao.egressos.importacoes.store': {
     methods: ["POST"],
