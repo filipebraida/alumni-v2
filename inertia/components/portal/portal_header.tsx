@@ -68,7 +68,10 @@ function NavTarget({
  */
 export function PortalHeader({ active }: { active?: PortalNavKey }) {
   const [open, setOpen] = useState(false)
-  const { user } = usePage<Data.SharedProps>().props
+  const { user, perfil } = usePage<Data.SharedProps>().props
+  // "Meu painel" leva o usuário para a sua área real (sem cair no egresso
+  // middleware como gestor-só e tomar flash de "Área restrita").
+  const painelRoute = perfil?.isEgresso ? 'dashboard' : perfil?.isGestor ? 'gestao.show' : null
 
   return (
     <header className="border-b bg-background/80 backdrop-blur-sm">
@@ -112,9 +115,9 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
           </a>
 
           {/* CTA primária — visível na barra só a partir de lg; abaixo disso vai pra gaveta */}
-          {user ? (
+          {user && painelRoute ? (
             <Link
-              route="dashboard"
+              route={painelRoute}
               className={cn(
                 buttonVariants({ variant: 'outline', size: 'sm' }),
                 'hidden lg:inline-flex'
@@ -173,9 +176,9 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
                 </nav>
 
                 <div className="mt-4 flex flex-col gap-3 border-t pt-4">
-                  {user ? (
+                  {user && painelRoute ? (
                     <Link
-                      route="dashboard"
+                      route={painelRoute}
                       onClick={() => setOpen(false)}
                       className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
                     >

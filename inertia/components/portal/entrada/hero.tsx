@@ -1,5 +1,7 @@
 import { ArrowRight, Eye, Leaf } from 'lucide-react'
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
+import { type Data } from '@generated/data'
 import { type ReactNode } from 'react'
 import { EightFieldsRule } from '~/components/portal/entrada/eight_fields_rule'
 import { SectionHeading } from '~/components/portal/section_heading'
@@ -13,6 +15,11 @@ import { cn } from '~/lib/utils'
  * is a typographic ruler under "8 dados" that anchors the gesture.
  */
 export function EntradaHero() {
+  const { user, perfil } = usePage<Data.SharedProps>().props
+  // Usuário já logado vê "Ir para o meu painel" no CTA principal; o "Entrar"
+  // só faz sentido enquanto não autenticado (guest_middleware faria bounce).
+  const painelRoute = perfil?.isEgresso ? 'dashboard' : perfil?.isGestor ? 'gestao.show' : null
+
   return (
     <section className="relative overflow-hidden">
       {/* subtle dot texture */}
@@ -54,10 +61,17 @@ export function EntradaHero() {
         <EightFieldsRule />
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Link route="session.create" className={cn(buttonVariants({ size: 'xl' }), 'group')}>
-            Entrar com e-mail @ufrrj.br
-            <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
-          </Link>
+          {user && painelRoute ? (
+            <Link route={painelRoute} className={cn(buttonVariants({ size: 'xl' }), 'group')}>
+              Ir para o meu painel
+              <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          ) : (
+            <Link route="session.create" className={cn(buttonVariants({ size: 'xl' }), 'group')}>
+              Entrar com e-mail @ufrrj.br
+              <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          )}
           <a href="#passos" className={buttonVariants({ variant: 'outline', size: 'xl' })}>
             Como funciona
           </a>
