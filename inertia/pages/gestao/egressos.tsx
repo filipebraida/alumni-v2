@@ -1,8 +1,7 @@
 import { Head, usePage } from '@inertiajs/react'
 import { type ReactElement } from 'react'
-import { BellIcon, ChevronRightIcon, UploadIcon } from 'lucide-react'
+import { UploadIcon } from 'lucide-react'
 import GestaoLayout from '~/layouts/gestao'
-import { SidebarTrigger } from '~/components/ui/sidebar'
 import { Button } from '~/components/ui/button'
 import { EgressosStats } from '~/components/gestao/egressos_stats'
 import {
@@ -11,7 +10,6 @@ import {
   type Situacao,
 } from '~/components/gestao/egressos_table'
 import { CadastrarEgressoDialog } from '~/components/gestao/cadastrar_egresso_dialog'
-import { GestaoUserMenu } from '~/components/gestao/gestao_user_menu'
 import { type InertiaProps } from '~/types'
 import type { EgressosEstatisticas, GestaoShared } from '~/components/gestao/types'
 
@@ -38,29 +36,6 @@ export default function GestaoEgressos({
   return (
     <>
       <Head title="Gestão · Egressos" />
-
-      <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 sm:px-6">
-        <SidebarTrigger />
-        <nav className="flex items-center gap-1.5 text-muted-foreground text-xs">
-          <span>{curso?.nivel ?? 'Gestão'}</span>
-          <ChevronRightIcon className="size-3.5 opacity-50" />
-          <span className="font-medium text-foreground">Egressos</span>
-        </nav>
-
-        <div className="ms-auto flex items-center gap-2">
-          <button
-            type="button"
-            title="Em breve"
-            aria-label="Notificações"
-            className="relative flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted"
-          >
-            <BellIcon className="size-4.5" />
-            <span className="absolute end-2 top-2 size-1.5 rounded-full bg-brand-yellow" />
-          </button>
-          <span className="h-5 w-px bg-border" />
-          <GestaoUserMenu />
-        </div>
-      </header>
 
       <div className="p-4 sm:p-6">
         {!curso ? (

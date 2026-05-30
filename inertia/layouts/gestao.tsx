@@ -1,20 +1,61 @@
 import { type ReactElement } from 'react'
+import { usePage } from '@inertiajs/react'
+import { BellIcon, ChevronRightIcon } from 'lucide-react'
+
 import { useFlashToasts } from '~/hooks/use_flash'
 import { GestaoSidebar } from '~/components/gestao/gestao_sidebar'
-import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar'
+import { GestaoUserMenu } from '~/components/gestao/gestao_user_menu'
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
 import { AnchoredToastProvider, ToastProvider } from '~/components/ui/toast'
+import type { GestaoShared } from '~/components/gestao/types'
+
+/** Rótulo da página atual no breadcrumb, derivado da URL (mapa explícito). */
+function rotuloDaPagina(url: string): string {
+  if (url.startsWith('/gestao/egressos')) return 'Egressos'
+  if (url === '/gestao' || url.startsWith('/gestao?')) return 'Visão geral'
+  return 'Gestão'
+}
 
 /**
- * Shell da área de gestão: sidebar com CursoSwitcher (tenant = curso) + conteúdo.
+ * Shell da área de gestão: sidebar com CursoSwitcher (tenant = curso) +
+ * top bar compartilhado (breadcrumb + sino + menu do usuário) + conteúdo.
  * O curso ativo vive na sessão e é resolvido pelo `gestor` middleware.
  */
 export default function GestaoLayout({ children }: { children: ReactElement }) {
   useFlashToasts()
 
+  const { gestao } = usePage<{ gestao: GestaoShared }>().props
+  const url = usePage().url
+  const curso = gestao.cursos.find((c) => c.id === gestao.cursoAtivoId) ?? null
+  const pagina = rotuloDaPagina(url)
+
   return (
     <SidebarProvider>
       <GestaoSidebar />
       <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 sm:px-6">
+          <SidebarTrigger />
+          <nav className="flex items-center gap-1.5 text-muted-foreground text-xs">
+            <span>{curso?.nivel ?? 'Gestão'}</span>
+            <ChevronRightIcon className="size-3.5 opacity-50" />
+            <span className="font-medium text-foreground">{pagina}</span>
+          </nav>
+
+          <div className="ms-auto flex items-center gap-2">
+            <button
+              type="button"
+              title="Em breve"
+              aria-label="Notificações"
+              className="relative flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted"
+            >
+              <BellIcon className="size-4.5" />
+              <span className="absolute end-2 top-2 size-1.5 rounded-full bg-brand-yellow" />
+            </button>
+            <span className="h-5 w-px bg-border" />
+            <GestaoUserMenu />
+          </div>
+        </header>
+
         <ToastProvider position="top-center">
           <AnchoredToastProvider>{children}</AnchoredToastProvider>
         </ToastProvider>

@@ -1,7 +1,6 @@
 import { Head, usePage } from '@inertiajs/react'
 import { type ReactElement } from 'react'
 import GestaoLayout from '~/layouts/gestao'
-import { SidebarTrigger } from '~/components/ui/sidebar'
 import { type InertiaProps } from '~/types'
 import type { GestaoShared } from '~/components/gestao/types'
 
@@ -32,14 +31,6 @@ export default function GestaoDashboard({ estatisticas }: PageProps) {
     <>
       <Head title="Gestão · Visão geral" />
 
-      <header className="flex h-14 items-center gap-2 border-b px-4">
-        <SidebarTrigger />
-        <div className="leading-tight">
-          <h1 className="font-semibold text-sm">Visão geral</h1>
-          <p className="text-muted-foreground text-xs">{curso?.nome ?? 'Nenhum curso'}</p>
-        </div>
-      </header>
-
       <div className="p-4 sm:p-6">
         {!curso ? (
           <p className="text-muted-foreground text-sm">
@@ -47,6 +38,15 @@ export default function GestaoDashboard({ estatisticas }: PageProps) {
           </p>
         ) : (
           <div className="space-y-6">
+            <div className="min-w-0">
+              <h1 className="font-semibold text-2xl leading-tight tracking-tight">
+                Visão geral de {curso.nome}
+              </h1>
+              <p className="mt-1 text-muted-foreground text-sm">
+                {curso.nivel} · {curso.campus} — gestão da coordenação
+              </p>
+            </div>
+
             <div className="grid gap-4 sm:grid-cols-3">
               <Stat rotulo="Cadastros em dia" valor={`${estatisticas?.pct ?? 0}%`} />
               <Stat rotulo="Em dia" valor={`${estatisticas?.emDia ?? 0}`} />
