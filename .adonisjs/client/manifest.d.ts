@@ -9,5 +9,5 @@
 /// <reference path="../../config/limiter.ts" />
 /// <reference path="../../config/logger.ts" />
 /// <reference path="../../config/mail.ts" />
-/// <reference path="../../config/transmit.ts" />
 /// <reference path="../../config/notifications.ts" />
+/// <reference path="../../config/transmit.ts" />

@@ -32,6 +32,11 @@ export interface ApiDefinition {
     update: typeof routes['onboarding.update']
   }
   dashboard: typeof routes['dashboard']
+  perfil: {
+    show: typeof routes['perfil.show']
+    edit: typeof routes['perfil.edit']
+    update: typeof routes['perfil.update']
+  }
   respostas: {
     create: typeof routes['respostas.create']
     store: typeof routes['respostas.store']

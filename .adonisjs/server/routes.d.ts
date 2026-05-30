@@ -24,6 +24,9 @@ export type ScannedRoutes = {
     'onboarding.show': { paramsTuple?: []; params?: {} }
     'onboarding.update': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
+    'perfil.show': { paramsTuple?: []; params?: {} }
+    'perfil.edit': { paramsTuple?: []; params?: {} }
+    'perfil.update': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'respostas.store': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
@@ -55,6 +58,8 @@ export type ScannedRoutes = {
     'notificacoes.index': { paramsTuple?: []; params?: {} }
     'onboarding.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
+    'perfil.show': { paramsTuple?: []; params?: {} }
+    'perfil.edit': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos': { paramsTuple?: []; params?: {} }
@@ -76,6 +81,8 @@ export type ScannedRoutes = {
     'notificacoes.index': { paramsTuple?: []; params?: {} }
     'onboarding.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
+    'perfil.show': { paramsTuple?: []; params?: {} }
+    'perfil.edit': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos': { paramsTuple?: []; params?: {} }
@@ -109,6 +116,7 @@ export type ScannedRoutes = {
     'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }
   }
   PUT: {
+    'perfil.update': { paramsTuple?: []; params?: {} }
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
     'admin.usuarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }

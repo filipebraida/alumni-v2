@@ -126,6 +126,24 @@ const routes = {
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard']['types'],
   },
+  'perfil.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/perfil',
+    tokens: [{"old":"/perfil","type":0,"val":"perfil","end":""}],
+    types: placeholder as Registry['perfil.show']['types'],
+  },
+  'perfil.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/perfil/editar',
+    tokens: [{"old":"/perfil/editar","type":0,"val":"perfil","end":""},{"old":"/perfil/editar","type":0,"val":"editar","end":""}],
+    types: placeholder as Registry['perfil.edit']['types'],
+  },
+  'perfil.update': {
+    methods: ["PUT"],
+    pattern: '/perfil',
+    tokens: [{"old":"/perfil","type":0,"val":"perfil","end":""}],
+    types: placeholder as Registry['perfil.update']['types'],
+  },
   'respostas.create': {
     methods: ["GET","HEAD"],
     pattern: '/respostas/create',

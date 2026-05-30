@@ -12,23 +12,25 @@ type ExtractProps<T> =
 
 declare module '@adonisjs/inertia/types' {
   export interface InertiaPages {
+    'admin/cursos': ExtractProps<(typeof import('../../inertia/pages/admin/cursos.tsx'))['default']>
+    'admin/institutos': ExtractProps<(typeof import('../../inertia/pages/admin/institutos.tsx'))['default']>
+    'admin/usuarios': ExtractProps<(typeof import('../../inertia/pages/admin/usuarios.tsx'))['default']>
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.tsx'))['default']>
     'dashboard': ExtractProps<(typeof import('../../inertia/pages/dashboard.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'gestao/dashboard': ExtractProps<(typeof import('../../inertia/pages/gestao/dashboard.tsx'))['default']>
+    'gestao/egresso': ExtractProps<(typeof import('../../inertia/pages/gestao/egresso.tsx'))['default']>
     'gestao/egressos': ExtractProps<(typeof import('../../inertia/pages/gestao/egressos.tsx'))['default']>
+    'gestao/importacao_resultado': ExtractProps<(typeof import('../../inertia/pages/gestao/importacao_resultado.tsx'))['default']>
     'onboarding': ExtractProps<(typeof import('../../inertia/pages/onboarding.tsx'))['default']>
+    'perfil/edit': ExtractProps<(typeof import('../../inertia/pages/perfil/edit.tsx'))['default']>
+    'perfil/show': ExtractProps<(typeof import('../../inertia/pages/perfil/show.tsx'))['default']>
     'portal/egressos': ExtractProps<(typeof import('../../inertia/pages/portal/egressos.tsx'))['default']>
     'portal/entrada': ExtractProps<(typeof import('../../inertia/pages/portal/entrada.tsx'))['default']>
     'portal/sobre': ExtractProps<(typeof import('../../inertia/pages/portal/sobre.tsx'))['default']>
     'portal/transparencia': ExtractProps<(typeof import('../../inertia/pages/portal/transparencia.tsx'))['default']>
     'portal/ufrrj': ExtractProps<(typeof import('../../inertia/pages/portal/ufrrj.tsx'))['default']>
     'respostas/create': ExtractProps<(typeof import('../../inertia/pages/respostas/create.tsx'))['default']>
-    'gestao/importacao_resultado': ExtractProps<(typeof import('../../inertia/pages/gestao/importacao_resultado.tsx'))['default']>
-    'admin/institutos': ExtractProps<(typeof import('../../inertia/pages/admin/institutos.tsx'))['default']>
-    'admin/cursos': ExtractProps<(typeof import('../../inertia/pages/admin/cursos.tsx'))['default']>
-    'gestao/egresso': ExtractProps<(typeof import('../../inertia/pages/gestao/egresso.tsx'))['default']>
-    'admin/usuarios': ExtractProps<(typeof import('../../inertia/pages/admin/usuarios.tsx'))['default']>
   }
 }
