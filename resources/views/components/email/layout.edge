@@ -22,36 +22,38 @@
       />
       <mj-attributes>
         <mj-all font-family="Inter, system-ui, -apple-system, sans-serif" />
-        <mj-text color="#18181b" font-size="15px" line-height="1.55" padding="0" />
+        <mj-text color="#19211B" font-size="15px" line-height="1.55" padding="0" />
         <mj-button
           background-color="#1F4E27"
-          color="#ffffff"
+          color="#FAFAF5"
           font-weight="600"
-          inner-padding="14px 26px"
-          border-radius="8px"
-          font-size="14px"
+          inner-padding="15px 30px"
+          border-radius="11px"
+          font-size="15.5px"
         />
       </mj-attributes>
       <mj-style>a { color: #1F4E27; text-decoration: none; }</mj-style>
     </mj-head>
-    <mj-body background-color="#f4f4f5" width="600px">
+    <mj-body background-color="#EEF1EE" width="600px">
       {{-- Header --}}
       <mj-section
         background-color="#ffffff"
-        padding="28px 40px 20px"
-        border-bottom="1px solid #e4e4e7"
+        padding="22px 40px 18px"
+        border-bottom="1px solid #DDE3DE"
       >
         <mj-column vertical-align="middle" padding="0">
           <mj-text
             font-size="16px"
             font-weight="700"
-            color="#18181b"
+            color="#19211B"
             letter-spacing="-0.01em"
             padding="0"
           >
-            <a href="{{ appUrl }}" style="color:#18181b;text-decoration:none;">
-              SAE
-              <span style="color:#71717a;font-weight:400;">· UFRRJ</span>
+            <a href="{{ appUrl }}" style="color:#19211B;text-decoration:none;">
+              <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#1F4E27;color:#F5C826;text-align:center;line-height:22px;font-size:14px;font-weight:700;margin-right:9px;vertical-align:middle;">&#10070;</span>
+              <span style="vertical-align:middle;">SAE
+                <span style="color:#656E68;font-weight:400;">· UFRRJ</span>
+              </span>
             </a>
           </mj-text>
         </mj-column>
@@ -64,6 +66,7 @@
               color="#1F4E27"
               letter-spacing="0.2em"
               text-transform="uppercase"
+              font-weight="600"
             >
               {{ $props.get('eyebrow') }}
             </mj-text>
@@ -74,22 +77,32 @@
       {{{ await $slots.main() }}}
       {{-- Footer --}}
       <mj-section
-        background-color="#ffffff"
-        padding="20px 40px 28px"
-        border-top="1px solid #e4e4e7"
+        background-color="#F3F5F4"
+        padding="24px 40px 28px"
+        border-top="1px solid #DDE3DE"
       >
         <mj-column>
-          <mj-text font-size="13px" color="#71717a" line-height="1.55" padding="0">
-            Serviço de Acompanhamento de Egressos — Pró-Reitoria de Graduação, UFRRJ.
+          <mj-text
+            font-size="12.5px"
+            font-weight="600"
+            color="#19211B"
+            line-height="1.6"
+            padding="0 0 8px 0"
+          >
+            <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#1F4E27;color:#F5C826;text-align:center;line-height:22px;font-size:13px;font-weight:700;margin-right:9px;vertical-align:middle;">&#10070;</span>
+            <span style="vertical-align:middle;">SAE · Serviço de Acompanhamento de Egressos</span>
+          </mj-text>
+          <mj-text font-size="11.5px" color="#656E68" line-height="1.6" padding="0 0 6px 0">
+            Pró-Reitoria de Graduação · UFRRJ. Seus dados individuais são vistos só por você; a coordenação acompanha apenas recortes agregados por turma (LGPD).
           </mj-text>
           <mj-text
             font-size="10px"
-            color="#a1a1aa"
+            color="#7C857F"
             letter-spacing="0.1em"
             text-transform="uppercase"
-            padding="10px 0 0 0"
+            padding="6px 0 0 0"
           >
-            Rod. BR-465, km 7 · Seropédica/RJ · 23890-000
+            Rod. BR-465, km 7 · Seropédica / RJ · 23890-000
           </mj-text>
         </mj-column>
       </mj-section>
