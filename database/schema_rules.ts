@@ -71,5 +71,18 @@ export default {
         },
       },
     },
+    // Notificacoes: `content` e `tags` sao JSON em colunas TEXT (gravadas pelo
+    // canal `database` do facteur via knex bruto). Pulamos as colunas no
+    // schema gerado e re-definimos com `prepare`/`consume` no #models/notification.
+    notifications: {
+      skipColumns: ['content', 'tags'],
+      columns: {
+        status: {
+          tsType: 'NotificationStatus',
+          decorators: [{ name: '@column' }],
+          imports: [{ source: '#models/notification', typeImports: ['NotificationStatus'] }],
+        },
+      },
+    },
   },
 } satisfies SchemaRules

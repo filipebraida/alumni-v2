@@ -16,4 +16,5 @@ export const controllers = {
   Institutos: () => import('#controllers/institutos_controller'),
   Cursos: () => import('#controllers/cursos_controller'),
   Usuarios: () => import('#controllers/usuarios_controller'),
+  Notificacoes: () => import('#controllers/notificacoes_controller'),
 }

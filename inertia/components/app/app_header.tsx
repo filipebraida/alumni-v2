@@ -1,6 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Bell, Menu, Search } from 'lucide-react'
+import { Menu, Search } from 'lucide-react'
 import { type ReactNode, useState } from 'react'
+import { NotificationBell } from '~/components/app/notification_bell'
 import { PortalContainer } from '~/components/portal/container'
 import { PortalLogo } from '~/components/portal/logo'
 import { UserMenu } from '~/components/app/user_menu'
@@ -88,10 +89,7 @@ export function AppHeader() {
 
         <div className="ml-auto flex items-center gap-1.5">
           <SearchTrigger />
-          <Button variant="ghost" size="icon" className="relative" aria-label="Notificações">
-            <Bell />
-            <span className="absolute top-2 right-2 size-1.5 rounded-full bg-brand-yellow" />
-          </Button>
+          <NotificationBell />
           <UserMenu />
         </div>
       </PortalContainer>

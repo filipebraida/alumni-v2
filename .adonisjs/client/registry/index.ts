@@ -6,6 +6,24 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
+  'event_stream': {
+    methods: ["GET","HEAD"],
+    pattern: '/__transmit/events',
+    tokens: [{"old":"/__transmit/events","type":0,"val":"__transmit","end":""},{"old":"/__transmit/events","type":0,"val":"events","end":""}],
+    types: placeholder as Registry['event_stream']['types'],
+  },
+  'subscribe': {
+    methods: ["POST"],
+    pattern: '/__transmit/subscribe',
+    tokens: [{"old":"/__transmit/subscribe","type":0,"val":"__transmit","end":""},{"old":"/__transmit/subscribe","type":0,"val":"subscribe","end":""}],
+    types: placeholder as Registry['subscribe']['types'],
+  },
+  'unsubscribe': {
+    methods: ["POST"],
+    pattern: '/__transmit/unsubscribe',
+    tokens: [{"old":"/__transmit/unsubscribe","type":0,"val":"__transmit","end":""},{"old":"/__transmit/unsubscribe","type":0,"val":"unsubscribe","end":""}],
+    types: placeholder as Registry['unsubscribe']['types'],
+  },
   'home': {
     methods: ["GET","HEAD"],
     pattern: '/',
@@ -65,6 +83,30 @@ const routes = {
     pattern: '/logout',
     tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
     types: placeholder as Registry['session.destroy']['types'],
+  },
+  'notificacoes.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/notificacoes',
+    tokens: [{"old":"/notificacoes","type":0,"val":"notificacoes","end":""}],
+    types: placeholder as Registry['notificacoes.index']['types'],
+  },
+  'notificacoes.visualizar': {
+    methods: ["POST"],
+    pattern: '/notificacoes/visualizar',
+    tokens: [{"old":"/notificacoes/visualizar","type":0,"val":"notificacoes","end":""},{"old":"/notificacoes/visualizar","type":0,"val":"visualizar","end":""}],
+    types: placeholder as Registry['notificacoes.visualizar']['types'],
+  },
+  'notificacoes.ler_todas': {
+    methods: ["POST"],
+    pattern: '/notificacoes/ler-todas',
+    tokens: [{"old":"/notificacoes/ler-todas","type":0,"val":"notificacoes","end":""},{"old":"/notificacoes/ler-todas","type":0,"val":"ler-todas","end":""}],
+    types: placeholder as Registry['notificacoes.ler_todas']['types'],
+  },
+  'notificacoes.ler': {
+    methods: ["POST"],
+    pattern: '/notificacoes/:id/ler',
+    tokens: [{"old":"/notificacoes/:id/ler","type":0,"val":"notificacoes","end":""},{"old":"/notificacoes/:id/ler","type":1,"val":"id","end":""},{"old":"/notificacoes/:id/ler","type":0,"val":"ler","end":""}],
+    types: placeholder as Registry['notificacoes.ler']['types'],
   },
   'onboarding.show': {
     methods: ["GET","HEAD"],

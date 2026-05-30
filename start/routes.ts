@@ -10,7 +10,18 @@
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
+import transmit from '@adonisjs/transmit/services/main'
 import { loginCodeRequestThrottle, loginCodeVerifyThrottle } from '#start/limiter'
+
+// Rotas SSE do transmit (`__transmit/events|subscribe|unsubscribe`). Todas
+// protegidas por auth: so usuario autenticado pode escutar.
+transmit.registerRoutes((route) => route.use(middleware.auth()))
+
+// Canal pessoal `notifications/user-<id>`: so o proprio dono escuta. Outros
+// canais (se existirem no futuro) caem no comportamento padrao do transmit.
+transmit.authorize<{ id: string }>('notifications/user-:id', (ctx, { id }) => {
+  return ctx.auth.user?.id === Number(id)
+})
 
 /*
 | Public portal (institutional, pre-login). All pages share PortalLayout.
@@ -36,6 +47,24 @@ router
 
 // Logout: qualquer usuário autenticado (egresso ou gestor).
 router.post('logout', [controllers.Session, 'destroy']).use(middleware.auth())
+
+// Notificações (sino do header). Qualquer usuário autenticado tem caixa
+// pessoal: lista, marca uma como lida, ou marca tudo como visto/lido.
+router
+  .group(() => {
+    router.get('/notificacoes', [controllers.Notificacoes, 'index']).as('notificacoes.index')
+    router
+      .post('/notificacoes/visualizar', [controllers.Notificacoes, 'visualizar'])
+      .as('notificacoes.visualizar')
+    router
+      .post('/notificacoes/ler-todas', [controllers.Notificacoes, 'lerTodas'])
+      .as('notificacoes.ler_todas')
+    router
+      .post('/notificacoes/:id/ler', [controllers.Notificacoes, 'ler'])
+      .where('id', router.matchers.number())
+      .as('notificacoes.ler')
+  })
+  .use(middleware.auth())
 
 // Área do egresso. Exige autenticação + perfil de egresso (vínculo com matrícula).
 router
@@ -84,9 +113,7 @@ router
 router
   .group(() => {
     router.get('/admin/institutos', [controllers.Institutos, 'index']).as('admin.institutos')
-    router
-      .post('/admin/institutos', [controllers.Institutos, 'store'])
-      .as('admin.institutos.store')
+    router.post('/admin/institutos', [controllers.Institutos, 'store']).as('admin.institutos.store')
     router.get('/admin/cursos', [controllers.Cursos, 'index']).as('admin.cursos')
     router.post('/admin/cursos', [controllers.Cursos, 'store']).as('admin.cursos.store')
     router.get('/admin/usuarios', [controllers.Usuarios, 'index']).as('admin.usuarios')

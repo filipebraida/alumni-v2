@@ -2,6 +2,9 @@
 import type { routes } from './index.ts'
 
 export interface ApiDefinition {
+  eventStream: typeof routes['event_stream']
+  subscribe: typeof routes['subscribe']
+  unsubscribe: typeof routes['unsubscribe']
   home: typeof routes['home']
   portal: {
     egressos: typeof routes['portal.egressos']
@@ -17,6 +20,12 @@ export interface ApiDefinition {
   codigoAcesso: {
     store: typeof routes['codigo_acesso.store']
     destroy: typeof routes['codigo_acesso.destroy']
+  }
+  notificacoes: {
+    index: typeof routes['notificacoes.index']
+    visualizar: typeof routes['notificacoes.visualizar']
+    lerTodas: typeof routes['notificacoes.ler_todas']
+    ler: typeof routes['notificacoes.ler']
   }
   onboarding: {
     show: typeof routes['onboarding.show']

@@ -8,6 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 import type { NivelAcademico, NivelPos } from '#enums/nivel_academico'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
+import type { NotificationStatus } from '#models/notification'
 import type { FaixaSalarial } from '#enums/faixa_salarial'
 import type { StatusPos } from '#enums/status_pos'
 import type { RelacaoFormacao } from '#enums/relacao_formacao'
@@ -152,6 +153,48 @@ export class MatriculaSchema extends BaseModel {
   declare situacao: SituacaoMatricula
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+}
+
+export class NotificationPreferenceSchema extends BaseModel {
+  static $columns = ['channels', 'createdAt', 'id', 'notificationName', 'tenantId', 'updatedAt', 'userId'] as const
+  $columns = NotificationPreferenceSchema.$columns
+  @column()
+  declare channels: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare notificationName: string | null
+  @column()
+  declare tenantId: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: string
+}
+
+export class NotificationSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'notifiableId', 'readAt', 'seenAt', 'status', 'tenantId', 'type', 'updatedAt'] as const
+  $columns = NotificationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare notifiableId: string
+  @column.dateTime()
+  declare readAt: DateTime | null
+  @column.dateTime()
+  declare seenAt: DateTime | null
+  @column()
+  declare status: NotificationStatus
+  @column()
+  declare tenantId: string | null
+  @column()
+  declare type: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
 }
 
 export class RateLimitSchema extends BaseModel {

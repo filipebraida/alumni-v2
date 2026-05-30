@@ -4,6 +4,9 @@ type ParamValue = string | number | bigint | boolean
 
 export type ScannedRoutes = {
   ALL: {
+    'event_stream': { paramsTuple?: []; params?: {} }
+    'subscribe': { paramsTuple?: []; params?: {} }
+    'unsubscribe': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
     'portal.egressos': { paramsTuple?: []; params?: {} }
     'portal.sobre': { paramsTuple?: []; params?: {} }
@@ -14,6 +17,10 @@ export type ScannedRoutes = {
     'codigo_acesso.store': { paramsTuple?: []; params?: {} }
     'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'notificacoes.index': { paramsTuple?: []; params?: {} }
+    'notificacoes.visualizar': { paramsTuple?: []; params?: {} }
+    'notificacoes.ler_todas': { paramsTuple?: []; params?: {} }
+    'notificacoes.ler': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'onboarding.show': { paramsTuple?: []; params?: {} }
     'onboarding.update': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
@@ -37,12 +44,14 @@ export type ScannedRoutes = {
     'admin.usuarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   GET: {
+    'event_stream': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
     'portal.egressos': { paramsTuple?: []; params?: {} }
     'portal.sobre': { paramsTuple?: []; params?: {} }
     'portal.ufrrj': { paramsTuple?: []; params?: {} }
     'portal.transparencia': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'notificacoes.index': { paramsTuple?: []; params?: {} }
     'onboarding.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
@@ -56,12 +65,14 @@ export type ScannedRoutes = {
     'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
+    'event_stream': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
     'portal.egressos': { paramsTuple?: []; params?: {} }
     'portal.sobre': { paramsTuple?: []; params?: {} }
     'portal.ufrrj': { paramsTuple?: []; params?: {} }
     'portal.transparencia': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'notificacoes.index': { paramsTuple?: []; params?: {} }
     'onboarding.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
@@ -75,9 +86,14 @@ export type ScannedRoutes = {
     'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
   POST: {
+    'subscribe': { paramsTuple?: []; params?: {} }
+    'unsubscribe': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'codigo_acesso.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'notificacoes.visualizar': { paramsTuple?: []; params?: {} }
+    'notificacoes.ler_todas': { paramsTuple?: []; params?: {} }
+    'notificacoes.ler': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'onboarding.update': { paramsTuple?: []; params?: {} }
     'respostas.store': { paramsTuple?: []; params?: {} }
     'gestao.egressos.store': { paramsTuple?: []; params?: {} }

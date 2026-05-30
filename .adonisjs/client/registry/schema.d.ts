@@ -7,6 +7,42 @@ import type { InferInput, SimpleError } from '@vinejs/vine/types'
 export type ParamValue = string | number | bigint | boolean
 
 export interface Registry {
+  'event_stream': {
+    methods: ["GET","HEAD"]
+    pattern: '/__transmit/events'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'subscribe': {
+    methods: ["POST"]
+    pattern: '/__transmit/subscribe'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'unsubscribe': {
+    methods: ["POST"]
+    pattern: '/__transmit/unsubscribe'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
   'home': {
     methods: ["GET","HEAD"]
     pattern: '/'
@@ -125,6 +161,54 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+    }
+  }
+  'notificacoes.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/notificacoes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['index']>>>
+    }
+  }
+  'notificacoes.visualizar': {
+    methods: ["POST"]
+    pattern: '/notificacoes/visualizar'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['visualizar']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['visualizar']>>>
+    }
+  }
+  'notificacoes.ler_todas': {
+    methods: ["POST"]
+    pattern: '/notificacoes/ler-todas'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['lerTodas']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['lerTodas']>>>
+    }
+  }
+  'notificacoes.ler': {
+    methods: ["POST"]
+    pattern: '/notificacoes/:id/ler'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['ler']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/notificacoes_controller').default['ler']>>>
     }
   }
   'onboarding.show': {
