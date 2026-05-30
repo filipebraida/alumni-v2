@@ -7,7 +7,9 @@
     <mj-column>
       <mj-text font-size="13px" color="#71717a" padding="0 0 6px 0">
         @if(fullName)
-          Olá, {{ fullName }}.
+          Olá,
+          {{ fullName }}
+          .
         @else
           Olá.
         @end
@@ -24,7 +26,8 @@
       </mj-text>
       <mj-text font-size="15px" color="#3f3f46" line-height="1.55" padding="0">
         Use o código abaixo para acessar o Portal de Egressos. Ele é válido por
-        {{ ttlMinutes }} minutos.
+        {{ ttlMinutes }}
+        minutos.
       </mj-text>
     </mj-column>
   </mj-section>
@@ -34,7 +37,9 @@
       <mj-text align="center" padding="0">
         <div
           style="background:#f4f4f5;border:1px solid #e4e4e7;border-radius:10px;padding:20px 24px;font-family:'Courier New',Courier,monospace;font-size:34px;font-weight:700;color:#18181b;letter-spacing:12px;display:inline-block;"
-        >{{ code }}</div>
+        >
+          {{ code }}
+        </div>
       </mj-text>
     </mj-column>
   </mj-section>
