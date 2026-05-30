@@ -136,6 +136,36 @@ function exportarEgressosCsv(egressos: EgressoRow[]) {
   URL.revokeObjectURL(url)
 }
 
+/**
+ * Cópia para a área de transferência. Em contextos não-seguros (HTTP fora de
+ * localhost) `navigator.clipboard` fica indisponível — caímos no fallback com
+ * `document.execCommand('copy')` num textarea fora da tela.
+ */
+async function copiarParaClipboard(texto: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(texto)
+      return true
+    }
+  } catch {
+    // segue para o fallback
+  }
+  try {
+    const textarea = document.createElement('textarea')
+    textarea.value = texto
+    textarea.setAttribute('readonly', '')
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    const ok = document.execCommand('copy')
+    document.body.removeChild(textarea)
+    return ok
+  } catch {
+    return false
+  }
+}
+
 function SituacaoBadge({ situacao }: { situacao: Situacao }) {
   return (
     <Badge variant={SITUACAO_VARIANT[situacao]} className="gap-1.5">
@@ -146,18 +176,21 @@ function SituacaoBadge({ situacao }: { situacao: Situacao }) {
 }
 
 function AcoesEgresso({ egresso }: { egresso: EgressoRow }) {
-  function copiarEmail() {
+  async function copiarEmail() {
     if (!egresso.email) return
-    navigator.clipboard
-      ?.writeText(egresso.email)
-      .then(() =>
-        toastManager.add({
-          type: 'success',
-          title: 'E-mail copiado',
-          description: egresso.email ?? undefined,
-        })
-      )
-      .catch(() => {})
+    const ok = await copiarParaClipboard(egresso.email)
+    if (ok) {
+      toastManager.add({
+        type: 'success',
+        title: 'E-mail copiado',
+        description: egresso.email,
+      })
+    } else {
+      toastManager.add({
+        type: 'error',
+        title: 'Não foi possível copiar o e-mail',
+      })
+    }
   }
 
   return (
