@@ -38,6 +38,7 @@ type UsuarioRow = {
   fullName: string | null
   email: string
   role: 'usuario' | 'admin'
+  temEgresso: boolean
   cursosCoordenados: { id: number; codigo: string; nome: string }[]
 }
 
@@ -118,6 +119,7 @@ export default function AdminUsuarios({ usuarios, cursos, filtros }: PageProps) 
               modo="editar"
               cursos={cursos}
               bloqueiaTirarAdmin={ehVoceMesmo || ultimoAdmin}
+              temEgresso={usuario.temEgresso}
               usuario={{
                 id: usuario.id,
                 fullName: usuario.fullName,

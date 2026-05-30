@@ -1,8 +1,17 @@
 import { useState } from 'react'
-import { PlusIcon, PencilIcon } from 'lucide-react'
+import { AlertTriangleIcon, PencilIcon, PlusIcon, SearchIcon } from 'lucide-react'
 
 import { Button } from '~/components/ui/button'
-import { Checkbox } from '~/components/ui/checkbox'
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxPopup,
+} from '~/components/ui/combobox'
 import {
   Dialog,
   DialogClose,
@@ -32,6 +41,8 @@ type ModoEditar = {
     cursosIds: number[]
   }
   bloqueiaTirarAdmin: boolean
+  /** Se o user já tem perfil de egresso, pode ficar sem admin e sem cursos. */
+  temEgresso: boolean
 }
 
 type Props = (ModoCriar | ModoEditar) & { cursos: CursoOption[] }
@@ -40,7 +51,9 @@ export function UsuarioDialog(props: Props) {
   const [aberto, setAberto] = useState(false)
   const criando = props.modo === 'criar'
 
-  const tituloDialog = criando ? 'Cadastrar usuário' : `Editar ${props.usuario.fullName ?? props.usuario.email}`
+  const tituloDialog = criando
+    ? 'Cadastrar usuário'
+    : `Editar ${props.usuario.fullName ?? props.usuario.email}`
   const descricao = criando
     ? 'Pessoa que acessa o SAE. Marque como administrador e/ou vincule a um ou mais cursos como coordenador(a).'
     : 'Atualize o nome, a permissão de administrador e os cursos coordenados.'
@@ -68,8 +81,8 @@ export function UsuarioDialog(props: Props) {
 
         {aberto && (
           <UsuarioForm
-            // Re-monta o form ao trocar de usuário no modo edit — garante que os
-            // checkboxes de cursos comecem com o `defaultChecked` correto.
+            // Re-monta o form ao trocar de usuário no modo edit — garante que
+            // o combobox e o switch comecem com o estado inicial certo.
             key={criando ? 'novo' : props.usuario.id}
             {...props}
             onSuccess={() => setAberto(false)}
@@ -82,8 +95,15 @@ export function UsuarioDialog(props: Props) {
 
 function UsuarioForm(props: Props & { onSuccess: () => void }) {
   const criando = props.modo === 'criar'
-  const cursosSelecionadosInicial = criando ? new Set<number>() : new Set(props.usuario.cursosIds)
   const adminInicial = criando ? false : props.usuario.role === 'admin'
+  const selecionadosIniciais = criando
+    ? []
+    : props.cursos.filter((c) => props.usuario.cursosIds.includes(c.id))
+  const [selecionados, setSelecionados] = useState<CursoOption[]>(selecionadosIniciais)
+  const [isAdmin, setIsAdmin] = useState(adminInicial)
+
+  const temEgresso = criando ? false : props.temEgresso
+  const ficariaOrfao = !isAdmin && selecionados.length === 0 && !temEgresso
 
   const formProps = criando
     ? ({ route: 'admin.usuarios.store' } as const)
@@ -138,7 +158,8 @@ function UsuarioForm(props: Props & { onSuccess: () => void }) {
                   id="isAdmin"
                   name="isAdmin"
                   value="true"
-                  defaultChecked={adminInicial}
+                  checked={isAdmin}
+                  onCheckedChange={(checked) => setIsAdmin(checked)}
                   disabled={!criando && props.bloqueiaTirarAdmin}
                 />
               </div>
@@ -152,34 +173,65 @@ function UsuarioForm(props: Props & { onSuccess: () => void }) {
                   Cadastre um curso antes de vincular coordenadores.
                 </p>
               ) : (
-                <ul className="grid max-h-56 grid-cols-1 gap-2 overflow-y-auto rounded-md border p-2 sm:grid-cols-2">
-                  {props.cursos.map((curso) => (
-                    <li key={curso.id}>
-                      <label className="flex cursor-pointer items-start gap-2 rounded-md px-2 py-1.5 hover:bg-muted">
-                        <Checkbox
-                          name="cursosIds[]"
-                          value={String(curso.id)}
-                          defaultChecked={cursosSelecionadosInicial.has(curso.id)}
-                          className="mt-0.5"
-                        />
-                        <span className="min-w-0">
-                          <span className="block truncate text-sm">{curso.nome}</span>
-                          <span className="block truncate text-muted-foreground text-xs">
-                            {curso.codigo}
-                          </span>
-                        </span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
+                <Combobox<CursoOption, true>
+                  multiple
+                  items={props.cursos}
+                  value={selecionados}
+                  onValueChange={(v) => setSelecionados(v)}
+                  itemToStringLabel={(c) => `${c.codigo} · ${c.nome}`}
+                  itemToStringValue={(c) => String(c.id)}
+                  isItemEqualToValue={(a, b) => a.id === b.id}
+                >
+                  <ComboboxChips startAddon={<SearchIcon />}>
+                    {selecionados.map((curso) => (
+                      <ComboboxChip key={curso.id}>{curso.codigo}</ComboboxChip>
+                    ))}
+                    <ComboboxChipsInput
+                      placeholder={
+                        selecionados.length > 0 ? 'Adicionar outro curso…' : 'Buscar curso…'
+                      }
+                    />
+                  </ComboboxChips>
+                  <ComboboxPopup>
+                    <ComboboxList>
+                      {(curso: CursoOption) => (
+                        <ComboboxItem key={curso.id} value={curso}>
+                          <div className="min-w-0">
+                            <div className="truncate text-sm">{curso.nome}</div>
+                            <div className="truncate text-muted-foreground text-xs">
+                              {curso.codigo}
+                            </div>
+                          </div>
+                        </ComboboxItem>
+                      )}
+                    </ComboboxList>
+                    <ComboboxEmpty>Nenhum curso bate com a busca.</ComboboxEmpty>
+                  </ComboboxPopup>
+                </Combobox>
               )}
+              {/* O Combobox vive como state controlado; o submit pega os IDs
+                  destes inputs hidden — o padrão `cursosIds[]` vira array no
+                  body parser do Adonis. */}
+              {selecionados.map((curso) => (
+                <input key={curso.id} type="hidden" name="cursosIds[]" value={curso.id} />
+              ))}
               <FieldError />
             </Field>
+
+            {ficariaOrfao && (
+              <div className="flex items-start gap-2 rounded-md border border-warning/40 bg-warning/8 p-3 text-sm">
+                <AlertTriangleIcon className="mt-0.5 size-4 shrink-0 text-warning" />
+                <p>
+                  Sem curso e sem administrador, este usuário não consegue entrar em nenhuma área
+                  do SAE. Marque como administrador ou vincule pelo menos um curso.
+                </p>
+              </div>
+            )}
           </DialogPanel>
 
           <DialogFooter>
             <DialogClose render={<Button variant="ghost" type="button" />}>Cancelar</DialogClose>
-            <Button type="submit" disabled={processing}>
+            <Button type="submit" disabled={processing || ficariaOrfao}>
               {processing ? 'Salvando…' : criando ? 'Cadastrar' : 'Salvar'}
             </Button>
           </DialogFooter>

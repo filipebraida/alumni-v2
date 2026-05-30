@@ -37,6 +37,14 @@ export default class UsuariosController {
       return response.redirect().toRoute('admin.usuarios')
     }
 
+    if (resultado.status === 'sem_acesso') {
+      session.flashErrors({
+        cursosIds:
+          'Sem curso e sem permissão de administrador, o usuário não conseguiria entrar em nenhuma área.',
+      })
+      return response.redirect().back()
+    }
+
     session.flashErrors({ email: 'Já existe um usuário com este e-mail.' })
     return response.redirect().back()
   }
@@ -67,6 +75,14 @@ export default class UsuariosController {
     if (resultado.status === 'atualizado') {
       session.flash('success', `${resultado.usuario.nome} atualizado(a).`)
       return response.redirect().toRoute('admin.usuarios')
+    }
+
+    if (resultado.status === 'sem_acesso') {
+      session.flashErrors({
+        cursosIds:
+          'Sem curso e sem permissão de administrador, o usuário ficaria sem nenhuma área para entrar.',
+      })
+      return response.redirect().back()
     }
 
     session.flash('error', 'Usuário não encontrado.')

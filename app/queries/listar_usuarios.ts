@@ -8,6 +8,7 @@ export type UsuarioRow = {
   fullName: string | null
   email: string
   role: RoleUsuario
+  temEgresso: boolean
   cursosCoordenados: { id: number; codigo: string; nome: string }[]
 }
 
@@ -31,6 +32,7 @@ export default class ListarUsuarios {
     perPage = 20,
   }: ListarUsuariosInput = {}): Promise<ListarUsuariosResult> {
     const query = User.query()
+      .preload('egresso')
       .preload('gestor', (gestor) =>
         gestor.preload('cursos', (cursos) => cursos.orderBy('nome', 'asc'))
       )
@@ -57,6 +59,7 @@ export default class ListarUsuarios {
       fullName: user.fullName,
       email: user.email,
       role: user.role,
+      temEgresso: !!user.egresso,
       cursosCoordenados:
         user.gestor?.cursos.map((curso) => ({
           id: curso.id,
