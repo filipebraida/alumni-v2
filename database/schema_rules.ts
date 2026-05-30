@@ -15,11 +15,6 @@ export default {
           decorators: [{ name: '@column' }],
           imports: [{ source: '#enums/nivel_academico', typeImports: ['NivelAcademico'] }],
         },
-        campus: {
-          tsType: 'Campus',
-          decorators: [{ name: '@column' }],
-          imports: [{ source: '#enums/campus', typeImports: ['Campus'] }],
-        },
       },
     },
     matriculas: {
@@ -64,6 +59,15 @@ export default {
           tsType: 'StatusPos',
           decorators: [{ name: '@column' }],
           imports: [{ source: '#enums/status_pos', typeImports: ['StatusPos'] }],
+        },
+      },
+    },
+    users: {
+      columns: {
+        role: {
+          tsType: 'RoleUsuario',
+          decorators: [{ name: '@column' }],
+          imports: [{ source: '#enums/role_usuario', typeImports: ['RoleUsuario'] }],
         },
       },
     },

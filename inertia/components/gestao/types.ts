@@ -4,13 +4,15 @@ export type CursoResumo = {
   nome: string
   codigo: string
   nivel: string
-  campus: string
+  instituto: string
 }
 
-/** Shared prop `gestao`: cursos do gestor + qual está ativo (o "tenant"). */
+/** Shared prop `gestao`: cursos visíveis ao usuário + qual está ativo (tenant). */
 export type GestaoShared = {
   cursoAtivoId: number | null
   cursos: CursoResumo[]
+  /** Admin enxerga TODOS os cursos da UFRRJ, não só os da pivot do gestor. */
+  isAdmin: boolean
 }
 
 /** Métricas de frescor do roster do curso (ResumoEgressosDoCurso). */

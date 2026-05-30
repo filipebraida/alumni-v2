@@ -144,6 +144,30 @@ const routes = {
     tokens: [{"old":"/gestao/curso-ativo","type":0,"val":"gestao","end":""},{"old":"/gestao/curso-ativo","type":0,"val":"curso-ativo","end":""}],
     types: placeholder as Registry['gestao.curso_ativo']['types'],
   },
+  'admin.institutos': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/institutos',
+    tokens: [{"old":"/admin/institutos","type":0,"val":"admin","end":""},{"old":"/admin/institutos","type":0,"val":"institutos","end":""}],
+    types: placeholder as Registry['admin.institutos']['types'],
+  },
+  'admin.institutos.store': {
+    methods: ["POST"],
+    pattern: '/admin/institutos',
+    tokens: [{"old":"/admin/institutos","type":0,"val":"admin","end":""},{"old":"/admin/institutos","type":0,"val":"institutos","end":""}],
+    types: placeholder as Registry['admin.institutos.store']['types'],
+  },
+  'admin.cursos': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/cursos',
+    tokens: [{"old":"/admin/cursos","type":0,"val":"admin","end":""},{"old":"/admin/cursos","type":0,"val":"cursos","end":""}],
+    types: placeholder as Registry['admin.cursos']['types'],
+  },
+  'admin.cursos.store': {
+    methods: ["POST"],
+    pattern: '/admin/cursos',
+    tokens: [{"old":"/admin/cursos","type":0,"val":"admin","end":""},{"old":"/admin/cursos","type":0,"val":"cursos","end":""}],
+    types: placeholder as Registry['admin.cursos.store']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

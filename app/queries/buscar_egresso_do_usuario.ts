@@ -9,7 +9,9 @@ export default class BuscarEgressoDoUsuario {
   async handle({ userId }: BuscarEgressoDoUsuarioInput): Promise<Egresso | null> {
     return Egresso.query()
       .where('user_id', userId)
-      .preload('matriculas', (matriculas) => matriculas.preload('curso'))
+      .preload('matriculas', (matriculas) =>
+        matriculas.preload('curso', (curso) => curso.preload('instituto'))
+      )
       .first()
   }
 }

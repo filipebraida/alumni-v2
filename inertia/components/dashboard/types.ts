@@ -11,7 +11,7 @@ export type Egresso = {
   iniciais: string
   curso: string
   turma: string
-  campus: string
+  instituto: string
   saudacao: string
   agora: string
   verificada: boolean

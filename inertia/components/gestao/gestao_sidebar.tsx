@@ -2,7 +2,16 @@ import * as React from 'react'
 import { type Data } from '@generated/data'
 import { router, usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
-import { FileBarChart, FileText, LayoutDashboard, LogOut, Settings, Users } from 'lucide-react'
+import {
+  Building2,
+  FileBarChart,
+  FileText,
+  GraduationCap,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  Users,
+} from 'lucide-react'
 import { urlFor } from '~/client'
 import { CursoSwitcher } from '~/components/gestao/curso_switcher'
 import {
@@ -40,7 +49,8 @@ const navAtivo =
 
 export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const page = usePage<Data.SharedProps>()
-  const { user } = page.props
+  const { user, perfil } = page.props
+  const isAdmin = perfil?.isAdmin ?? false
 
   return (
     <Sidebar
@@ -116,6 +126,36 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Administração</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={navAtivo}
+                  tooltip="Institutos"
+                  render={<Link href={urlFor('admin.institutos')} />}
+                  isActive={page.url.startsWith('/admin/institutos')}
+                >
+                  <Building2 />
+                  <span>Institutos</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={navAtivo}
+                  tooltip="Cursos"
+                  render={<Link href={urlFor('admin.cursos')} />}
+                  isActive={page.url.startsWith('/admin/cursos')}
+                >
+                  <GraduationCap />
+                  <span>Cursos</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarSeparator className="mx-0" />
@@ -126,7 +166,9 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
           </span>
           <div className="min-w-0 flex-1 leading-tight group-data-[collapsible=icon]:hidden">
             <div className="truncate font-medium text-sm">{user?.fullName ?? 'Conta'}</div>
-            <div className="truncate text-sidebar-foreground/55 text-xs">Coordenação</div>
+            <div className="truncate text-sidebar-foreground/55 text-xs">
+              {isAdmin ? 'Administração' : 'Coordenação'}
+            </div>
           </div>
           <button
             type="button"

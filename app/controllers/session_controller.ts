@@ -12,6 +12,7 @@ export const PENDING_EMAIL_KEY = 'pendingLoginEmail'
 /** Flags de perfil gravadas no login; lidas pelo inertia_middleware (prop `perfil`). */
 export const IS_EGRESSO_KEY = 'isEgresso'
 export const IS_GESTOR_KEY = 'isGestor'
+export const IS_ADMIN_KEY = 'isAdmin'
 
 const ERROR_MESSAGES: Record<VerificarCodigoAcessoFalha, string> = {
   invalid_code: 'Código inválido. Confira e tente novamente.',
@@ -62,8 +63,10 @@ export default class SessionController {
     const gestor = await new BuscarGestorDoUsuario().handle({ userId: result.user.id })
     const podeEgresso = !!egresso && egresso.matriculas.length > 0
     const podeGestor = !!gestor && gestor.cursos.length > 0
+    const ehAdmin = result.user.isAdmin
     session.put(IS_EGRESSO_KEY, podeEgresso)
     session.put(IS_GESTOR_KEY, podeGestor)
+    session.put(IS_ADMIN_KEY, ehAdmin)
 
     // Egresso (mesmo que também seja gestor) entra na área do egresso; só-gestor
     // vai direto para a gestão. A troca entre áreas fica no menu do usuário.
@@ -73,7 +76,8 @@ export default class SessionController {
       }
       return response.redirect().toRoute('dashboard')
     }
-    if (podeGestor) {
+    if (podeGestor || ehAdmin) {
+      // Admin entra como super-gestor (vê todos os cursos via gestor_middleware).
       return response.redirect().toRoute('gestao.show')
     }
 

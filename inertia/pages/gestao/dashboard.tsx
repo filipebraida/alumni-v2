@@ -41,7 +41,7 @@ export default function GestaoDashboard({ estatisticas }: PageProps) {
           <>
             <GestaoPageHeader
               titulo={`Visão geral de ${curso.nome}`}
-              subtitulo={`${curso.nivel} · ${curso.campus} — gestão da coordenação`}
+              subtitulo={`${curso.nivel} · ${curso.instituto} — gestão da coordenação`}
             />
 
             <div className="grid gap-4 sm:grid-cols-3">

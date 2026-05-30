@@ -13,6 +13,13 @@ import type { GestaoShared } from '~/components/gestao/types'
 function rotuloDaPagina(url: string): string {
   if (url.startsWith('/gestao/egressos')) return 'Egressos'
   if (url === '/gestao' || url.startsWith('/gestao?')) return 'Visão geral'
+  if (url.startsWith('/admin/institutos')) return 'Institutos'
+  if (url.startsWith('/admin/cursos')) return 'Cursos'
+  return 'Gestão'
+}
+
+function secaoDaPagina(url: string): string {
+  if (url.startsWith('/admin/')) return 'Administração'
   return 'Gestão'
 }
 
@@ -28,6 +35,7 @@ export default function GestaoLayout({ children }: { children: ReactElement }) {
   const url = usePage().url
   const curso = gestao.cursos.find((c) => c.id === gestao.cursoAtivoId) ?? null
   const pagina = rotuloDaPagina(url)
+  const secao = secaoDaPagina(url)
 
   return (
     <SidebarProvider>
@@ -36,7 +44,7 @@ export default function GestaoLayout({ children }: { children: ReactElement }) {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 sm:px-6">
           <SidebarTrigger />
           <nav className="flex items-center gap-1.5 text-muted-foreground text-xs">
-            <span>{curso?.nivel ?? 'Gestão'}</span>
+            <span>{url.startsWith('/admin/') ? secao : (curso?.nivel ?? secao)}</span>
             <ChevronRightIcon className="size-3.5 opacity-50" />
             <span className="font-medium text-foreground">{pagina}</span>
           </nav>

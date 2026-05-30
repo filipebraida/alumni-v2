@@ -283,4 +283,52 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/curso_ativo_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'admin.institutos': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/institutos'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['index']>>>
+    }
+  }
+  'admin.institutos.store': {
+    methods: ["POST"]
+    pattern: '/admin/institutos'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/admin').criarInstitutoValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/admin').criarInstitutoValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.cursos': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/cursos'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['index']>>>
+    }
+  }
+  'admin.cursos.store': {
+    methods: ["POST"]
+    pattern: '/admin/cursos'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/admin').criarCursoValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/admin').criarCursoValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
 }

@@ -15,7 +15,7 @@ type Identidade = {
   matricula: string | null
   curso: string | null
   nivel: string | null
-  campus: string | null
+  instituto: string | null
   turma: string | null
   colacao: string | null
   outrosVinculos: number
@@ -72,7 +72,7 @@ export default function Onboarding({ identidade }: OnboardingProps) {
                 {formacao && (
                   <div className="mt-0.5 text-sm text-muted-foreground">
                     {formacao}
-                    {identidade.campus ? ` · ${identidade.campus}` : ''}
+                    {identidade.instituto ? ` · ${identidade.instituto}` : ''}
                   </div>
                 )}
 

@@ -73,3 +73,16 @@ router
     router.put('/gestao/curso-ativo', [controllers.CursoAtivo, 'update']).as('gestao.curso_ativo')
   })
   .use([middleware.auth(), middleware.gestor()])
+
+// Área administrativa, dentro do shell de gestão: `gestor` popula a shared
+// prop `gestao` (admin tem bypass); `admin` corta quem não é admin.
+router
+  .group(() => {
+    router.get('/admin/institutos', [controllers.Institutos, 'index']).as('admin.institutos')
+    router
+      .post('/admin/institutos', [controllers.Institutos, 'store'])
+      .as('admin.institutos.store')
+    router.get('/admin/cursos', [controllers.Cursos, 'index']).as('admin.cursos')
+    router.post('/admin/cursos', [controllers.Cursos, 'store']).as('admin.cursos.store')
+  })
+  .use([middleware.auth(), middleware.gestor(), middleware.admin()])

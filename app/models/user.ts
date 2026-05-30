@@ -11,6 +11,10 @@ export default class User extends UserSchema {
   @hasOne(() => Gestor)
   declare gestor: HasOne<typeof Gestor>
 
+  get isAdmin() {
+    return this.role === 'admin'
+  }
+
   get initials() {
     const [first, last] = this.fullName ? this.fullName.split(' ') : this.email.split('@')
     if (first && last) {

@@ -57,7 +57,7 @@ export function DashboardHero({
         </h1>
 
         <div className="mt-1 text-muted-foreground text-sm">
-          {egresso.curso} · Turma {egresso.turma} · {egresso.campus}
+          {egresso.curso} · Turma {egresso.turma} · {egresso.instituto}
         </div>
       </div>
 

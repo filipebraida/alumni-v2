@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
-import { IS_EGRESSO_KEY, IS_GESTOR_KEY } from '#controllers/session_controller'
+import { IS_ADMIN_KEY, IS_EGRESSO_KEY, IS_GESTOR_KEY } from '#controllers/session_controller'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -29,6 +29,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     const perfil = {
       isEgresso: (session?.get(IS_EGRESSO_KEY, false) ?? false) as boolean,
       isGestor: (session?.get(IS_GESTOR_KEY, false) ?? false) as boolean,
+      isAdmin: (session?.get(IS_ADMIN_KEY, false) ?? false) as boolean,
     }
 
     /**

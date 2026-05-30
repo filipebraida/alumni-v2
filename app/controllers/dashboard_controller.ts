@@ -16,7 +16,7 @@ export default class DashboardController {
         iniciais: 'AC',
         curso: 'Ciência da Computação',
         turma: '2022',
-        campus: 'Seropédica',
+        instituto: 'Seropédica',
         saudacao: 'Bom dia',
         agora: 'Terça, 19 maio · 09:24',
         verificada: true,

@@ -6,11 +6,13 @@
 export const controllers = {
   CodigoAcesso: () => import('#controllers/codigo_acesso_controller'),
   CursoAtivo: () => import('#controllers/curso_ativo_controller'),
+  Cursos: () => import('#controllers/cursos_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
   Egressos: () => import('#controllers/egressos_controller'),
   Gestao: () => import('#controllers/gestao_controller'),
+  ImportacoesEgressos: () => import('#controllers/importacoes_egressos_controller'),
+  Institutos: () => import('#controllers/institutos_controller'),
   Onboarding: () => import('#controllers/onboarding_controller'),
   Respostas: () => import('#controllers/respostas_controller'),
   Session: () => import('#controllers/session_controller'),
-  ImportacoesEgressos: () => import('#controllers/importacoes_egressos_controller'),
 }

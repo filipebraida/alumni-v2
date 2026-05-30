@@ -85,7 +85,7 @@ export function CursoSwitcher() {
                   <div className="grid flex-1 leading-tight">
                     <span className="truncate text-sm">{curso.nome}</span>
                     <span className="truncate text-muted-foreground text-xs">
-                      {curso.nivel} · {curso.campus}
+                      {curso.nivel} · {curso.instituto}
                     </span>
                   </div>
                   {curso.id === cursoAtivoId && <Check className="size-4" />}

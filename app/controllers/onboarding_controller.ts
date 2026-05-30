@@ -2,7 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type Matricula from '#models/matricula'
 import BuscarEgressoDoUsuario from '#queries/buscar_egresso_do_usuario'
 import ConfirmarIdentidade from '#actions/confirmar_identidade'
-import { CAMPUS_LABELS } from '#enums/campus'
 import { NIVEL_LABELS } from '#enums/nivel_academico'
 
 function iniciais(nome: string) {
@@ -31,7 +30,7 @@ export default class OnboardingController {
         matricula: vinculo?.codigo ?? null,
         curso: vinculo?.curso.nome ?? null,
         nivel: vinculo ? NIVEL_LABELS[vinculo.curso.nivel] : null,
-        campus: vinculo ? CAMPUS_LABELS[vinculo.curso.campus] : null,
+        instituto: vinculo?.curso.instituto.nome ?? null,
         turma: vinculo?.periodoFormatura ?? null,
         colacao: vinculo?.dataColacao ? vinculo.dataColacao.toFormat('MM/yyyy') : null,
         outrosVinculos: Math.max(egresso.matriculas.length - 1, 0),

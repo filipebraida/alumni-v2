@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import User from '#models/user'
 import Egresso from '#models/egresso'
 import Curso from '#models/curso'
+import Instituto from '#models/instituto'
 import RegistrarResposta from '#actions/registrar_resposta'
 import BuscarRespostaAtual from '#queries/buscar_resposta_atual'
 import BuscarRespostaDoAno from '#queries/buscar_resposta_do_ano'
@@ -79,17 +80,21 @@ test.group('Egresso · respostas (append-only)', (group) => {
     const egresso = await criarEgresso()
     const sufixo = `${contador}-${Date.now()}`
 
+    const instituto = await Instituto.create({
+      codigo: `inst-${sufixo}`,
+      nome: 'Instituto de teste',
+    })
     const graduacao = await Curso.create({
       codigo: `grad-${sufixo}`,
       nome: 'Ciência da Computação',
       nivel: 'graduacao',
-      campus: 'seropedica',
+      institutoId: instituto.id,
     })
     const mestrado = await Curso.create({
       codigo: `mest-${sufixo}`,
       nome: 'Informática',
       nivel: 'mestrado',
-      campus: 'seropedica',
+      institutoId: instituto.id,
     })
 
     await egresso.related('matriculas').createMany([

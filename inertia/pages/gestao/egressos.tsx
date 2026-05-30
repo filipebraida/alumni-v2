@@ -52,7 +52,7 @@ export default function GestaoEgressos({
           <>
             <GestaoPageHeader
               titulo={`Egressos de ${curso.nome}`}
-              subtitulo={`${curso.nivel} · ${curso.campus} — gestão da coordenação`}
+              subtitulo={`${curso.nivel} · ${curso.instituto} — gestão da coordenação`}
               acoes={
                 <>
                   <ImportarEgressosDialog cursoNome={curso.nome} />

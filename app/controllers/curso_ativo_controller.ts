@@ -7,8 +7,8 @@ export default class CursoAtivoController {
   async update({ request, response, session, gestao }: HttpContext) {
     const { cursoId } = await request.validateUsing(trocarCursoAtivoValidator)
 
-    // Só permite ativar um curso que o gestor realmente gere.
-    if (gestao.gestor.cursos.some((curso) => curso.id === cursoId)) {
+    // `gestao.cursos` = pivot do gestor, ou todos os cursos se admin.
+    if (gestao.cursos.some((curso) => curso.id === cursoId)) {
       session.put(CURSO_GESTAO_ATIVO_KEY, cursoId)
     }
 

@@ -1,27 +1,20 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'cursos'
+  protected tableName = 'institutos'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.string('codigo').notNullable().unique() // código SIGAA do curso — chave natural
+      table.string('codigo', 16).notNullable().unique()
       table.string('nome').notNullable()
-      table.string('nivel').notNullable()
-      table
-        .integer('instituto_id')
-        .notNullable()
-        .references('id')
-        .inTable('institutos')
-        .onDelete('RESTRICT')
       table.boolean('ativo').notNullable().defaultTo(true)
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()
 
-      table.index(['instituto_id', 'nivel'])
+      table.index(['ativo'])
     })
   }
 

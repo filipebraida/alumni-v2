@@ -40,4 +40,12 @@ export interface ApiDefinition {
     }
     cursoAtivo: typeof routes['gestao.curso_ativo']
   }
+  admin: {
+    institutos: typeof routes['admin.institutos'] & {
+      store: typeof routes['admin.institutos.store']
+    }
+    cursos: typeof routes['admin.cursos'] & {
+      store: typeof routes['admin.cursos.store']
+    }
+  }
 }

@@ -26,7 +26,9 @@ export function GestaoUserMenu() {
       >
         <div className="hidden text-right leading-tight sm:block">
           <div className="font-medium text-foreground text-sm">{nome}</div>
-          <div className="text-muted-foreground text-xs">Coordenação</div>
+          <div className="text-muted-foreground text-xs">
+            {perfil?.isAdmin ? 'Administração' : 'Coordenação'}
+          </div>
         </div>
         <Avatar className="size-8">
           <AvatarFallback className="bg-primary font-semibold text-primary-foreground text-xs">

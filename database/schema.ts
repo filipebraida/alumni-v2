@@ -5,7 +5,6 @@
  */
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import type { Campus } from '#enums/campus'
 import { DateTime } from 'luxon'
 import type { NivelAcademico, NivelPos } from '#enums/nivel_academico'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
@@ -14,20 +13,21 @@ import type { StatusPos } from '#enums/status_pos'
 import type { RelacaoFormacao } from '#enums/relacao_formacao'
 import type { Setor } from '#enums/setor'
 import type { TempoPrimeiroEmprego } from '#enums/tempo_primeiro_emprego'
+import type { RoleUsuario } from '#enums/role_usuario'
 
 export class CursoSchema extends BaseModel {
-  static $columns = ['ativo', 'campus', 'codigo', 'createdAt', 'id', 'nivel', 'nome', 'updatedAt'] as const
+  static $columns = ['ativo', 'codigo', 'createdAt', 'id', 'institutoId', 'nivel', 'nome', 'updatedAt'] as const
   $columns = CursoSchema.$columns
   @column()
   declare ativo: boolean
-  @column()
-  declare campus: Campus
   @column()
   declare codigo: string
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column({ isPrimary: true })
   declare id: number
+  @column()
+  declare institutoId: number
   @column()
   declare nivel: NivelAcademico
   @column()
@@ -87,6 +87,23 @@ export class GestoreSchema extends BaseModel {
   declare updatedAt: DateTime
   @column()
   declare userId: number
+}
+
+export class InstitutoSchema extends BaseModel {
+  static $columns = ['ativo', 'codigo', 'createdAt', 'id', 'nome', 'updatedAt'] as const
+  $columns = InstitutoSchema.$columns
+  @column()
+  declare ativo: boolean
+  @column()
+  declare codigo: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare nome: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
 }
 
 export class LoginCodeSchema extends BaseModel {
@@ -192,7 +209,7 @@ export class RespostaSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'updatedAt'] as const
+  static $columns = ['createdAt', 'email', 'fullName', 'id', 'role', 'updatedAt'] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -202,6 +219,8 @@ export class UserSchema extends BaseModel {
   declare fullName: string | null
   @column({ isPrimary: true })
   declare id: number
+  @column()
+  declare role: RoleUsuario
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
