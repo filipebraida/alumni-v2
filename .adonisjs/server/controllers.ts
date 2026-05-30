@@ -12,4 +12,5 @@ export const controllers = {
   Onboarding: () => import('#controllers/onboarding_controller'),
   Respostas: () => import('#controllers/respostas_controller'),
   Session: () => import('#controllers/session_controller'),
+  ImportacoesEgressos: () => import('#controllers/importacoes_egressos_controller'),
 }

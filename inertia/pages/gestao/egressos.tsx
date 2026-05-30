@@ -1,8 +1,6 @@
 import { Head, usePage } from '@inertiajs/react'
 import { type ReactElement } from 'react'
-import { UploadIcon } from 'lucide-react'
 import GestaoLayout from '~/layouts/gestao'
-import { Button } from '~/components/ui/button'
 import { EgressosStats } from '~/components/gestao/egressos_stats'
 import {
   EgressosTable,
@@ -12,6 +10,7 @@ import {
   type Situacao,
 } from '~/components/gestao/egressos_table'
 import { CadastrarEgressoDialog } from '~/components/gestao/cadastrar_egresso_dialog'
+import { ImportarEgressosDialog } from '~/components/gestao/importar_egressos_dialog'
 import { type InertiaProps } from '~/types'
 import type { EgressosEstatisticas, GestaoShared } from '~/components/gestao/types'
 
@@ -60,9 +59,7 @@ export default function GestaoEgressos({
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <Button variant="outline" disabled title="Em breve">
-                  <UploadIcon /> Importar planilha
-                </Button>
+                <ImportarEgressosDialog cursoNome={curso.nome} />
                 <CadastrarEgressoDialog cursoNome={curso.nome} />
               </div>
             </div>

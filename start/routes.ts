@@ -58,6 +58,9 @@ router
     router.get('/gestao', [controllers.Gestao, 'show']).as('gestao.show')
     router.get('/gestao/egressos', [controllers.Egressos, 'index']).as('gestao.egressos')
     router.post('/gestao/egressos', [controllers.Egressos, 'store']).as('gestao.egressos.store')
+    router
+      .post('/gestao/egressos/importacoes', [controllers.ImportacoesEgressos, 'store'])
+      .as('gestao.egressos.importacoes.store')
     router.put('/gestao/curso-ativo', [controllers.CursoAtivo, 'update']).as('gestao.curso_ativo')
   })
   .use([middleware.auth(), middleware.gestor()])

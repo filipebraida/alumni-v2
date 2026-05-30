@@ -29,3 +29,8 @@ export const cadastrarEgressoValidator = vine.create({
   situacao: vine.enum(SITUACOES_MATRICULA),
   periodoFormatura: vine.string().trim().minLength(1).maxLength(20).optional(),
 })
+
+/** Valida o upload da planilha (CSV) de egressos para o curso ativo. */
+export const importarEgressosValidator = vine.create({
+  arquivo: vine.file({ size: '5mb', extnames: ['csv', 'txt'] }),
+})

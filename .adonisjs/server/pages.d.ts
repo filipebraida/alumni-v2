@@ -25,5 +25,6 @@ declare module '@adonisjs/inertia/types' {
     'portal/transparencia': ExtractProps<(typeof import('../../inertia/pages/portal/transparencia.tsx'))['default']>
     'portal/ufrrj': ExtractProps<(typeof import('../../inertia/pages/portal/ufrrj.tsx'))['default']>
     'respostas/create': ExtractProps<(typeof import('../../inertia/pages/respostas/create.tsx'))['default']>
+    'gestao/importacao_resultado': ExtractProps<(typeof import('../../inertia/pages/gestao/importacao_resultado.tsx'))['default']>
   }
 }
