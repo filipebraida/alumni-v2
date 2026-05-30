@@ -51,3 +51,9 @@ export const vincularEgressoValidator = vine.create({
 export const importarEgressosValidator = vine.create({
   arquivo: vine.file({ size: '5mb', extnames: ['csv', 'txt'] }),
 })
+
+/** Valida o pedido de atualização do questionário enviado para N egressos. */
+export const pedirAtualizacaoValidator = vine.create({
+  egressoIds: vine.array(vine.number().withoutDecimals().positive()).minLength(1).maxLength(500),
+  mensagem: vine.string().trim().minLength(1).maxLength(500).optional(),
+})

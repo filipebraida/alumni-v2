@@ -1,8 +1,9 @@
 import { type ReactElement } from 'react'
 import { usePage } from '@inertiajs/react'
-import { BellIcon, ChevronRightIcon } from 'lucide-react'
+import { ChevronRightIcon } from 'lucide-react'
 
 import { useFlashToasts } from '~/hooks/use_flash'
+import { NotificationBell } from '~/components/app/notification_bell'
 import { GestaoSidebar } from '~/components/gestao/gestao_sidebar'
 import { GestaoUserMenu } from '~/components/gestao/gestao_user_menu'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
@@ -51,15 +52,7 @@ export default function GestaoLayout({ children }: { children: ReactElement }) {
           </nav>
 
           <div className="ms-auto flex items-center gap-2">
-            <button
-              type="button"
-              title="Em breve"
-              aria-label="Notificações"
-              className="relative flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted"
-            >
-              <BellIcon className="size-4.5" />
-              <span className="absolute end-2 top-2 size-1.5 rounded-full bg-brand-yellow" />
-            </button>
+            <NotificationBell />
             <span className="h-5 w-px bg-border" />
             <GestaoUserMenu />
           </div>

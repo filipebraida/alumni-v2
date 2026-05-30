@@ -31,6 +31,7 @@ export type ScannedRoutes = {
     'gestao.egressos.lookup': { paramsTuple?: []; params?: {} }
     'gestao.egressos.store': { paramsTuple?: []; params?: {} }
     'gestao.egressos.vincular': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.pedir_atualizacao': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.store': { paramsTuple?: []; params?: {} }
     'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
@@ -98,6 +99,7 @@ export type ScannedRoutes = {
     'respostas.store': { paramsTuple?: []; params?: {} }
     'gestao.egressos.store': { paramsTuple?: []; params?: {} }
     'gestao.egressos.vincular': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.pedir_atualizacao': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.store': { paramsTuple?: []; params?: {} }
     'admin.institutos.store': { paramsTuple?: []; params?: {} }
     'admin.cursos.store': { paramsTuple?: []; params?: {} }

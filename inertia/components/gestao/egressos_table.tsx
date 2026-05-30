@@ -176,7 +176,13 @@ function SituacaoBadge({ situacao }: { situacao: Situacao }) {
   )
 }
 
-function AcoesEgresso({ egresso }: { egresso: EgressoRow }) {
+function AcoesEgresso({
+  egresso,
+  onPedirAtualizacao,
+}: {
+  egresso: EgressoRow
+  onPedirAtualizacao: (egresso: EgressoRow) => void
+}) {
   async function copiarEmail() {
     if (!egresso.email) return
     const ok = await copiarParaClipboard(egresso.email)
@@ -214,7 +220,7 @@ function AcoesEgresso({ egresso }: { egresso: EgressoRow }) {
             <MailIcon /> Copiar e-mail
           </MenuItem>
           <MenuSeparator />
-          <MenuItem disabled>
+          <MenuItem onClick={() => onPedirAtualizacao(egresso)}>
             <BellIcon /> Pedir atualização
           </MenuItem>
         </MenuPopup>
@@ -239,124 +245,130 @@ function FrescorInline({ egresso }: { egresso: EgressoRow }) {
   )
 }
 
-const colunas: ColumnDef<EgressoRow>[] = [
-  {
-    id: 'select',
-    enableSorting: false,
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        indeterminate={table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()}
-        onCheckedChange={(checked) => table.toggleAllPageRowsSelected(!!checked)}
-        aria-label="Selecionar todos os egressos da página"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(checked) => row.toggleSelected(!!checked)}
-        aria-label={`Selecionar ${row.original.nome}`}
-      />
-    ),
-  },
-  {
-    id: 'egresso',
-    accessorKey: 'nome',
-    header: 'Egresso',
-    enableSorting: true,
-    cell: ({ row }) => {
-      const egresso = row.original
-      return (
-        <div className="flex items-center gap-3">
-          <Avatar className="size-9">
-            <AvatarFallback className="bg-muted font-semibold text-foreground text-xs">
-              {iniciais(egresso.nome)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="min-w-0">
-            <div className="truncate font-medium text-foreground">{egresso.nome}</div>
-            {egresso.email && (
-              <div className="truncate text-muted-foreground text-xs">{egresso.email}</div>
-            )}
-            {/* xs: absorve a info das colunas escondidas (situação + questionário) */}
-            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
-              <SituacaoBadge situacao={egresso.situacao} />
-              <FrescorInline egresso={egresso} />
+function montarColunas(onPedirAtualizacao: (egresso: EgressoRow) => void): ColumnDef<EgressoRow>[] {
+  return [
+    {
+      id: 'select',
+      enableSorting: false,
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          indeterminate={table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()}
+          onCheckedChange={(checked) => table.toggleAllPageRowsSelected(!!checked)}
+          aria-label="Selecionar todos os egressos da página"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(checked) => row.toggleSelected(!!checked)}
+          aria-label={`Selecionar ${row.original.nome}`}
+        />
+      ),
+    },
+    {
+      id: 'egresso',
+      accessorKey: 'nome',
+      header: 'Egresso',
+      enableSorting: true,
+      cell: ({ row }) => {
+        const egresso = row.original
+        return (
+          <div className="flex items-center gap-3">
+            <Avatar className="size-9">
+              <AvatarFallback className="bg-muted font-semibold text-foreground text-xs">
+                {iniciais(egresso.nome)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <div className="truncate font-medium text-foreground">{egresso.nome}</div>
+              {egresso.email && (
+                <div className="truncate text-muted-foreground text-xs">{egresso.email}</div>
+              )}
+              {/* xs: absorve a info das colunas escondidas (situação + questionário) */}
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+                <SituacaoBadge situacao={egresso.situacao} />
+                <FrescorInline egresso={egresso} />
+              </div>
             </div>
           </div>
-        </div>
-      )
+        )
+      },
     },
-  },
-  {
-    id: 'turma',
-    accessorKey: 'periodoFormatura',
-    header: 'Turma',
-    enableSorting: true,
-    meta: { responsiveClass: 'hidden md:table-cell' },
-    cell: ({ row }) => (
-      <div className="leading-tight">
-        <div className="text-sm tabular-nums">{row.original.periodoFormatura ?? '—'}</div>
-        <div className="font-mono text-muted-foreground text-xs">
-          {row.original.matriculaCodigo}
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: 'situacao',
-    accessorKey: 'situacao',
-    header: 'Situação',
-    enableSorting: true,
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    cell: ({ row }) => <SituacaoBadge situacao={row.original.situacao} />,
-  },
-  {
-    id: 'vinculo',
-    header: 'Vínculo atual',
-    enableSorting: false,
-    meta: { responsiveClass: 'hidden lg:table-cell' },
-    cell: ({ row }) => {
-      const { cargo, empregador } = row.original
-      if (!cargo && !empregador) {
-        return <span className="text-muted-foreground/70 text-sm italic">não informado</span>
-      }
-      return (
+    {
+      id: 'turma',
+      accessorKey: 'periodoFormatura',
+      header: 'Turma',
+      enableSorting: true,
+      meta: { responsiveClass: 'hidden md:table-cell' },
+      cell: ({ row }) => (
         <div className="leading-tight">
-          {cargo && <div className="font-medium text-sm">{cargo}</div>}
-          {empregador && <div className="text-muted-foreground text-xs">{empregador}</div>}
+          <div className="text-sm tabular-nums">{row.original.periodoFormatura ?? '—'}</div>
+          <div className="font-mono text-muted-foreground text-xs">
+            {row.original.matriculaCodigo}
+          </div>
         </div>
-      )
+      ),
     },
-  },
-  {
-    id: 'status',
-    accessorKey: 'status',
-    header: 'Questionário · atualizado em',
-    enableSorting: true,
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    cell: ({ row }) => {
-      const egresso = row.original
-      return (
-        <div className="flex items-center gap-2" title={STATUS_LABEL[egresso.status]}>
-          <span className={cn('size-1.5 shrink-0 rounded-full', FRESCOR_DOT[egresso.status])} />
-          {egresso.status === 'sem_registro' ? (
-            <span className="text-muted-foreground text-sm italic">nunca respondeu</span>
-          ) : (
-            <span className="text-sm tabular-nums">{formatarData(egresso.ultimaAtualizacao)}</span>
-          )}
-        </div>
-      )
+    {
+      id: 'situacao',
+      accessorKey: 'situacao',
+      header: 'Situação',
+      enableSorting: true,
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      cell: ({ row }) => <SituacaoBadge situacao={row.original.situacao} />,
     },
-  },
-  {
-    id: 'acoes',
-    header: '',
-    enableSorting: false,
-    cell: ({ row }) => <AcoesEgresso egresso={row.original} />,
-  },
-]
+    {
+      id: 'vinculo',
+      header: 'Vínculo atual',
+      enableSorting: false,
+      meta: { responsiveClass: 'hidden lg:table-cell' },
+      cell: ({ row }) => {
+        const { cargo, empregador } = row.original
+        if (!cargo && !empregador) {
+          return <span className="text-muted-foreground/70 text-sm italic">não informado</span>
+        }
+        return (
+          <div className="leading-tight">
+            {cargo && <div className="font-medium text-sm">{cargo}</div>}
+            {empregador && <div className="text-muted-foreground text-xs">{empregador}</div>}
+          </div>
+        )
+      },
+    },
+    {
+      id: 'status',
+      accessorKey: 'status',
+      header: 'Questionário · atualizado em',
+      enableSorting: true,
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      cell: ({ row }) => {
+        const egresso = row.original
+        return (
+          <div className="flex items-center gap-2" title={STATUS_LABEL[egresso.status]}>
+            <span className={cn('size-1.5 shrink-0 rounded-full', FRESCOR_DOT[egresso.status])} />
+            {egresso.status === 'sem_registro' ? (
+              <span className="text-muted-foreground text-sm italic">nunca respondeu</span>
+            ) : (
+              <span className="text-sm tabular-nums">
+                {formatarData(egresso.ultimaAtualizacao)}
+              </span>
+            )}
+          </div>
+        )
+      },
+    },
+    {
+      id: 'acoes',
+      header: '',
+      enableSorting: false,
+      cell: ({ row }) => (
+        <AcoesEgresso egresso={row.original} onPedirAtualizacao={onPedirAtualizacao} />
+      ),
+    },
+  ]
+}
 
 export function EgressosTable({
   egressos,
@@ -532,6 +544,37 @@ export function EgressosTable({
     [egressos.data, selecionados]
   )
 
+  const [pedindoAtualizacao, setPedindoAtualizacao] = useState(false)
+
+  // Dispara o pedido via POST normal do Inertia (não fetch): re-renderiza com
+  // o flash de sucesso/erro e atualiza shared props como `unseenNotificationsCount`.
+  // O servidor responde com redirect-back, então o `onSuccess` cobre o caso.
+  const pedirAtualizacao = useCallback(
+    (egressoIds: number[], aoFinalizar?: () => void) => {
+      if (egressoIds.length === 0 || pedindoAtualizacao) return
+
+      setPedindoAtualizacao(true)
+      router.post(
+        urlFor('gestao.egressos.pedir_atualizacao'),
+        { egressoIds },
+        {
+          preserveScroll: true,
+          preserveState: true,
+          onFinish: () => {
+            setPedindoAtualizacao(false)
+            aoFinalizar?.()
+          },
+        }
+      )
+    },
+    [pedindoAtualizacao]
+  )
+
+  const colunas = useMemo(
+    () => montarColunas((egresso) => pedirAtualizacao([egresso.egressoId])),
+    [pedirAtualizacao]
+  )
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -635,12 +678,12 @@ export function EgressosTable({
           })
         }}
         onPedirAtualizacao={() =>
-          toastManager.add({
-            type: 'info',
-            title: 'Em breve',
-            description: 'O pedido de atualização do questionário ainda está sendo construído.',
-          })
+          pedirAtualizacao(
+            egressosSelecionados.map((e) => e.egressoId),
+            () => setSelecionados({})
+          )
         }
+        pedindoAtualizacao={pedindoAtualizacao}
         onLimpar={() => setSelecionados({})}
       />
     </div>

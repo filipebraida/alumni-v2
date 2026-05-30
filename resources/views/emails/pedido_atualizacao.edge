@@ -1,0 +1,66 @@
+@email.layout({
+  title: 'Pedido de atualização do questionário',
+  eyebrow: 'Atualização SAE',
+  preview: 'A coordenação do seu curso pediu uma atualização do questionário.',
+})
+  <mj-section background-color="#ffffff" padding="32px 40px 8px">
+    <mj-column>
+      <mj-text font-size="13px" color="#71717a" padding="0 0 6px 0">
+        Olá,
+        {{ nomeEgresso }}
+        .
+      </mj-text>
+      <mj-text
+        font-family="Newsreader, Georgia, serif"
+        font-size="26px"
+        font-weight="600"
+        color="#18181b"
+        line-height="1.2"
+        padding="0 0 14px 0"
+      >
+        Atualize suas informações em
+        {{ nomeCurso }}
+      </mj-text>
+      <mj-text font-size="15px" color="#3f3f46" line-height="1.55" padding="0 0 14px 0">
+        A coordenação do curso solicitou que você atualize os dados do questionário do SAE. A atualização leva cerca de 2 minutos e ajuda a coordenação a acompanhar a trajetória dos egressos.
+      </mj-text>
+      @if(mensagem)
+        <mj-text
+          font-size="14px"
+          color="#3f3f46"
+          line-height="1.55"
+          padding="12px 16px"
+          background-color="#f4f4f5"
+          border-radius="8px"
+        >
+          “{{ mensagem }}” —
+          {{ nomeGestor }}
+        </mj-text>
+      @end
+    </mj-column>
+  </mj-section>
+
+  <mj-section background-color="#ffffff" padding="12px 40px 28px">
+    <mj-column>
+      <mj-button
+        href="{{ link }}"
+        background-color="#18181b"
+        color="#ffffff"
+        font-size="15px"
+        font-weight="600"
+        inner-padding="14px 22px"
+        border-radius="10px"
+      >
+        Atualizar agora
+      </mj-button>
+    </mj-column>
+  </mj-section>
+
+  <mj-section background-color="#ffffff" padding="0 40px 28px">
+    <mj-column>
+      <mj-text font-size="13px" color="#71717a" line-height="1.55" padding="0">
+        Se você já atualizou recentemente, pode ignorar este e-mail.
+      </mj-text>
+    </mj-column>
+  </mj-section>
+@end

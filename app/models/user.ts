@@ -22,4 +22,17 @@ export default class User extends UserSchema {
     }
     return `${first.slice(0, 2)}`.toUpperCase()
   }
+
+  /**
+   * Alvos por canal do facteur (ver `config/notifications.ts`). Define para onde
+   * cada canal entrega: `database`/`transmit` usam o `id` como `notifiableId` (e
+   * nome do canal SSE pessoal); `mail` usa o e-mail de login.
+   */
+  notificationTargets() {
+    return {
+      database: { notifiableId: String(this.id) },
+      transmit: { channel: `notifications/user-${this.id}` },
+      mail: { email: this.email },
+    }
+  }
 }

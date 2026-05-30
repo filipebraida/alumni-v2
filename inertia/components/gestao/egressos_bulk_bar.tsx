@@ -3,19 +3,21 @@ import { BellIcon, DownloadIcon, XIcon } from 'lucide-react'
 import { cn } from '~/lib/utils'
 
 /**
- * Barra de ações em massa que sobe quando há egressos selecionados (padrão do
- * mock, adaptado ao modelo de frescor do projeto): exportar CSV (real) e pedir
- * atualização do questionário (em breve). Superfície escura institucional.
+ * Barra de ações em massa que sobe quando há egressos selecionados: pedir
+ * atualização do questionário (envia e-mail e notificação) e exportar CSV.
+ * Superfície escura institucional.
  */
 export function EgressosBulkBar({
   quantidade,
   onExportar,
   onPedirAtualizacao,
+  pedindoAtualizacao,
   onLimpar,
 }: {
   quantidade: number
   onExportar: () => void
   onPedirAtualizacao: () => void
+  pedindoAtualizacao?: boolean
   onLimpar: () => void
 }) {
   const aberto = quantidade > 0
@@ -44,8 +46,7 @@ export function EgressosBulkBar({
         <button
           type="button"
           onClick={onPedirAtualizacao}
-          disabled
-          title="Em breve"
+          disabled={pedindoAtualizacao}
           className="inline-flex h-9 items-center gap-2 rounded-lg bg-brand-yellow px-3.5 font-semibold text-sm text-warning-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           <BellIcon className="size-4" /> Pedir atualização

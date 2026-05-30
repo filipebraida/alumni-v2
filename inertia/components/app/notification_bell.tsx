@@ -111,19 +111,27 @@ export function NotificationBell() {
 
   useNotificationsChannel(userId, aoChegarNotificacao)
 
-  const aoClicarItem = async (item: NotificationItem) => {
-    if (item.status === 'read') return
+  const aoClicarItem = (item: NotificationItem) => {
+    const naoLida = item.status !== 'read'
 
-    void fetch(urlFor('notificacoes.ler', { id: item.id }), {
-      method: 'POST',
-      headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
-      credentials: 'same-origin',
-    })
+    if (naoLida) {
+      void fetch(urlFor('notificacoes.ler', { id: item.id }), {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
+        credentials: 'same-origin',
+      })
 
-    const agora = new Date().toISOString()
-    setItens((anterior) =>
-      anterior.map((n) => (n.id === item.id ? { ...n, status: 'read', readAt: agora } : n))
-    )
+      const agora = new Date().toISOString()
+      setItens((anterior) =>
+        anterior.map((n) => (n.id === item.id ? { ...n, status: 'read', readAt: agora } : n))
+      )
+    }
+
+    const link = typeof item.content.link === 'string' ? item.content.link : null
+    if (link) {
+      setOpen(false)
+      router.visit(link)
+    }
   }
 
   return (

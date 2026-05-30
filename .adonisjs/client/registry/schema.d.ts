@@ -331,6 +331,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['vincular']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'gestao.egressos.pedir_atualizacao': {
+    methods: ["POST"]
+    pattern: '/gestao/egressos/pedidos-atualizacao'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/gestao').pedirAtualizacaoValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/gestao').pedirAtualizacaoValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['pedirAtualizacao']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/egressos_controller').default['pedirAtualizacao']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'gestao.egressos.importacoes.show': {
     methods: ["GET","HEAD"]
     pattern: '/gestao/egressos/importacoes'

@@ -94,6 +94,9 @@ router
       .post('/gestao/egressos/vinculos', [controllers.Egressos, 'vincular'])
       .as('gestao.egressos.vincular')
     router
+      .post('/gestao/egressos/pedidos-atualizacao', [controllers.Egressos, 'pedirAtualizacao'])
+      .as('gestao.egressos.pedir_atualizacao')
+    router
       .get('/gestao/egressos/importacoes', [controllers.ImportacoesEgressos, 'show'])
       .as('gestao.egressos.importacoes.show')
     router

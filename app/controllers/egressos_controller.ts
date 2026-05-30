@@ -6,12 +6,14 @@ import BuscarEgressoPorCpf from '#queries/buscar_egresso_por_cpf'
 import BuscarEgressoDoCurso from '#queries/buscar_egresso_do_curso'
 import RespostaTransformer from '#transformers/resposta_transformer'
 import CadastrarEgressoNoCurso from '#actions/cadastrar_egresso_no_curso'
+import EnviarPedidoDeAtualizacao from '#actions/enviar_pedido_de_atualizacao'
 import VincularEgressoAoCurso from '#actions/vincular_egresso_ao_curso'
 import {
   cadastrarEgressoValidator,
   listarEgressosValidator,
   lookupEgressoValidator,
   mostrarEgressoValidator,
+  pedirAtualizacaoValidator,
   vincularEgressoValidator,
 } from '#validators/gestao'
 
@@ -147,6 +149,38 @@ export default class EgressosController {
       erros.matriculaCodigo = 'Esta matrícula já pertence a outro egresso.'
     }
     session.flashErrors(erros)
+    return response.redirect().back()
+  }
+
+  /**
+   * Coordenacao pede atualizacao do questionario para N egressos do curso ativo.
+   * Cada egresso com User recebe e-mail + notificacao no sino (clique leva
+   * para `respostas.create`). Egressos sem User entram no balde "sem usuario".
+   */
+  async pedirAtualizacao({ auth, gestao, request, response, session }: HttpContext) {
+    const { cursoAtivo } = gestao
+    if (!cursoAtivo) {
+      session.flash('error', 'Selecione um curso antes de pedir atualização.')
+      return response.redirect().toRoute('gestao.egressos')
+    }
+
+    const { egressoIds, mensagem } = await request.validateUsing(pedirAtualizacaoValidator)
+    const usuario = auth.getUserOrFail()
+
+    const resultado = await new EnviarPedidoDeAtualizacao().handle({
+      egressoIds,
+      cursoId: cursoAtivo.id,
+      nomeCurso: cursoAtivo.nome,
+      nomeGestor: usuario.fullName ?? usuario.email,
+      mensagem: mensagem ?? null,
+    })
+
+    const { enviados, semUsuario } = resultado
+    const mensagemSucesso = semUsuario
+      ? `Pedido enviado a ${enviados} egresso${enviados === 1 ? '' : 's'}. ` +
+        `${semUsuario} ainda não acessou o portal e não foi notificado.`
+      : `Pedido enviado a ${enviados} egresso${enviados === 1 ? '' : 's'}.`
+    session.flash(enviados > 0 ? 'success' : 'error', mensagemSucesso)
     return response.redirect().back()
   }
 

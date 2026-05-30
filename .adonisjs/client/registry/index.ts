@@ -168,6 +168,12 @@ const routes = {
     tokens: [{"old":"/gestao/egressos/vinculos","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/vinculos","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/vinculos","type":0,"val":"vinculos","end":""}],
     types: placeholder as Registry['gestao.egressos.vincular']['types'],
   },
+  'gestao.egressos.pedir_atualizacao': {
+    methods: ["POST"],
+    pattern: '/gestao/egressos/pedidos-atualizacao',
+    tokens: [{"old":"/gestao/egressos/pedidos-atualizacao","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/pedidos-atualizacao","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/pedidos-atualizacao","type":0,"val":"pedidos-atualizacao","end":""}],
+    types: placeholder as Registry['gestao.egressos.pedir_atualizacao']['types'],
+  },
   'gestao.egressos.importacoes.show': {
     methods: ["GET","HEAD"],
     pattern: '/gestao/egressos/importacoes',

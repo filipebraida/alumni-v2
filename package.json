@@ -29,6 +29,7 @@
     "#events/*": "./app/events/*.js",
     "#generated/*": "./.adonisjs/server/*.js",
     "#middleware/*": "./app/middleware/*.js",
+    "#notifications/*": "./app/notifications/*.js",
     "#transformers/*": "./app/transformers/*.js",
     "#validators/*": "./app/validators/*.js",
     "#providers/*": "./providers/*.js",
