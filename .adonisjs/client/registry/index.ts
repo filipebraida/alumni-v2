@@ -138,6 +138,12 @@ const routes = {
     tokens: [{"old":"/gestao/egressos/importacoes","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/importacoes","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/importacoes","type":0,"val":"importacoes","end":""}],
     types: placeholder as Registry['gestao.egressos.importacoes.store']['types'],
   },
+  'gestao.egressos.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/gestao/egressos/:egressoId',
+    tokens: [{"old":"/gestao/egressos/:egressoId","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/:egressoId","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/:egressoId","type":1,"val":"egressoId","end":""}],
+    types: placeholder as Registry['gestao.egressos.show']['types'],
+  },
   'gestao.curso_ativo': {
     methods: ["PUT"],
     pattern: '/gestao/curso-ativo',

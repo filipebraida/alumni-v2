@@ -26,6 +26,7 @@ export type ScannedRoutes = {
     'gestao.egressos.vincular': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.store': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
     'admin.institutos.store': { paramsTuple?: []; params?: {} }
@@ -46,6 +47,7 @@ export type ScannedRoutes = {
     'gestao.egressos': { paramsTuple?: []; params?: {} }
     'gestao.egressos.lookup': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
   }
@@ -63,6 +65,7 @@ export type ScannedRoutes = {
     'gestao.egressos': { paramsTuple?: []; params?: {} }
     'gestao.egressos.lookup': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
   }

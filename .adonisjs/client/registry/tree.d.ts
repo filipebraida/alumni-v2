@@ -37,6 +37,7 @@ export interface ApiDefinition {
         show: typeof routes['gestao.egressos.importacoes.show']
         store: typeof routes['gestao.egressos.importacoes.store']
       }
+      show: typeof routes['gestao.egressos.show']
     }
     cursoAtivo: typeof routes['gestao.curso_ativo']
   }

@@ -1,4 +1,5 @@
 import { router } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ColumnDef, OnChangeFn, RowSelectionState, SortingState } from '@tanstack/react-table'
 import { EyeIcon, BellIcon, MailIcon, MoreHorizontalIcon, SearchIcon, XIcon } from 'lucide-react'
@@ -202,7 +203,11 @@ function AcoesEgresso({ egresso }: { egresso: EgressoRow }) {
           <MoreHorizontalIcon />
         </MenuTrigger>
         <MenuPopup align="end" className="min-w-48">
-          <MenuItem disabled>
+          <MenuItem
+            render={
+              <Link href={urlFor('gestao.egressos.show', { egressoId: egresso.egressoId })} />
+            }
+          >
             <EyeIcon /> Ver perfil
           </MenuItem>
           <MenuItem disabled={!egresso.email} onClick={copiarEmail}>

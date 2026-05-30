@@ -6,6 +6,10 @@ export const trocarCursoAtivoValidator = vine.create({
   cursoId: vine.number().positive(),
 })
 
+export const mostrarEgressoValidator = vine.create({
+  egressoId: vine.number().withoutDecimals().positive(),
+})
+
 /** Colunas pelas quais a listagem de egressos pode ser ordenada. */
 export const ORDENAVEIS_EGRESSOS = ['egresso', 'turma', 'situacao', 'status'] as const
 

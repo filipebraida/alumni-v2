@@ -3,12 +3,15 @@ import ListarEgressosDoCurso, { rosterVazio } from '#queries/listar_egressos_do_
 import ListarTurmasDoCurso from '#queries/listar_turmas_do_curso'
 import ResumoEgressosDoCurso from '#queries/resumo_egressos_do_curso'
 import BuscarEgressoPorCpf from '#queries/buscar_egresso_por_cpf'
+import BuscarEgressoDoCurso from '#queries/buscar_egresso_do_curso'
+import RespostaTransformer from '#transformers/resposta_transformer'
 import CadastrarEgressoNoCurso from '#actions/cadastrar_egresso_no_curso'
 import VincularEgressoAoCurso from '#actions/vincular_egresso_ao_curso'
 import {
   cadastrarEgressoValidator,
   listarEgressosValidator,
   lookupEgressoValidator,
+  mostrarEgressoValidator,
   vincularEgressoValidator,
 } from '#validators/gestao'
 
@@ -54,6 +57,51 @@ export default class EgressosController {
       turma: turma ?? null,
       sort: sort ?? null,
       order: order ?? null,
+    })
+  }
+
+  async show({ gestao, params, inertia, response, session }: HttpContext) {
+    const { cursoAtivo } = gestao
+    if (!cursoAtivo) {
+      session.flash('error', 'Selecione um curso antes de abrir o perfil de um egresso.')
+      return response.redirect().toRoute('gestao.egressos')
+    }
+
+    const { egressoId } = await mostrarEgressoValidator.validate(params)
+    const detalhe = await new BuscarEgressoDoCurso().handle({
+      egressoId,
+      cursoId: cursoAtivo.id,
+    })
+
+    if (!detalhe) {
+      session.flash('error', 'Egresso não encontrado neste curso.')
+      return response.redirect().toRoute('gestao.egressos')
+    }
+
+    const { egresso, matricula, respostaAtual, statusFrescor } = detalhe
+    return inertia.render('gestao/egresso', {
+      egresso: {
+        id: egresso.id,
+        nomeCompleto: egresso.nomeCompleto,
+        cpf: egresso.cpf,
+        emailLogin: egresso.user?.email ?? null,
+        emailPessoal: egresso.emailPessoal,
+        consentimentoEm: egresso.consentimentoEm?.toISO() ?? null,
+      },
+      matricula: {
+        codigo: matricula.codigo,
+        situacao: matricula.situacao,
+        periodoFormatura: matricula.periodoFormatura,
+        dataColacao: matricula.dataColacao?.toISODate() ?? null,
+        curso: {
+          nome: matricula.curso.nome,
+          codigo: matricula.curso.codigo,
+          nivel: matricula.curso.nivel,
+          instituto: matricula.curso.instituto.nome,
+        },
+      },
+      respostaAtual: respostaAtual ? RespostaTransformer.transform(respostaAtual) : null,
+      statusFrescor,
     })
   }
 

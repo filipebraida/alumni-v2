@@ -70,6 +70,11 @@ router
     router
       .post('/gestao/egressos/importacoes', [controllers.ImportacoesEgressos, 'store'])
       .as('gestao.egressos.importacoes.store')
+    // Show por último: rota com param só pega o que não casou nas literais acima.
+    router
+      .get('/gestao/egressos/:egressoId', [controllers.Egressos, 'show'])
+      .where('egressoId', router.matchers.number())
+      .as('gestao.egressos.show')
     router.put('/gestao/curso-ativo', [controllers.CursoAtivo, 'update']).as('gestao.curso_ativo')
   })
   .use([middleware.auth(), middleware.gestor()])
