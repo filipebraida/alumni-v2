@@ -16,6 +16,7 @@ import {
   type PerfilFormState,
   type Vinculo,
   estadoInicialDoPerfil,
+  payloadParaSalvar,
 } from '~/components/perfil/types'
 import { type InertiaProps } from '~/types'
 
@@ -50,7 +51,7 @@ function calcularPreenchidos(form: PerfilFormState, foto: string | null): number
 export default function PerfilEdit({ perfil, vinculos }: PageProps) {
   const inicial = useMemo(() => estadoInicialDoPerfil(perfil), [perfil])
   const [form, setForm] = useState<PerfilFormState>(inicial)
-  const [foto, setFoto] = useState<string | null>(null)
+  const [foto, setFoto] = useState<string | null>(perfil.fotoUrl)
   const [ativo, setAtivo] = useState<PerfilSecaoId>('foto')
   const [processando, setProcessando] = useState(false)
   const [salvo, setSalvo] = useState(false)
@@ -62,8 +63,8 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
   }
 
   const dirty = useMemo(
-    () => JSON.stringify(form) !== JSON.stringify(inicial) || foto !== null,
-    [form, inicial, foto]
+    () => JSON.stringify(form) !== JSON.stringify(inicial) || foto !== perfil.fotoUrl,
+    [form, inicial, foto, perfil.fotoUrl]
   )
 
   const preenchidos = calcularPreenchidos(form, foto)
@@ -95,24 +96,20 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
 
   const salvar = () => {
     setProcessando(true)
-    router.put(
-      urlFor('perfil.update'),
-      { nomeCompleto: form.nomeCompleto, emailPessoal: form.emailPessoal || null },
-      {
-        preserveScroll: true,
-        onSuccess: () => {
-          setSalvo(true)
-          if (ultimoSalvoTimer.current) clearTimeout(ultimoSalvoTimer.current)
-          ultimoSalvoTimer.current = setTimeout(() => setSalvo(false), 3500)
-        },
-        onFinish: () => setProcessando(false),
-      }
-    )
+    router.put(urlFor('perfil.update'), payloadParaSalvar(form), {
+      preserveScroll: true,
+      onSuccess: () => {
+        setSalvo(true)
+        if (ultimoSalvoTimer.current) clearTimeout(ultimoSalvoTimer.current)
+        ultimoSalvoTimer.current = setTimeout(() => setSalvo(false), 3500)
+      },
+      onFinish: () => setProcessando(false),
+    })
   }
 
   const descartar = () => {
     setForm(inicial)
-    setFoto(null)
+    setFoto(perfil.fotoUrl)
     setSalvo(false)
   }
 
@@ -137,15 +134,6 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
             <p className="mt-1 text-muted-foreground text-sm leading-relaxed">
               Mantenha seus dados frescos — a UFRRJ usa só em análises agregadas.
             </p>
-          </div>
-
-          <div className="flex items-start gap-3 rounded-lg border border-warning/40 bg-warning/5 px-4 py-3">
-            <span className="mt-0.5 inline-block size-1.5 shrink-0 rounded-full bg-warning" />
-            <div className="text-muted-foreground text-xs leading-relaxed">
-              <strong className="text-foreground">Edição em piloto.</strong> Por enquanto salvamos
-              só <strong>nome completo</strong> e <strong>e-mail alternativo</strong>. Os demais
-              campos (telefone, ORCID, Lattes, privacidade…) viram em seguida.
-            </div>
           </div>
 
           <PerfilFoto

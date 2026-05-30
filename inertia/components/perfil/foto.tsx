@@ -102,8 +102,8 @@ export function PerfilFoto({ form, set, foto, setFoto, iniciais }: Props) {
             label="Como prefere ser chamado(a)"
             hint="Opcional — usado em saudações."
             placeholder="Ex.: Ana"
-            value={form.social}
-            onChange={(v) => set('social', v)}
+            value={form.nomeSocial}
+            onChange={(v) => set('nomeSocial', v)}
           />
           <CampoTexto
             label="Título / headline"

@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react'
 
+import { cn } from '~/lib/utils'
 import { Button } from '~/components/ui/button'
 
 type Props = {
@@ -11,18 +12,31 @@ type Props = {
 }
 
 /**
- * Barra inferior fixa que aparece quando há alterações não salvas (e fica
- * mais 1s após o save com mensagem de sucesso). `sticky bottom-0` pra grudar
- * no fim do scroll do conteúdo — funciona dentro do main do AppLayout.
+ * Barra inferior que aparece quando há alterações não salvas (e fica mais
+ * uns segundos após o save com a confirmação). `fixed` (não `sticky`) pra
+ * sair do fluxo do documento — ligar/desligar a barra não muda a altura da
+ * página, então o scroll não pula. A área do formulário reserva `pb-24`
+ * por padrão pra que o conteúdo final nunca fique embaixo da barra.
  */
 export function PerfilSaveBar({ dirty, saved, processing, onSalvar, onDescartar }: Props) {
-  if (!dirty && !saved) return null
+  const visivel = dirty || saved
 
   return (
-    <div className="sticky bottom-0 z-10 border-t bg-card/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-3 sm:px-8">
+    <div
+      className={cn(
+        'pointer-events-none fixed inset-x-0 bottom-0 z-20 border-t bg-card/95 backdrop-blur transition-all duration-200 ease-out',
+        visivel ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-full opacity-0'
+      )}
+      aria-hidden={!visivel}
+    >
+      <div
+        className={cn(
+          'mx-auto flex max-w-6xl items-center gap-4 px-6 py-3 sm:px-8',
+          visivel && 'pointer-events-auto'
+        )}
+      >
         {saved ? (
-          <div className="flex items-center gap-2 font-medium text-success-foreground text-sm">
+          <div className="flex items-center gap-2 font-medium text-sm text-success-foreground">
             <span className="grid size-6 place-items-center rounded-full bg-success/15">
               <Check className="size-3.5" strokeWidth={2.5} />
             </span>

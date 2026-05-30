@@ -11,13 +11,31 @@ function iniciais(nome: string) {
 }
 
 function viewPayload(perfil: PerfilDetalhe, emailLogin: string) {
+  const e = perfil.egresso
   return {
     perfil: {
-      nomeCompleto: perfil.egresso.nomeCompleto,
-      iniciais: iniciais(perfil.egresso.nomeCompleto),
-      cpf: perfil.egresso.cpf,
+      nomeCompleto: e.nomeCompleto,
+      iniciais: iniciais(e.nomeCompleto),
+      cpf: e.cpf,
       emailLogin,
-      emailPessoal: perfil.egresso.emailPessoal,
+      emailPessoal: e.emailPessoal,
+      nomeSocial: e.nomeSocial,
+      headline: e.headline,
+      bio: e.bio,
+      fotoUrl: e.fotoUrl,
+      telefone: e.telefone,
+      cidade: e.cidade,
+      uf: e.uf,
+      pais: e.pais,
+      lattes: e.lattes,
+      orcid: e.orcid,
+      scholar: e.scholar,
+      linkedin: e.linkedin,
+      github: e.github,
+      site: e.site,
+      visEmail: e.visEmail,
+      visMapa: e.visMapa,
+      visEncontrar: e.visEncontrar,
     },
     vinculos: perfil.matriculas.map((matricula) => ({
       id: matricula.id,
@@ -59,7 +77,23 @@ export default class PerfilController {
     const result = await new AtualizarPerfil().handle({
       userId: user.id,
       nomeCompleto: data.nomeCompleto,
+      nomeSocial: data.nomeSocial ?? null,
+      headline: data.headline ?? null,
+      bio: data.bio ?? null,
       emailPessoal: data.emailPessoal ?? null,
+      telefone: data.telefone ?? null,
+      cidade: data.cidade ?? null,
+      uf: data.uf ?? null,
+      pais: data.pais ?? null,
+      lattes: data.lattes ?? null,
+      orcid: data.orcid ?? null,
+      scholar: data.scholar ?? null,
+      linkedin: data.linkedin ?? null,
+      github: data.github ?? null,
+      site: data.site ?? null,
+      visEmail: data.visEmail,
+      visMapa: data.visMapa,
+      visEncontrar: data.visEncontrar,
     })
 
     if (result.status === 'sem_egresso') {

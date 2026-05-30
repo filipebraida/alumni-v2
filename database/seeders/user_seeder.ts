@@ -1,8 +1,10 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import User from '#models/user'
 import Curso from '#models/curso'
+import Egresso from '#models/egresso'
 import Gestor from '#models/gestor'
 import Instituto from '#models/instituto'
+import Matricula from '#models/matricula'
 
 const INSTITUTOS = [
   { codigo: 'IA', nome: 'Instituto de Agronomia' },
@@ -54,5 +56,30 @@ export default class extends BaseSeeder {
       { userId: julianaUser.id, nomeCompleto: 'Juliana Nascente', cargo: 'Coordenadora' }
     )
     await juliana.related('cursos').sync([computacao.id])
+
+    // Egresso de teste — pra abrir /perfil sem ter que importar CSV.
+    const anaUser = await User.updateOrCreate(
+      { email: 'ana.silva@ufrrj.br' },
+      { email: 'ana.silva@ufrrj.br', fullName: 'Ana Carolina Silva' }
+    )
+    const ana = await Egresso.updateOrCreate(
+      { userId: anaUser.id },
+      {
+        userId: anaUser.id,
+        cpf: '00100200300',
+        nomeCompleto: 'Ana Carolina Silva',
+        emailPessoal: 'ana.silva@gmail.com',
+      }
+    )
+    await Matricula.updateOrCreate(
+      { codigo: '2018201245' },
+      {
+        codigo: '2018201245',
+        egressoId: ana.id,
+        cursoId: computacao.id,
+        situacao: 'formado',
+        periodoFormatura: '2022.2',
+      }
+    )
   }
 }

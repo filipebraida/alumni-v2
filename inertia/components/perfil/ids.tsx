@@ -34,8 +34,10 @@ function formatarOrcid(raw: string): string {
  */
 export function PerfilIds({ form, set }: Props) {
   const orcidValid = form.orcid.replace(/[^0-9X]/gi, '').length === 16
-  const lattesValid =
-    /lattes\.cnpq\.br\/\d{16}/.test(form.lattes) || /^\d{16}$/.test(form.lattes.trim())
+  // Lattes ID é uma sequência de 16 dígitos. Aceita qualquer formato (URL
+  // completa, só o número, com/sem prefixo) desde que tenha 16 dígitos
+  // seguidos em algum lugar. Continuar digitando não derruba a validade.
+  const lattesValid = /\d{16}/.test(form.lattes)
 
   return (
     <PerfilSectionCard
@@ -161,13 +163,17 @@ function IdCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span className="font-semibold text-sm">{nome}</span>
-            {conectado ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 font-medium text-success-foreground text-xs">
-                <span className="inline-block size-1.5 rounded-full bg-current" /> conectado
-              </span>
-            ) : (
-              <span className="text-muted-foreground text-xs">não preenchido</span>
-            )}
+            <span
+              className={cn(
+                'inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium text-xs transition-colors',
+                conectado
+                  ? 'bg-success/10 text-success-foreground'
+                  : 'bg-muted text-muted-foreground'
+              )}
+            >
+              <span className="inline-block size-1.5 rounded-full bg-current" />
+              {conectado ? 'conectado' : 'não preenchido'}
+            </span>
           </div>
           {hint && <div className="mt-0.5 text-muted-foreground text-xs">{hint}</div>}
         </div>
@@ -197,7 +203,11 @@ function CampoLink({
         placeholder={placeholder}
         className="h-9 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
       />
-      {valid && <Check className="size-4 text-success" strokeWidth={2.5} />}
+      <Check
+        className={cn('size-4 text-success transition-opacity', valid ? 'opacity-100' : 'opacity-0')}
+        strokeWidth={2.5}
+        aria-hidden={!valid}
+      />
     </div>
   )
 }
@@ -212,10 +222,14 @@ function CampoPrefixo({
   children: ReactNode
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-md border border-input bg-background pl-3 shadow-xs focus-within:ring-2 focus-within:ring-ring">
+    <div className="flex items-center gap-2 rounded-md border border-input bg-background pl-3 pr-3 shadow-xs focus-within:ring-2 focus-within:ring-ring">
       <span className="font-medium text-muted-foreground text-xs">{prefixo}</span>
       {children}
-      {valid && <Check className="me-3 size-4 text-success" strokeWidth={2.5} />}
+      <Check
+        className={cn('size-4 text-success transition-opacity', valid ? 'opacity-100' : 'opacity-0')}
+        strokeWidth={2.5}
+        aria-hidden={!valid}
+      />
     </div>
   )
 }

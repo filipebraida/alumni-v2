@@ -31,6 +31,7 @@ export function UserMenu() {
   // Admin entra na gestão como super-gestor — a sidebar expõe a área administrativa.
   const podeIrParaGestao = perfil?.isGestor || perfil?.isAdmin
   const irParaGestao = () => router.visit(urlFor('gestao.show'))
+  const irParaPerfil = () => router.visit(urlFor('perfil.show'))
 
   const fallback = (
     <AvatarFallback className="bg-primary font-semibold text-primary-foreground text-xs">
@@ -55,7 +56,7 @@ export function UserMenu() {
             {user?.email && <p className="truncate text-muted-foreground text-xs">{user.email}</p>}
           </div>
           <MenuSeparator />
-          <MenuItem>
+          <MenuItem onClick={irParaPerfil}>
             <User /> Meu perfil
           </MenuItem>
           <MenuItem>
@@ -102,7 +103,9 @@ export function UserMenu() {
             </div>
           </SheetHeader>
           <SheetPanel className="flex flex-col gap-1 pb-8">
-            <ItemSheet icon={<User className="size-4" />}>Meu perfil</ItemSheet>
+            <ItemSheet icon={<User className="size-4" />} onClick={irParaPerfil}>
+              Meu perfil
+            </ItemSheet>
             <ItemSheet icon={<Settings className="size-4" />}>Configurações</ItemSheet>
             {podeIrParaGestao && (
               <ItemSheet icon={<Briefcase className="size-4" />} onClick={irParaGestao}>
