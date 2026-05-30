@@ -33,3 +33,27 @@ export const atualizarUsuarioValidator = vine.create({
   isAdmin: vine.boolean().optional(),
   cursosIds: vine.array(vine.number().withoutDecimals().positive()).distinct().optional(),
 })
+
+export const listarInstitutosValidator = vine.create({
+  q: vine.string().trim().minLength(1).maxLength(120).optional(),
+  page: vine.number().withoutDecimals().positive().optional(),
+  perPage: vine.number().withoutDecimals().positive().optional(),
+})
+
+export const listarCursosValidator = vine.create({
+  q: vine.string().trim().minLength(1).maxLength(120).optional(),
+  nivel: vine.enum(NIVEIS_ACADEMICOS).optional(),
+  institutoId: vine.number().withoutDecimals().positive().optional(),
+  page: vine.number().withoutDecimals().positive().optional(),
+  perPage: vine.number().withoutDecimals().positive().optional(),
+})
+
+export const TIPOS_FILTRO_USUARIO = ['admin', 'coordenador', 'sem_papel'] as const
+export type TipoFiltroUsuario = (typeof TIPOS_FILTRO_USUARIO)[number]
+
+export const listarUsuariosValidator = vine.create({
+  q: vine.string().trim().minLength(1).maxLength(120).optional(),
+  tipo: vine.enum(TIPOS_FILTRO_USUARIO).optional(),
+  page: vine.number().withoutDecimals().positive().optional(),
+  perPage: vine.number().withoutDecimals().positive().optional(),
+})

@@ -302,9 +302,9 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/admin').listarInstitutosValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.institutos.store': {
@@ -326,9 +326,9 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/admin').listarCursosValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.cursos.store': {
@@ -350,9 +350,9 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/admin').listarUsuariosValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/usuarios_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/usuarios_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/usuarios_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.usuarios.store': {

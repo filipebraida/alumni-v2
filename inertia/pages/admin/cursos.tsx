@@ -1,22 +1,28 @@
-import { Head } from '@inertiajs/react'
-import { GraduationCap } from 'lucide-react'
-import { type ReactElement } from 'react'
+import { Head, router } from '@inertiajs/react'
+import type { ColumnDef } from '@tanstack/react-table'
+import { GraduationCap, SearchIcon } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
 
+import { urlFor } from '~/client'
 import GestaoLayout from '~/layouts/gestao'
 import { Badge } from '~/components/ui/badge'
+import { Button } from '~/components/ui/button'
+import { DataTable } from '~/components/ui/data_table'
+import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import {
   CriarCursoDialog,
   type InstitutoOption,
 } from '~/components/admin/criar_curso_dialog'
+import { useDataTable, type PaginatorMeta } from '~/hooks/use_data_table'
 import { type InertiaProps } from '~/types'
 
 type NivelAcademico =
@@ -36,6 +42,8 @@ const NIVEL_LABELS: Record<NivelAcademico, string> = {
   posdoc: 'Pós-doutorado',
 }
 
+const TODOS = '_todos'
+
 type CursoRow = {
   id: number
   codigo: string
@@ -45,16 +53,67 @@ type CursoRow = {
   instituto: { id: number; nome: string; codigo: string }
 }
 
+type Filtros = {
+  q: string | null
+  nivel: NivelAcademico | null
+  institutoId: number | null
+}
+
 type PageProps = InertiaProps<{
-  cursos: CursoRow[]
+  cursos: { data: CursoRow[]; metadata: PaginatorMeta }
   institutos: InstitutoOption[]
+  filtros: Filtros
 }>
 
-export default function AdminCursos({ cursos, institutos }: PageProps) {
-  const subtitulo =
-    institutos.length === 0
-      ? 'Cadastre um instituto antes de criar cursos.'
-      : 'Catálogo de cursos da UFRRJ. Cada curso pertence a um instituto.'
+const COLUNAS: ColumnDef<CursoRow>[] = [
+  {
+    id: 'codigo',
+    header: 'Código',
+    cell: ({ row }) => (
+      <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
+    ),
+  },
+  {
+    id: 'nome',
+    header: 'Nome',
+    cell: ({ row }) => <span className="font-medium">{row.original.nome}</span>,
+  },
+  {
+    id: 'nivel',
+    header: 'Nível',
+    cell: ({ row }) => (
+      <span className="text-muted-foreground text-sm">{NIVEL_LABELS[row.original.nivel]}</span>
+    ),
+  },
+  {
+    id: 'instituto',
+    header: 'Instituto',
+    cell: ({ row }) => (
+      <span className="text-sm">
+        {row.original.instituto.nome}{' '}
+        <span className="text-muted-foreground text-xs">· {row.original.instituto.codigo}</span>
+      </span>
+    ),
+  },
+  {
+    id: 'ativo',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant={row.original.ativo ? 'success' : 'outline'}>
+        {row.original.ativo ? 'Ativo' : 'Inativo'}
+      </Badge>
+    ),
+  },
+]
+
+export default function AdminCursos({ cursos, institutos, filtros }: PageProps) {
+  const semInstitutos = institutos.length === 0
+  const algumFiltro = !!(filtros.q || filtros.nivel || filtros.institutoId)
+  const semDados = cursos.data.length === 0 && !algumFiltro && cursos.metadata.total === 0
+
+  const subtitulo = semInstitutos
+    ? 'Cadastre um instituto antes de criar cursos.'
+    : 'Catálogo de cursos da UFRRJ. Cada curso pertence a um instituto.'
 
   return (
     <>
@@ -67,46 +126,17 @@ export default function AdminCursos({ cursos, institutos }: PageProps) {
           acoes={<CriarCursoDialog institutos={institutos} />}
         />
 
-        {cursos.length === 0 ? (
+        {semDados ? (
           <EstadoVazio />
         ) : (
-          <div className="rounded-xl border bg-background">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Código</TableHead>
-                  <TableHead>Nome</TableHead>
-                  <TableHead>Nível</TableHead>
-                  <TableHead>Instituto</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {cursos.map((curso) => (
-                  <TableRow key={curso.id}>
-                    <TableCell className="font-mono text-xs uppercase tracking-wide">
-                      {curso.codigo}
-                    </TableCell>
-                    <TableCell className="font-medium">{curso.nome}</TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
-                      {NIVEL_LABELS[curso.nivel]}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {curso.instituto.nome}{' '}
-                      <span className="text-muted-foreground text-xs">
-                        · {curso.instituto.codigo}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={curso.ativo ? 'success' : 'outline'}>
-                        {curso.ativo ? 'Ativo' : 'Inativo'}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <>
+            <FiltrosBar
+              institutos={institutos}
+              filtros={filtros}
+              perPage={cursos.metadata.perPage}
+            />
+            <CursosDataTable cursos={cursos} filtros={filtros} algumFiltro={algumFiltro} />
+          </>
         )}
       </GestaoPage>
     </>
@@ -115,16 +145,178 @@ export default function AdminCursos({ cursos, institutos }: PageProps) {
 
 AdminCursos.layout = (page: ReactElement) => <GestaoLayout>{page}</GestaoLayout>
 
+function CursosDataTable({
+  cursos,
+  filtros,
+  algumFiltro,
+}: {
+  cursos: { data: CursoRow[]; metadata: PaginatorMeta }
+  filtros: Filtros
+  algumFiltro: boolean
+}) {
+  const remoteTableOptions = useDataTable({
+    data: cursos,
+    visit: ({ page, perPage }) =>
+      router.get(
+        urlFor('admin.cursos'),
+        {
+          page,
+          perPage,
+          q: filtros.q ?? undefined,
+          nivel: filtros.nivel ?? undefined,
+          institutoId: filtros.institutoId ?? undefined,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+          only: ['cursos', 'filtros'],
+        }
+      ),
+  })
+
+  return (
+    <DataTable
+      columns={COLUNAS}
+      data={cursos.data}
+      remoteTableOptions={remoteTableOptions}
+      paginationVariant="numbered"
+      emptyMessage={
+        algumFiltro ? 'Nenhum curso bate com os filtros.' : 'Nenhum curso cadastrado.'
+      }
+    />
+  )
+}
+
+function FiltrosBar({
+  institutos,
+  filtros,
+  perPage,
+}: {
+  institutos: InstitutoOption[]
+  filtros: Filtros
+  perPage: number
+}) {
+  const [busca, setBusca] = useState(filtros.q ?? '')
+
+  const aplicar = useCallback(
+    (proxQ: string, proxNivel: string, proxInstituto: string) => {
+      router.get(
+        urlFor('admin.cursos'),
+        {
+          q: proxQ.length > 0 ? proxQ : undefined,
+          nivel: proxNivel === TODOS ? undefined : proxNivel,
+          institutoId: proxInstituto === TODOS ? undefined : Number(proxInstituto),
+          perPage,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+          only: ['cursos', 'filtros'],
+        }
+      )
+    },
+    [perPage]
+  )
+
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => () => clearTimeout(timer.current ?? undefined), [])
+
+  const nivelValor = filtros.nivel ?? TODOS
+  const institutoValor = filtros.institutoId?.toString() ?? TODOS
+  const algumAtivo = !!(filtros.q || filtros.nivel || filtros.institutoId)
+
+  function aoBuscar(valor: string) {
+    setBusca(valor)
+    if (timer.current) clearTimeout(timer.current)
+    timer.current = setTimeout(() => aplicar(valor, nivelValor, institutoValor), 300)
+  }
+
+  function limpar() {
+    setBusca('')
+    aplicar('', TODOS, TODOS)
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <InputGroup className="w-full sm:w-72">
+        <InputGroupAddon>
+          <SearchIcon />
+        </InputGroupAddon>
+        <InputGroupInput
+          type="text"
+          name="busca-cursos"
+          value={busca}
+          onChange={(e) => aoBuscar(e.target.value)}
+          placeholder="Buscar por nome ou código…"
+          autoComplete="off"
+        />
+      </InputGroup>
+
+      <Select
+        value={nivelValor}
+        onValueChange={(v) => aplicar(busca, v ?? TODOS, institutoValor)}
+      >
+        <SelectTrigger className="w-44">
+          <SelectValue>
+            {(v) =>
+              !v || v === TODOS ? 'Todos os níveis' : NIVEL_LABELS[v as NivelAcademico]
+            }
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={TODOS}>Todos os níveis</SelectItem>
+          {(Object.keys(NIVEL_LABELS) as NivelAcademico[]).map((nivel) => (
+            <SelectItem key={nivel} value={nivel}>
+              {NIVEL_LABELS[nivel]}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={institutoValor}
+        onValueChange={(v) => aplicar(busca, nivelValor, v ?? TODOS)}
+      >
+        <SelectTrigger className="w-48">
+          <SelectValue>
+            {(v) =>
+              !v || v === TODOS
+                ? 'Todos os institutos'
+                : institutos.find((i) => i.id.toString() === v)?.nome ?? '—'
+            }
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={TODOS}>Todos os institutos</SelectItem>
+          {institutos.map((instituto) => (
+            <SelectItem key={instituto.id} value={instituto.id.toString()}>
+              {instituto.nome}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      {algumAtivo && (
+        <Button variant="ghost" size="sm" onClick={limpar}>
+          Limpar
+        </Button>
+      )}
+    </div>
+  )
+}
+
 function EstadoVazio() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed bg-background py-14 text-center">
-      <GraduationCap className="size-8 text-muted-foreground" />
-      <div>
-        <p className="font-medium text-sm">Nenhum curso cadastrado.</p>
-        <p className="mt-1 text-muted-foreground text-xs">
-          Clique em "Novo curso" para começar.
-        </p>
-      </div>
-    </div>
+    <Empty>
+      <EmptyMedia variant="icon">
+        <GraduationCap />
+      </EmptyMedia>
+      <EmptyContent>
+        <EmptyTitle>Nenhum curso cadastrado.</EmptyTitle>
+        <EmptyDescription>Use "Novo curso" para começar a montar o catálogo.</EmptyDescription>
+      </EmptyContent>
+    </Empty>
   )
 }

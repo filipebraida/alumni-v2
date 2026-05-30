@@ -3,15 +3,24 @@ import ListarUsuarios from '#queries/listar_usuarios'
 import ListarCursos from '#queries/listar_cursos'
 import CriarUsuario from '#actions/criar_usuario'
 import AtualizarUsuario from '#actions/atualizar_usuario'
-import { atualizarUsuarioValidator, criarUsuarioValidator } from '#validators/admin'
+import {
+  atualizarUsuarioValidator,
+  criarUsuarioValidator,
+  listarUsuariosValidator,
+} from '#validators/admin'
 
 export default class UsuariosController {
-  async index({ inertia }: HttpContext) {
+  async index({ inertia, request }: HttpContext) {
+    const { q, tipo, page, perPage } = await request.validateUsing(listarUsuariosValidator)
     const [usuarios, cursos] = await Promise.all([
-      new ListarUsuarios().handle(),
-      new ListarCursos().handle(),
+      new ListarUsuarios().handle({ q, tipo, page: page ?? 1, perPage: perPage ?? 20 }),
+      new ListarCursos().handle({ perPage: 200 }),
     ])
-    return inertia.render('admin/usuarios', { usuarios, cursos })
+    return inertia.render('admin/usuarios', {
+      usuarios: { data: usuarios.data, metadata: usuarios.meta },
+      cursos: cursos.data,
+      filtros: { q: q ?? null, tipo: tipo ?? null },
+    })
   }
 
   async store({ request, response, session }: HttpContext) {

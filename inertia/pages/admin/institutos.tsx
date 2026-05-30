@@ -1,19 +1,18 @@
-import { Head } from '@inertiajs/react'
-import { Building2 } from 'lucide-react'
-import { type ReactElement } from 'react'
+import { Head, router } from '@inertiajs/react'
+import type { ColumnDef } from '@tanstack/react-table'
+import { Building2, SearchIcon } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
 
+import { urlFor } from '~/client'
 import GestaoLayout from '~/layouts/gestao'
 import { Badge } from '~/components/ui/badge'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table'
+import { Button } from '~/components/ui/button'
+import { DataTable } from '~/components/ui/data_table'
+import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { CriarInstitutoDialog } from '~/components/admin/criar_instituto_dialog'
+import { useDataTable, type PaginatorMeta } from '~/hooks/use_data_table'
 import { type InertiaProps } from '~/types'
 
 type InstitutoRow = {
@@ -24,11 +23,48 @@ type InstitutoRow = {
   totalCursos: number
 }
 
+type Filtros = { q: string | null }
+
 type PageProps = InertiaProps<{
-  institutos: InstitutoRow[]
+  institutos: { data: InstitutoRow[]; metadata: PaginatorMeta }
+  filtros: Filtros
 }>
 
-export default function AdminInstitutos({ institutos }: PageProps) {
+const COLUNAS: ColumnDef<InstitutoRow>[] = [
+  {
+    id: 'codigo',
+    header: 'Código',
+    cell: ({ row }) => (
+      <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
+    ),
+  },
+  {
+    id: 'nome',
+    header: 'Nome',
+    cell: ({ row }) => <span className="font-medium">{row.original.nome}</span>,
+  },
+  {
+    id: 'totalCursos',
+    header: () => <span className="block text-end">Cursos</span>,
+    cell: ({ row }) => (
+      <div className="text-end tabular-nums">{row.original.totalCursos}</div>
+    ),
+  },
+  {
+    id: 'ativo',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant={row.original.ativo ? 'success' : 'outline'}>
+        {row.original.ativo ? 'Ativo' : 'Inativo'}
+      </Badge>
+    ),
+  },
+]
+
+export default function AdminInstitutos({ institutos, filtros }: PageProps) {
+  const algumFiltro = !!filtros.q
+  const semDados = institutos.data.length === 0 && !algumFiltro && institutos.metadata.total === 0
+
   return (
     <>
       <Head title="Administração · Institutos" />
@@ -40,37 +76,13 @@ export default function AdminInstitutos({ institutos }: PageProps) {
           acoes={<CriarInstitutoDialog />}
         />
 
-        {institutos.length === 0 ? (
+        {semDados ? (
           <EstadoVazio />
         ) : (
-          <div className="rounded-xl border bg-background">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Código</TableHead>
-                  <TableHead>Nome</TableHead>
-                  <TableHead className="text-end">Cursos</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {institutos.map((instituto) => (
-                  <TableRow key={instituto.id}>
-                    <TableCell className="font-mono text-xs uppercase tracking-wide">
-                      {instituto.codigo}
-                    </TableCell>
-                    <TableCell className="font-medium">{instituto.nome}</TableCell>
-                    <TableCell className="text-end tabular-nums">{instituto.totalCursos}</TableCell>
-                    <TableCell>
-                      <Badge variant={instituto.ativo ? 'success' : 'outline'}>
-                        {instituto.ativo ? 'Ativo' : 'Inativo'}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <>
+            <FiltrosBar filtros={filtros} perPage={institutos.metadata.perPage} />
+            <InstitutosDataTable institutos={institutos} filtros={filtros} algumFiltro={algumFiltro} />
+          </>
         )}
       </GestaoPage>
     </>
@@ -79,16 +91,115 @@ export default function AdminInstitutos({ institutos }: PageProps) {
 
 AdminInstitutos.layout = (page: ReactElement) => <GestaoLayout>{page}</GestaoLayout>
 
-function EstadoVazio() {
+function InstitutosDataTable({
+  institutos,
+  filtros,
+  algumFiltro,
+}: {
+  institutos: { data: InstitutoRow[]; metadata: PaginatorMeta }
+  filtros: Filtros
+  algumFiltro: boolean
+}) {
+  const remoteTableOptions = useDataTable({
+    data: institutos,
+    visit: ({ page, perPage }) =>
+      router.get(
+        urlFor('admin.institutos'),
+        {
+          page,
+          perPage,
+          q: filtros.q ?? undefined,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+          only: ['institutos', 'filtros'],
+        }
+      ),
+  })
+
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed bg-background py-14 text-center">
-      <Building2 className="size-8 text-muted-foreground" />
-      <div>
-        <p className="font-medium text-sm">Nenhum instituto cadastrado.</p>
-        <p className="mt-1 text-muted-foreground text-xs">
-          Clique em "Novo instituto" para começar.
-        </p>
-      </div>
+    <DataTable
+      columns={COLUNAS}
+      data={institutos.data}
+      remoteTableOptions={remoteTableOptions}
+      paginationVariant="numbered"
+      emptyMessage={
+        algumFiltro ? 'Nenhum instituto bate com a busca.' : 'Nenhum instituto cadastrado.'
+      }
+    />
+  )
+}
+
+function FiltrosBar({ filtros, perPage }: { filtros: Filtros; perPage: number }) {
+  const [busca, setBusca] = useState(filtros.q ?? '')
+
+  const aplicar = useCallback(
+    (proxQ: string) => {
+      router.get(
+        urlFor('admin.institutos'),
+        { q: proxQ.length > 0 ? proxQ : undefined, perPage },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+          only: ['institutos', 'filtros'],
+        }
+      )
+    },
+    [perPage]
+  )
+
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => () => clearTimeout(timer.current ?? undefined), [])
+
+  function aoBuscar(valor: string) {
+    setBusca(valor)
+    if (timer.current) clearTimeout(timer.current)
+    timer.current = setTimeout(() => aplicar(valor), 300)
+  }
+
+  function limpar() {
+    setBusca('')
+    aplicar('')
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <InputGroup className="w-full sm:w-72">
+        <InputGroupAddon>
+          <SearchIcon />
+        </InputGroupAddon>
+        <InputGroupInput
+          type="text"
+          name="busca-institutos"
+          value={busca}
+          onChange={(e) => aoBuscar(e.target.value)}
+          placeholder="Buscar por nome ou código…"
+          autoComplete="off"
+        />
+      </InputGroup>
+      {!!filtros.q && (
+        <Button variant="ghost" size="sm" onClick={limpar}>
+          Limpar
+        </Button>
+      )}
     </div>
   )
 }
+
+function EstadoVazio() {
+  return (
+    <Empty>
+      <EmptyMedia variant="icon">
+        <Building2 />
+      </EmptyMedia>
+      <EmptyContent>
+        <EmptyTitle>Nenhum instituto cadastrado.</EmptyTitle>
+        <EmptyDescription>Use "Novo instituto" para começar a montar o catálogo.</EmptyDescription>
+      </EmptyContent>
+    </Empty>
+  )
+}
+

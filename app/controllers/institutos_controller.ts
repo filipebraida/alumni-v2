@@ -1,12 +1,21 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ListarInstitutos from '#queries/listar_institutos'
 import CriarInstituto from '#actions/criar_instituto'
-import { criarInstitutoValidator } from '#validators/admin'
+import { criarInstitutoValidator, listarInstitutosValidator } from '#validators/admin'
 
 export default class InstitutosController {
-  async index({ inertia }: HttpContext) {
-    const institutos = await new ListarInstitutos().handle()
-    return inertia.render('admin/institutos', { institutos })
+  async index({ inertia, request }: HttpContext) {
+    const { q, page, perPage } = await request.validateUsing(listarInstitutosValidator)
+    const resultado = await new ListarInstitutos().handle({
+      q,
+      page: page ?? 1,
+      perPage: perPage ?? 20,
+    })
+
+    return inertia.render('admin/institutos', {
+      institutos: { data: resultado.data, metadata: resultado.meta },
+      filtros: { q: q ?? null },
+    })
   }
 
   async store({ request, response, session }: HttpContext) {
