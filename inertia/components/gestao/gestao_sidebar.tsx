@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   LogOut,
   Settings,
+  ShieldUser,
   Users,
 } from 'lucide-react'
 import { urlFor } from '~/client'
@@ -151,6 +152,17 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
                 >
                   <GraduationCap />
                   <span>Cursos</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={navAtivo}
+                  tooltip="Usuários"
+                  render={<Link href={urlFor('admin.usuarios')} />}
+                  isActive={page.url.startsWith('/admin/usuarios')}
+                >
+                  <ShieldUser />
+                  <span>Usuários</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

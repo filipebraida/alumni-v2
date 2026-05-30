@@ -29,5 +29,6 @@ declare module '@adonisjs/inertia/types' {
     'admin/institutos': ExtractProps<(typeof import('../../inertia/pages/admin/institutos.tsx'))['default']>
     'admin/cursos': ExtractProps<(typeof import('../../inertia/pages/admin/cursos.tsx'))['default']>
     'gestao/egresso': ExtractProps<(typeof import('../../inertia/pages/gestao/egresso.tsx'))['default']>
+    'admin/usuarios': ExtractProps<(typeof import('../../inertia/pages/admin/usuarios.tsx'))['default']>
   }
 }

@@ -174,6 +174,24 @@ const routes = {
     tokens: [{"old":"/admin/cursos","type":0,"val":"admin","end":""},{"old":"/admin/cursos","type":0,"val":"cursos","end":""}],
     types: placeholder as Registry['admin.cursos.store']['types'],
   },
+  'admin.usuarios': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/usuarios',
+    tokens: [{"old":"/admin/usuarios","type":0,"val":"admin","end":""},{"old":"/admin/usuarios","type":0,"val":"usuarios","end":""}],
+    types: placeholder as Registry['admin.usuarios']['types'],
+  },
+  'admin.usuarios.store': {
+    methods: ["POST"],
+    pattern: '/admin/usuarios',
+    tokens: [{"old":"/admin/usuarios","type":0,"val":"admin","end":""},{"old":"/admin/usuarios","type":0,"val":"usuarios","end":""}],
+    types: placeholder as Registry['admin.usuarios.store']['types'],
+  },
+  'admin.usuarios.update': {
+    methods: ["PUT"],
+    pattern: '/admin/usuarios/:id',
+    tokens: [{"old":"/admin/usuarios/:id","type":0,"val":"admin","end":""},{"old":"/admin/usuarios/:id","type":0,"val":"usuarios","end":""},{"old":"/admin/usuarios/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.usuarios.update']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

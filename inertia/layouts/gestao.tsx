@@ -15,6 +15,7 @@ function rotuloDaPagina(url: string): string {
   if (url === '/gestao' || url.startsWith('/gestao?')) return 'Visão geral'
   if (url.startsWith('/admin/institutos')) return 'Institutos'
   if (url.startsWith('/admin/cursos')) return 'Cursos'
+  if (url.startsWith('/admin/usuarios')) return 'Usuários'
   return 'Gestão'
 }
 

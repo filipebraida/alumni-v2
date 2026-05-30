@@ -20,3 +20,16 @@ export const criarCursoValidator = vine.create({
   nivel: vine.enum(NIVEIS_ACADEMICOS),
   institutoId: vine.number().withoutDecimals().positive(),
 })
+
+export const criarUsuarioValidator = vine.create({
+  email: vine.string().trim().toLowerCase().email().maxLength(254),
+  fullName: vine.string().trim().minLength(3).maxLength(255),
+  isAdmin: vine.boolean().optional(),
+  cursosIds: vine.array(vine.number().withoutDecimals().positive()).distinct().optional(),
+})
+
+export const atualizarUsuarioValidator = vine.create({
+  fullName: vine.string().trim().minLength(3).maxLength(255),
+  isAdmin: vine.boolean().optional(),
+  cursosIds: vine.array(vine.number().withoutDecimals().positive()).distinct().optional(),
+})

@@ -32,6 +32,9 @@ export type ScannedRoutes = {
     'admin.institutos.store': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
     'admin.cursos.store': { paramsTuple?: []; params?: {} }
+    'admin.usuarios': { paramsTuple?: []; params?: {} }
+    'admin.usuarios.store': { paramsTuple?: []; params?: {} }
+    'admin.usuarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -50,6 +53,7 @@ export type ScannedRoutes = {
     'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
+    'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -68,6 +72,7 @@ export type ScannedRoutes = {
     'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
+    'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'session.store': { paramsTuple?: []; params?: {} }
@@ -80,12 +85,14 @@ export type ScannedRoutes = {
     'gestao.egressos.importacoes.store': { paramsTuple?: []; params?: {} }
     'admin.institutos.store': { paramsTuple?: []; params?: {} }
     'admin.cursos.store': { paramsTuple?: []; params?: {} }
+    'admin.usuarios.store': { paramsTuple?: []; params?: {} }
   }
   DELETE: {
     'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }
   }
   PUT: {
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
+    'admin.usuarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

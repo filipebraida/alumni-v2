@@ -48,5 +48,9 @@ export interface ApiDefinition {
     cursos: typeof routes['admin.cursos'] & {
       store: typeof routes['admin.cursos.store']
     }
+    usuarios: typeof routes['admin.usuarios'] & {
+      store: typeof routes['admin.usuarios.store']
+      update: typeof routes['admin.usuarios.update']
+    }
   }
 }

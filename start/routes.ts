@@ -89,5 +89,11 @@ router
       .as('admin.institutos.store')
     router.get('/admin/cursos', [controllers.Cursos, 'index']).as('admin.cursos')
     router.post('/admin/cursos', [controllers.Cursos, 'store']).as('admin.cursos.store')
+    router.get('/admin/usuarios', [controllers.Usuarios, 'index']).as('admin.usuarios')
+    router.post('/admin/usuarios', [controllers.Usuarios, 'store']).as('admin.usuarios.store')
+    router
+      .put('/admin/usuarios/:id', [controllers.Usuarios, 'update'])
+      .where('id', router.matchers.number())
+      .as('admin.usuarios.update')
   })
   .use([middleware.auth(), middleware.gestor(), middleware.admin()])
