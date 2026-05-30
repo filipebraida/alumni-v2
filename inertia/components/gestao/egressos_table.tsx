@@ -47,7 +47,7 @@ export type EgressosResponse = {
   metadata: PaginatorMeta
 }
 
-type SituacaoFiltro = 'todos' | 'formado' | 'cursando'
+type SituacaoFiltro = 'todos' | 'formado' | 'cursando' | 'evadido'
 
 const SITUACAO_LABEL: Record<Situacao, string> = {
   cursando: 'Cursando',
@@ -77,6 +77,7 @@ const FILTROS_SITUACAO: { value: SituacaoFiltro; label: string }[] = [
   { value: 'todos', label: 'Todos' },
   { value: 'formado', label: 'Formados' },
   { value: 'cursando', label: 'Cursando' },
+  { value: 'evadido', label: 'Evadidos' },
 ]
 
 const TODAS_TURMAS = 'todas'
@@ -338,7 +339,9 @@ export function EgressosTable({
 }) {
   const [busca, setBusca] = useState(q ?? '')
   const [situacao, setSituacao] = useState<SituacaoFiltro>(
-    situacoes[0] === 'formado' || situacoes[0] === 'cursando' ? situacoes[0] : 'todos'
+    situacoes[0] === 'formado' || situacoes[0] === 'cursando' || situacoes[0] === 'evadido'
+      ? situacoes[0]
+      : 'todos'
   )
   const [turmaFiltro, setTurmaFiltro] = useState<string>(turma ?? TODAS_TURMAS)
   const [selecionados, setSelecionados] = useState<RowSelectionState>({})

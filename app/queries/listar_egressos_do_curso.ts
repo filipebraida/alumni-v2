@@ -49,9 +49,9 @@ export interface ListarEgressosDoCursoResult {
 
 /**
  * Roster de egressos de um curso para a gestão analisar, paginado e filtrado no
- * servidor: uma linha por matrícula no curso (formado/cursando por padrão), com
- * o status de frescor derivado da Resposta mais recente do egresso. A busca (`q`)
- * casa nome, e-mail de contato e código da matrícula.
+ * servidor: uma linha por matrícula no curso, com o status de frescor derivado
+ * da Resposta mais recente do egresso. A busca (`q`) casa nome, e-mail de
+ * contato e código da matrícula.
  */
 export default class ListarEgressosDoCurso {
   async handle({
@@ -64,14 +64,16 @@ export default class ListarEgressosDoCurso {
     sort,
     order,
   }: ListarEgressosDoCursoInput): Promise<ListarEgressosDoCursoResult> {
-    const situacoesAlvo = situacoes?.length ? situacoes : ['formado', 'cursando']
     const dir: DirecaoOrdenacao = order ?? 'asc'
 
     const query = Matricula.query()
       .where('matriculas.curso_id', cursoId)
-      .whereIn('matriculas.situacao', situacoesAlvo)
       .preload('egresso', (egresso) => egresso.preload('user'))
       .select('matriculas.*')
+
+    if (situacoes?.length) {
+      query.whereIn('matriculas.situacao', situacoes)
+    }
 
     if (turma) {
       query.where('matriculas.periodo_formatura', turma)
