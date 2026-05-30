@@ -33,6 +33,7 @@ export type ImportacaoEgressosRelatorio = {
   novos: number
   vinculados: number
   atualizados: number
+  inalterados: number
   rejeitados: LinhaRejeitada[]
 }
 
@@ -41,8 +42,9 @@ export type ImportacaoEgressosRelatorio = {
  *  - CPF inexistente → cria User + Egresso + Matrícula (balde "novos").
  *  - CPF já cadastrado fora do curso → cria só a Matrícula (balde "vinculados").
  *  - CPF já cadastrado e neste curso → atualiza só `situacao` e
- *    `periodoFormatura` da matrícula existente (balde "atualizados"). Identidade
- *    (nome, CPF, e-mail) nunca é sobrescrita.
+ *    `periodoFormatura` da matrícula existente (balde "atualizados") OU, se os
+ *    valores já batem com o que está no banco, contabiliza como "inalterados"
+ *    sem tocar no registro. Identidade (nome, CPF, e-mail) nunca é sobrescrita.
  *  - Conflito de matriculaCodigo, CPF inválido ou e-mail duplicado de outro
  *    user → rejeita a linha (balde "rejeitados"), informando o motivo.
  * Cada linha roda em sua própria transação; uma linha rejeitada não desfaz as
@@ -58,6 +60,7 @@ export default class ImportarEgressosDoCsv {
       novos: 0,
       vinculados: 0,
       atualizados: 0,
+      inalterados: 0,
       rejeitados: [],
     }
 
@@ -110,6 +113,7 @@ export default class ImportarEgressosDoCsv {
             if (matriculaNoCurso) {
               matriculaNoCurso.situacao = situacao
               matriculaNoCurso.periodoFormatura = periodoFormatura
+              if (!matriculaNoCurso.$isDirty) return { balde: 'inalterados' as const }
               await matriculaNoCurso.useTransaction(trx).save()
               return { balde: 'atualizados' as const }
             }
@@ -176,6 +180,7 @@ export default class ImportarEgressosDoCsv {
         if (resultado.balde === 'novos') relatorio.novos++
         else if (resultado.balde === 'vinculados') relatorio.vinculados++
         else if (resultado.balde === 'atualizados') relatorio.atualizados++
+        else if (resultado.balde === 'inalterados') relatorio.inalterados++
         else
           relatorio.rejeitados.push({
             linha: numeroLinha,

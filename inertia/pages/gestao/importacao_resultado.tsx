@@ -15,6 +15,7 @@ type Relatorio = {
   novos: number
   vinculados: number
   atualizados: number
+  inalterados: number
   rejeitados: LinhaRejeitada[]
 }
 
@@ -46,10 +47,11 @@ export default function ImportacaoResultado({ relatorio, cursoNome, nomeArquivo 
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
             <SumarioCard label="Novos" valor={relatorio.novos} />
             <SumarioCard label="Vinculados" valor={relatorio.vinculados} />
             <SumarioCard label="Atualizados" valor={relatorio.atualizados} />
+            <SumarioCard label="Inalterados" valor={relatorio.inalterados} />
             <SumarioCard
               label="Rejeitados"
               valor={relatorio.rejeitados.length}
