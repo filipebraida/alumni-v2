@@ -4,6 +4,16 @@ import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react'
 
 import { urlFor } from '~/client'
 import AppLayout from '~/layouts/app'
+import {
+  AlertDialog,
+  AlertDialogClose,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogPopup,
+  AlertDialogTitle,
+} from '~/components/ui/alert_dialog'
+import { Button } from '~/components/ui/button'
 import { PerfilRail, type PerfilSecao, type PerfilSecaoId } from '~/components/perfil/rail'
 import { PerfilFoto } from '~/components/perfil/foto'
 import { PerfilContato } from '~/components/perfil/contato'
@@ -113,6 +123,16 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
     setSalvo(false)
   }
 
+  const [confirmandoSaida, setConfirmandoSaida] = useState(false)
+  const voltar = () => {
+    if (dirty) setConfirmandoSaida(true)
+    else router.visit(urlFor('perfil.show'))
+  }
+  const sairSemSalvar = () => {
+    setConfirmandoSaida(false)
+    router.visit(urlFor('perfil.show'))
+  }
+
   return (
     <>
       <Head title="Editar perfil · SAE UFRRJ" />
@@ -159,7 +179,27 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
         processing={processando}
         onSalvar={salvar}
         onDescartar={descartar}
+        onVoltar={voltar}
       />
+
+      <AlertDialog open={confirmandoSaida} onOpenChange={setConfirmandoSaida}>
+        <AlertDialogPopup>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sair sem salvar?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Você tem alterações não salvas. Se sair agora, elas serão perdidas.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogClose render={<Button variant="outline" />}>
+              Continuar editando
+            </AlertDialogClose>
+            <Button variant="destructive" onClick={sairSemSalvar}>
+              Sair sem salvar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogPopup>
+      </AlertDialog>
     </>
   )
 }

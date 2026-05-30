@@ -72,7 +72,7 @@ export function PerfilIds({ form, set }: Props) {
           <CampoLink
             value={form.lattes}
             onChange={(v) => set('lattes', v)}
-            placeholder="http://lattes.cnpq.br/0000000000000000"
+            placeholder="https://lattes.cnpq.br/0000000000000000"
             valid={lattesValid}
           />
         </IdCard>
