@@ -6,6 +6,9 @@ export const trocarCursoAtivoValidator = vine.create({
   cursoId: vine.number().positive(),
 })
 
+/** Colunas pelas quais a listagem de egressos pode ser ordenada. */
+export const ORDENAVEIS_EGRESSOS = ['egresso', 'turma', 'situacao', 'status'] as const
+
 /** Valida os parâmetros da listagem paginada/filtrada de egressos da gestão. */
 export const listarEgressosValidator = vine.create({
   page: vine.number().withoutDecimals().positive().optional(),
@@ -13,6 +16,8 @@ export const listarEgressosValidator = vine.create({
   q: vine.string().trim().minLength(1).maxLength(255).optional(),
   situacoes: vine.array(vine.enum(SITUACOES_MATRICULA)).optional(),
   turma: vine.string().trim().minLength(1).maxLength(20).optional(),
+  sort: vine.enum(ORDENAVEIS_EGRESSOS).optional(),
+  order: vine.enum(['asc', 'desc'] as const).optional(),
 })
 
 /** Valida o cadastro direto de um egresso no roster do curso ativo. */

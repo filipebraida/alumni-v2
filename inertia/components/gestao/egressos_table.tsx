@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { ColumnDef, RowSelectionState } from '@tanstack/react-table'
+import type { ColumnDef, OnChangeFn, RowSelectionState, SortingState } from '@tanstack/react-table'
 import { EyeIcon, BellIcon, MailIcon, MoreHorizontalIcon, SearchIcon, XIcon } from 'lucide-react'
 
 import { urlFor } from '~/client'
@@ -25,6 +25,8 @@ import { EgressosBulkBar } from '~/components/gestao/egressos_bulk_bar'
 
 export type Situacao = 'cursando' | 'formado' | 'evadido'
 export type StatusFrescor = 'em_dia' | 'desatualizado' | 'sem_registro'
+export type OrdenarPor = 'egresso' | 'turma' | 'situacao' | 'status'
+export type DirecaoOrdenacao = 'asc' | 'desc'
 
 export type EgressoRow = {
   egressoId: number
@@ -182,9 +184,27 @@ function AcoesEgresso({ egresso }: { egresso: EgressoRow }) {
   )
 }
 
+/** Versão compacta do frescor do questionário (usada inline em xs). */
+function FrescorInline({ egresso }: { egresso: EgressoRow }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-xs">
+      <span className={cn('size-1.5 shrink-0 rounded-full', FRESCOR_DOT[egresso.status])} />
+      {egresso.status === 'sem_registro' ? (
+        <span className="text-muted-foreground italic">nunca respondeu</span>
+      ) : (
+        <span className="text-muted-foreground tabular-nums">
+          {formatarData(egresso.ultimaAtualizacao)}
+        </span>
+      )}
+    </span>
+  )
+}
+
 const colunas: ColumnDef<EgressoRow>[] = [
   {
     id: 'select',
+    enableSorting: false,
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -204,6 +224,7 @@ const colunas: ColumnDef<EgressoRow>[] = [
   {
     id: 'egresso',
     header: 'Egresso',
+    enableSorting: true,
     cell: ({ row }) => {
       const egresso = row.original
       return (
@@ -218,6 +239,11 @@ const colunas: ColumnDef<EgressoRow>[] = [
             {egresso.email && (
               <div className="truncate text-muted-foreground text-xs">{egresso.email}</div>
             )}
+            {/* xs: absorve a info das colunas escondidas (situação + questionário) */}
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+              <SituacaoBadge situacao={egresso.situacao} />
+              <FrescorInline egresso={egresso} />
+            </div>
           </div>
         </div>
       )
@@ -226,6 +252,8 @@ const colunas: ColumnDef<EgressoRow>[] = [
   {
     id: 'turma',
     header: 'Turma',
+    enableSorting: true,
+    meta: { responsiveClass: 'hidden md:table-cell' },
     cell: ({ row }) => (
       <div className="leading-tight">
         <div className="text-sm tabular-nums">{row.original.periodoFormatura ?? '—'}</div>
@@ -236,13 +264,18 @@ const colunas: ColumnDef<EgressoRow>[] = [
     ),
   },
   {
+    id: 'situacao',
     accessorKey: 'situacao',
     header: 'Situação',
+    enableSorting: true,
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => <SituacaoBadge situacao={row.original.situacao} />,
   },
   {
     id: 'vinculo',
     header: 'Vínculo atual',
+    enableSorting: false,
+    meta: { responsiveClass: 'hidden lg:table-cell' },
     cell: ({ row }) => {
       const { cargo, empregador } = row.original
       if (!cargo && !empregador) {
@@ -257,8 +290,11 @@ const colunas: ColumnDef<EgressoRow>[] = [
     },
   },
   {
+    id: 'status',
     accessorKey: 'status',
-    header: 'Questionário',
+    header: 'Questionário · atualizado em',
+    enableSorting: true,
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => {
       const egresso = row.original
       return (
@@ -276,6 +312,7 @@ const colunas: ColumnDef<EgressoRow>[] = [
   {
     id: 'acoes',
     header: '',
+    enableSorting: false,
     cell: ({ row }) => <AcoesEgresso egresso={row.original} />,
   },
 ]
@@ -286,14 +323,16 @@ export function EgressosTable({
   situacoes,
   turma,
   turmas,
-  totalCurso,
+  sort,
+  order,
 }: {
   egressos: EgressosResponse
   q: string | null
   situacoes: Situacao[]
   turma: string | null
   turmas: string[]
-  totalCurso: number
+  sort: OrdenarPor | null
+  order: DirecaoOrdenacao | null
 }) {
   const [busca, setBusca] = useState(q ?? '')
   const [situacao, setSituacao] = useState<SituacaoFiltro>(
@@ -317,16 +356,18 @@ export function EgressosTable({
           situacoes: proxSituacao === 'todos' ? undefined : [proxSituacao],
           turma: proxTurma === TODAS_TURMAS ? undefined : proxTurma,
           perPage: itensPorPagina,
+          sort: sort ?? undefined,
+          order: order ?? undefined,
         },
         {
           preserveState: true,
           preserveScroll: true,
           replace: true,
-          only: ['egressos', 'q', 'situacoes', 'turma'],
+          only: ['egressos', 'q', 'situacoes', 'turma', 'sort', 'order'],
         }
       )
     },
-    []
+    [sort, order]
   )
 
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -368,10 +409,48 @@ export function EgressosTable({
           q: busca.length > 0 ? busca : undefined,
           situacoes: situacao === 'todos' ? undefined : [situacao],
           turma: turmaFiltro === TODAS_TURMAS ? undefined : turmaFiltro,
+          sort: sort ?? undefined,
+          order: order ?? undefined,
         },
         { preserveState: true, preserveScroll: true, replace: true }
       ),
   })
+
+  // Sorting é derivado das props (server-side via URL). Ao clicar num header,
+  // o callback faz um router.get com sort/order — o servidor responde já
+  // ordenado, e o estado volta pelas props na próxima render.
+  const sorting = useMemo<SortingState>(
+    () => (sort && order ? [{ id: sort, desc: order === 'desc' }] : []),
+    [sort, order]
+  )
+
+  const aoOrdenar = useCallback<OnChangeFn<SortingState>>(
+    (updater) => {
+      const proximo = typeof updater === 'function' ? updater(sorting) : updater
+      const primeiro = proximo[0]
+      const proxSort = (primeiro?.id ?? null) as OrdenarPor | null
+      const proxOrder: DirecaoOrdenacao | null = primeiro ? (primeiro.desc ? 'desc' : 'asc') : null
+
+      router.get(
+        urlFor('gestao.egressos'),
+        {
+          q: busca.length > 0 ? busca : undefined,
+          situacoes: situacao === 'todos' ? undefined : [situacao],
+          turma: turmaFiltro === TODAS_TURMAS ? undefined : turmaFiltro,
+          perPage,
+          sort: proxSort ?? undefined,
+          order: proxOrder ?? undefined,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+          only: ['egressos', 'sort', 'order'],
+        }
+      )
+    },
+    [sorting, busca, situacao, turmaFiltro, perPage]
+  )
 
   const aoBuscar = (valor: string) => {
     setBusca(valor)
@@ -471,13 +550,6 @@ export function EgressosTable({
             </SelectContent>
           </Select>
         )}
-
-        <div className="text-muted-foreground text-sm sm:ml-auto">
-          <span className="font-medium text-foreground tabular-nums">
-            {egressos.metadata.total}
-          </span>{' '}
-          de <span className="tabular-nums">{totalCurso}</span>
-        </div>
       </div>
 
       <DataTable
@@ -486,6 +558,9 @@ export function EgressosTable({
         remoteTableOptions={remoteTableOptions}
         rowSelection={selecionados}
         onRowSelectionChange={setSelecionados}
+        sorting={sorting}
+        onSortingChange={aoOrdenar}
+        paginationVariant="numbered"
         getRowId={(egresso) => String(egresso.egressoId)}
         emptyMessage="Nenhum egresso encontrado."
       />

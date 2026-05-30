@@ -3,6 +3,9 @@ import Matricula from '#models/matricula'
 import Resposta from '#models/resposta'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
 
+export type OrdenarEgressosPor = 'egresso' | 'turma' | 'situacao' | 'status'
+export type DirecaoOrdenacao = 'asc' | 'desc'
+
 export interface ListarEgressosDoCursoInput {
   cursoId: number
   page: number
@@ -10,6 +13,8 @@ export interface ListarEgressosDoCursoInput {
   q?: string
   situacoes?: SituacaoMatricula[]
   turma?: string
+  sort?: OrdenarEgressosPor
+  order?: DirecaoOrdenacao
 }
 
 /** Frescor do egresso em relação à janela de atualização (Resposta). */
@@ -56,31 +61,58 @@ export default class ListarEgressosDoCurso {
     q,
     situacoes,
     turma,
+    sort,
+    order,
   }: ListarEgressosDoCursoInput): Promise<ListarEgressosDoCursoResult> {
     const situacoesAlvo = situacoes?.length ? situacoes : ['formado', 'cursando']
+    const dir: DirecaoOrdenacao = order ?? 'asc'
 
     const query = Matricula.query()
-      .where('cursoId', cursoId)
-      .whereIn('situacao', situacoesAlvo)
+      .where('matriculas.curso_id', cursoId)
+      .whereIn('matriculas.situacao', situacoesAlvo)
       .preload('egresso', (egresso) => egresso.preload('user'))
+      .select('matriculas.*')
 
     if (turma) {
-      query.where('periodoFormatura', turma)
+      query.where('matriculas.periodo_formatura', turma)
     }
 
     if (q) {
       const like = `%${q}%`
       query.where((sub) => {
-        sub.where('codigo', 'like', like).orWhereHas('egresso', (egresso) => {
+        sub.where('matriculas.codigo', 'like', like).orWhereHas('egresso', (egresso) => {
           egresso.where('nomeCompleto', 'like', like).orWhere('emailPessoal', 'like', like)
         })
       })
     }
 
-    const paginator = await query
-      .orderBy('situacao', 'asc')
-      .orderBy('id', 'asc')
-      .paginate(page, perPage)
+    // Sort por coluna. Sempre fechamos com matriculas.id como tiebreaker
+    // para paginação estável (mesmo critério, mesma ordem).
+    if (sort === 'egresso') {
+      query
+        .join('egressos', 'matriculas.egresso_id', 'egressos.id')
+        .orderBy('egressos.nome_completo', dir)
+    } else if (sort === 'turma') {
+      query
+        .orderByRaw('matriculas.periodo_formatura IS NULL')
+        .orderBy('matriculas.periodo_formatura', dir)
+    } else if (sort === 'situacao') {
+      query.orderBy('matriculas.situacao', dir)
+    } else if (sort === 'status') {
+      // Subquery correlacionada com max(registrada_em) por egresso. Evita o
+      // leftJoin com subquery (o Lucid/Knex 3 trata o objeto Raw como literal
+      // de alias e gera SQL inválido). Nulls last em qualquer direção.
+      const ultimaPorEgressoExpr =
+        '(SELECT MAX(registrada_em) FROM respostas WHERE respostas.egresso_id = matriculas.egresso_id)'
+      query
+        .orderByRaw(`${ultimaPorEgressoExpr} IS NULL`)
+        .orderByRaw(`${ultimaPorEgressoExpr} ${dir === 'desc' ? 'DESC' : 'ASC'}`)
+    } else {
+      query.orderBy('matriculas.situacao', 'asc')
+    }
+    query.orderBy('matriculas.id', 'asc')
+
+    const paginator = await query.paginate(page, perPage)
     const matriculas = paginator.all()
 
     // Última Resposta apenas dos egressos desta página: carregamos os pares

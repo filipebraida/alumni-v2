@@ -6,7 +6,9 @@ import { Button } from '~/components/ui/button'
 import { EgressosStats } from '~/components/gestao/egressos_stats'
 import {
   EgressosTable,
+  type DirecaoOrdenacao,
   type EgressosResponse,
+  type OrdenarPor,
   type Situacao,
 } from '~/components/gestao/egressos_table'
 import { CadastrarEgressoDialog } from '~/components/gestao/cadastrar_egresso_dialog'
@@ -20,6 +22,8 @@ type PageProps = InertiaProps<{
   q: string | null
   situacoes: Situacao[]
   turma: string | null
+  sort: OrdenarPor | null
+  order: DirecaoOrdenacao | null
 }>
 
 export default function GestaoEgressos({
@@ -29,6 +33,8 @@ export default function GestaoEgressos({
   q,
   situacoes,
   turma,
+  sort,
+  order,
 }: PageProps) {
   const { gestao } = usePage<{ gestao: GestaoShared }>().props
   const curso = gestao.cursos.find((c) => c.id === gestao.cursoAtivoId) ?? null
@@ -69,7 +75,8 @@ export default function GestaoEgressos({
               situacoes={situacoes}
               turma={turma}
               turmas={turmas}
-              totalCurso={estatisticas?.total ?? egressos.metadata.total}
+              sort={sort}
+              order={order}
             />
           </div>
         )}

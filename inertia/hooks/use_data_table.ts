@@ -27,9 +27,11 @@ export function useDataTable({
   const pageIndex = Math.max(0, (data.metadata.currentPage ?? 1) - 1)
   const pageSize = data.metadata.perPage
   const pageCount = Math.max(1, data.metadata.lastPage)
+  const total = data.metadata.total
 
   return {
     pageCount,
+    total,
     state: { pagination: { pageIndex, pageSize } },
     onPaginationChange: (updater: Updater<PaginationState>) => {
       const atual: PaginationState = { pageIndex, pageSize }

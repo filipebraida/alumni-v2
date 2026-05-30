@@ -13,7 +13,7 @@ import { cadastrarEgressoValidator, listarEgressosValidator } from '#validators/
 export default class EgressosController {
   async index({ gestao, inertia, request }: HttpContext) {
     const { cursoAtivo } = gestao
-    const { page, perPage, q, situacoes, turma } =
+    const { page, perPage, q, situacoes, turma, sort, order } =
       await request.validateUsing(listarEgressosValidator)
 
     const resultado = cursoAtivo
@@ -24,6 +24,8 @@ export default class EgressosController {
           q,
           situacoes,
           turma,
+          sort,
+          order,
         })
       : rosterVazio(perPage ?? 10)
 
@@ -41,6 +43,8 @@ export default class EgressosController {
       q: q ?? null,
       situacoes: situacoes ?? [],
       turma: turma ?? null,
+      sort: sort ?? null,
+      order: order ?? null,
     })
   }
 
