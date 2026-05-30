@@ -30,7 +30,7 @@ export function PerfilSectionCard({
       id={id}
       className={cn('scroll-mt-24 overflow-hidden rounded-xl border bg-card shadow-xs', className)}
     >
-      <header className="flex items-start gap-3 border-b px-6 py-4">
+      <header className="flex items-start gap-3 border-b px-4 py-4 sm:px-6">
         <span className="grid size-9 shrink-0 place-items-center rounded-md bg-primary/10 text-primary">
           <Icon className="size-4" />
         </span>
@@ -41,7 +41,7 @@ export function PerfilSectionCard({
           )}
         </div>
       </header>
-      <div className="p-6">{children}</div>
+      <div className="p-4 sm:p-6">{children}</div>
     </section>
   )
 }

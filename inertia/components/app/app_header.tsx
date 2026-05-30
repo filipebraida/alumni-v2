@@ -1,6 +1,8 @@
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 import { Menu, Search } from 'lucide-react'
 import { type ReactNode, useState } from 'react'
+import { urlFor } from '~/client'
 import { NotificationBell } from '~/components/app/notification_bell'
 import { PortalContainer } from '~/components/portal/container'
 import { PortalLogo } from '~/components/portal/logo'
@@ -20,16 +22,25 @@ type NavItem = {
   label: string
   /** Seções já roteadas usam o nome da rota; as demais são placeholders. */
   route?: 'dashboard'
+  /** Computado em render a partir da URL atual (não passe manualmente). */
   active?: boolean
   soon?: boolean
 }
 
 const navItems: NavItem[] = [
-  { label: 'Início', route: 'dashboard', active: true },
+  { label: 'Início', route: 'dashboard' },
   { label: 'Egressos' },
   { label: 'Análises' },
   { label: 'Empresas', soon: true },
 ]
+
+/** Marca como ativo o item cuja URL bate com a página atual. */
+function withActive(items: NavItem[], pathname: string): NavItem[] {
+  return items.map((item) => ({
+    ...item,
+    active: item.route ? urlFor(item.route) === pathname : false,
+  }))
+}
 
 /**
  * Top bar do painel do egresso: marca, navegação primária, busca, notificações
@@ -39,6 +50,8 @@ const navItems: NavItem[] = [
  */
 export function AppHeader() {
   const [navOpen, setNavOpen] = useState(false)
+  const { url } = usePage()
+  const items = withActive(navItems, url.split('?')[0])
 
   return (
     <header className="sticky top-0 z-10 border-b bg-background">
@@ -66,7 +79,7 @@ export function AppHeader() {
             </SheetHeader>
             <SheetPanel className="pt-1">
               <nav className="flex flex-col">
-                {navItems.map((item) => (
+                {items.map((item) => (
                   <NavSheetLink key={item.label} item={item} onClick={() => setNavOpen(false)} />
                 ))}
               </nav>
@@ -82,7 +95,7 @@ export function AppHeader() {
         </Link>
 
         <nav className="hidden items-center md:flex">
-          {navItems.map((item) => (
+          {items.map((item) => (
             <NavLink key={item.label} item={item} />
           ))}
         </nav>

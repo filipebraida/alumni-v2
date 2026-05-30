@@ -11,6 +11,7 @@ import { type ReactNode } from 'react'
 
 import { cn } from '~/lib/utils'
 import { Separator } from '~/components/ui/separator'
+import { GlifoIcone, GlifoTexto } from '~/components/perfil/glifo'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
 import { type PerfilFormState } from '~/components/perfil/types'
 
@@ -30,14 +31,17 @@ function formatarOrcid(raw: string): string {
 /**
  * Identificadores acadêmicos e redes profissionais (ORCID, Lattes, Scholar,
  * LinkedIn, GitHub, site). Glifos monocromáticos por serviço — sem logos de
- * marca, pra manter a consistência visual.
+ * marca, pra manter consistência visual.
  */
 export function PerfilIds({ form, set }: Props) {
   const orcidValid = form.orcid.replace(/[^0-9X]/gi, '').length === 16
-  // Lattes ID é uma sequência de 16 dígitos. Aceita qualquer formato (URL
-  // completa, só o número, com/sem prefixo) desde que tenha 16 dígitos
-  // seguidos em algum lugar. Continuar digitando não derruba a validade.
+  // Lattes ID é uma sequência de 16 dígitos. Aceita qualquer formato (URL,
+  // só o número, com/sem prefixo) desde que tenha 16 dígitos seguidos.
   const lattesValid = /\d{16}/.test(form.lattes)
+  const scholarValid = !!form.scholar.trim()
+  const linkedinValid = !!form.linkedin.trim()
+  const githubValid = !!form.github.trim()
+  const siteValid = !!form.site.trim()
 
   return (
     <PerfilSectionCard
@@ -48,7 +52,7 @@ export function PerfilIds({ form, set }: Props) {
     >
       <div className="space-y-3">
         <IdCard
-          glifo={<GlifoTexto texto="iD" tom="success" />}
+          glifo={<GlifoTexto texto="iD" conectado={orcidValid} />}
           nome="ORCID iD"
           hint="Identificador único de pesquisador (16 dígitos)."
           conectado={orcidValid}
@@ -64,7 +68,7 @@ export function PerfilIds({ form, set }: Props) {
         </IdCard>
 
         <IdCard
-          glifo={<GlifoIcone icon={BookOpen} tom="primary" />}
+          glifo={<GlifoIcone icon={BookOpen} conectado={lattesValid} />}
           nome="Currículo Lattes"
           hint="Cole o link do seu currículo na Plataforma Lattes (CNPq)."
           conectado={lattesValid}
@@ -78,28 +82,28 @@ export function PerfilIds({ form, set }: Props) {
         </IdCard>
 
         <IdCard
-          glifo={<GlifoIcone icon={GraduationCap} tom="primary" />}
+          glifo={<GlifoIcone icon={GraduationCap} conectado={scholarValid} />}
           nome="Google Scholar"
           hint="Opcional."
-          conectado={!!form.scholar.trim()}
+          conectado={scholarValid}
         >
           <CampoLink
             value={form.scholar}
             onChange={(v) => set('scholar', v)}
             placeholder="scholar.google.com/citations?user=…"
-            valid={!!form.scholar.trim()}
+            valid={scholarValid}
           />
         </IdCard>
 
         <Separator className="my-1" />
 
         <IdCard
-          glifo={<GlifoIcone icon={Briefcase} tom="primary" />}
+          glifo={<GlifoIcone icon={Briefcase} conectado={linkedinValid} />}
           nome="LinkedIn"
           hint="Seu nome de usuário (após /in/)."
-          conectado={!!form.linkedin.trim()}
+          conectado={linkedinValid}
         >
-          <CampoPrefixo prefixo="linkedin.com/in/" valid={!!form.linkedin.trim()}>
+          <CampoPrefixo prefixo="linkedin.com/in/" valid={linkedinValid}>
             <input
               value={form.linkedin}
               onChange={(e) => set('linkedin', e.target.value.trim())}
@@ -110,12 +114,12 @@ export function PerfilIds({ form, set }: Props) {
         </IdCard>
 
         <IdCard
-          glifo={<GlifoIcone icon={LinkIcon} tom="muted" />}
+          glifo={<GlifoIcone icon={LinkIcon} conectado={githubValid} />}
           nome="GitHub"
           hint="Opcional."
-          conectado={!!form.github.trim()}
+          conectado={githubValid}
         >
-          <CampoPrefixo prefixo="github.com/" valid={!!form.github.trim()}>
+          <CampoPrefixo prefixo="github.com/" valid={githubValid}>
             <input
               value={form.github}
               onChange={(e) => set('github', e.target.value.trim())}
@@ -126,10 +130,10 @@ export function PerfilIds({ form, set }: Props) {
         </IdCard>
 
         <IdCard
-          glifo={<GlifoIcone icon={Globe} tom="muted" />}
+          glifo={<GlifoIcone icon={Globe} conectado={siteValid} />}
           nome="Site / portfólio"
           hint="Opcional."
-          conectado={!!form.site.trim()}
+          conectado={siteValid}
         >
           <input
             value={form.site}
@@ -161,7 +165,7 @@ function IdCard({
       <div className="flex items-center gap-2.5">
         {glifo}
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
             <span className="font-semibold text-sm">{nome}</span>
             <span
               className={cn(
@@ -195,19 +199,15 @@ function CampoLink({
   valid: boolean
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-md border border-input bg-background px-3 shadow-xs focus-within:ring-2 focus-within:ring-ring">
-      <LinkIcon className="size-4 text-muted-foreground" />
+    <div className="flex min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 shadow-xs focus-within:ring-2 focus-within:ring-ring">
+      <LinkIcon className="size-4 shrink-0 text-muted-foreground" />
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-9 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+        className="h-9 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
       />
-      <Check
-        className={cn('size-4 text-success transition-opacity', valid ? 'opacity-100' : 'opacity-0')}
-        strokeWidth={2.5}
-        aria-hidden={!valid}
-      />
+      <CheckSlot valid={valid} />
     </div>
   )
 }
@@ -222,47 +222,26 @@ function CampoPrefixo({
   children: ReactNode
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-md border border-input bg-background pl-3 pr-3 shadow-xs focus-within:ring-2 focus-within:ring-ring">
-      <span className="font-medium text-muted-foreground text-xs">{prefixo}</span>
+    <div className="flex min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 shadow-xs focus-within:ring-2 focus-within:ring-ring">
+      <span className="hidden max-w-40 shrink-0 truncate font-medium text-muted-foreground text-xs sm:inline-block">
+        {prefixo}
+      </span>
       {children}
-      <Check
-        className={cn('size-4 text-success transition-opacity', valid ? 'opacity-100' : 'opacity-0')}
-        strokeWidth={2.5}
-        aria-hidden={!valid}
-      />
+      <CheckSlot valid={valid} />
     </div>
   )
 }
 
-function GlifoTexto({ texto, tom }: { texto: string; tom: 'primary' | 'success' | 'muted' }) {
+/** Espaço fixo pra evitar layout shift quando o ✓ aparece/some. */
+function CheckSlot({ valid }: { valid: boolean }) {
   return (
-    <span
+    <Check
       className={cn(
-        'grid size-9 shrink-0 place-items-center rounded-md font-bold text-sm',
-        tomCls(tom)
+        'size-4 shrink-0 text-success transition-opacity',
+        valid ? 'opacity-100' : 'opacity-0'
       )}
-    >
-      {texto}
-    </span>
+      strokeWidth={2.5}
+      aria-hidden={!valid}
+    />
   )
-}
-
-function GlifoIcone({
-  icon: Icon,
-  tom,
-}: {
-  icon: typeof Briefcase
-  tom: 'primary' | 'success' | 'muted'
-}) {
-  return (
-    <span className={cn('grid size-9 shrink-0 place-items-center rounded-md', tomCls(tom))}>
-      <Icon className="size-4" />
-    </span>
-  )
-}
-
-function tomCls(tom: 'primary' | 'success' | 'muted') {
-  if (tom === 'primary') return 'bg-primary/10 text-primary'
-  if (tom === 'success') return 'bg-success/10 text-success-foreground'
-  return 'bg-muted text-muted-foreground'
 }
