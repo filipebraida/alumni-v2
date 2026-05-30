@@ -1,6 +1,7 @@
 import { Head, usePage } from '@inertiajs/react'
 import { type ReactElement } from 'react'
 import GestaoLayout from '~/layouts/gestao'
+import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { type InertiaProps } from '~/types'
 import type { GestaoShared } from '~/components/gestao/types'
 
@@ -31,21 +32,17 @@ export default function GestaoDashboard({ estatisticas }: PageProps) {
     <>
       <Head title="Gestão · Visão geral" />
 
-      <div className="p-4 sm:p-6">
+      <GestaoPage>
         {!curso ? (
           <p className="text-muted-foreground text-sm">
             Você ainda não gere nenhum curso. Fale com a coordenação para ser vinculado.
           </p>
         ) : (
-          <div className="space-y-6">
-            <div className="min-w-0">
-              <h1 className="font-semibold text-2xl leading-tight tracking-tight">
-                Visão geral de {curso.nome}
-              </h1>
-              <p className="mt-1 text-muted-foreground text-sm">
-                {curso.nivel} · {curso.campus} — gestão da coordenação
-              </p>
-            </div>
+          <>
+            <GestaoPageHeader
+              titulo={`Visão geral de ${curso.nome}`}
+              subtitulo={`${curso.nivel} · ${curso.campus} — gestão da coordenação`}
+            />
 
             <div className="grid gap-4 sm:grid-cols-3">
               <Stat rotulo="Cadastros em dia" valor={`${estatisticas?.pct ?? 0}%`} />
@@ -55,9 +52,9 @@ export default function GestaoDashboard({ estatisticas }: PageProps) {
             <p className="text-muted-foreground text-sm">
               “Em dia” = egresso com questionário atualizado nos últimos 12 meses.
             </p>
-          </div>
+          </>
         )}
-      </div>
+      </GestaoPage>
     </>
   )
 }

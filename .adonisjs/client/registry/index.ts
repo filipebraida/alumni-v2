@@ -126,6 +126,12 @@ const routes = {
     tokens: [{"old":"/gestao/egressos/vinculos","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/vinculos","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/vinculos","type":0,"val":"vinculos","end":""}],
     types: placeholder as Registry['gestao.egressos.vincular']['types'],
   },
+  'gestao.egressos.importacoes.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/gestao/egressos/importacoes',
+    tokens: [{"old":"/gestao/egressos/importacoes","type":0,"val":"gestao","end":""},{"old":"/gestao/egressos/importacoes","type":0,"val":"egressos","end":""},{"old":"/gestao/egressos/importacoes","type":0,"val":"importacoes","end":""}],
+    types: placeholder as Registry['gestao.egressos.importacoes.show']['types'],
+  },
   'gestao.egressos.importacoes.store': {
     methods: ["POST"],
     pattern: '/gestao/egressos/importacoes',

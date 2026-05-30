@@ -34,6 +34,7 @@ export interface ApiDefinition {
       store: typeof routes['gestao.egressos.store']
       vincular: typeof routes['gestao.egressos.vincular']
       importacoes: {
+        show: typeof routes['gestao.egressos.importacoes.show']
         store: typeof routes['gestao.egressos.importacoes.store']
       }
     }

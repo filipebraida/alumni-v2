@@ -65,6 +65,9 @@ router
       .post('/gestao/egressos/vinculos', [controllers.Egressos, 'vincular'])
       .as('gestao.egressos.vincular')
     router
+      .get('/gestao/egressos/importacoes', [controllers.ImportacoesEgressos, 'show'])
+      .as('gestao.egressos.importacoes.show')
+    router
       .post('/gestao/egressos/importacoes', [controllers.ImportacoesEgressos, 'store'])
       .as('gestao.egressos.importacoes.store')
     router.put('/gestao/curso-ativo', [controllers.CursoAtivo, 'update']).as('gestao.curso_ativo')

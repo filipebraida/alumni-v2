@@ -10,6 +10,7 @@ import {
   type Situacao,
 } from '~/components/gestao/egressos_table'
 import { CadastrarEgressoDialog } from '~/components/gestao/cadastrar_egresso_dialog'
+import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { ImportarEgressosDialog } from '~/components/gestao/importar_egressos_dialog'
 import { type InertiaProps } from '~/types'
 import type { EgressosEstatisticas, GestaoShared } from '~/components/gestao/types'
@@ -42,27 +43,23 @@ export default function GestaoEgressos({
     <>
       <Head title="Gestão · Egressos" />
 
-      <div className="p-4 sm:p-6">
+      <GestaoPage>
         {!curso ? (
           <p className="text-muted-foreground text-sm">
             Você ainda não gere nenhum curso. Fale com a coordenação para ser vinculado.
           </p>
         ) : (
-          <div className="space-y-6">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div className="min-w-0">
-                <h1 className="font-semibold text-2xl leading-tight tracking-tight">
-                  Egressos de {curso.nome}
-                </h1>
-                <p className="mt-1 text-muted-foreground text-sm">
-                  {curso.nivel} · {curso.campus} — gestão da coordenação
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <ImportarEgressosDialog cursoNome={curso.nome} />
-                <CadastrarEgressoDialog cursoNome={curso.nome} />
-              </div>
-            </div>
+          <>
+            <GestaoPageHeader
+              titulo={`Egressos de ${curso.nome}`}
+              subtitulo={`${curso.nivel} · ${curso.campus} — gestão da coordenação`}
+              acoes={
+                <>
+                  <ImportarEgressosDialog cursoNome={curso.nome} />
+                  <CadastrarEgressoDialog cursoNome={curso.nome} />
+                </>
+              }
+            />
 
             {estatisticas && <EgressosStats estatisticas={estatisticas} />}
 
@@ -75,9 +72,9 @@ export default function GestaoEgressos({
               sort={sort}
               order={order}
             />
-          </div>
+          </>
         )}
-      </div>
+      </GestaoPage>
     </>
   )
 }

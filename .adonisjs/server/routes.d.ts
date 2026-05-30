@@ -24,6 +24,7 @@ export type ScannedRoutes = {
     'gestao.egressos.lookup': { paramsTuple?: []; params?: {} }
     'gestao.egressos.store': { paramsTuple?: []; params?: {} }
     'gestao.egressos.vincular': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.store': { paramsTuple?: []; params?: {} }
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
   }
@@ -40,6 +41,7 @@ export type ScannedRoutes = {
     'gestao.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos': { paramsTuple?: []; params?: {} }
     'gestao.egressos.lookup': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -54,6 +56,7 @@ export type ScannedRoutes = {
     'gestao.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos': { paramsTuple?: []; params?: {} }
     'gestao.egressos.lookup': { paramsTuple?: []; params?: {} }
+    'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'session.store': { paramsTuple?: []; params?: {} }
