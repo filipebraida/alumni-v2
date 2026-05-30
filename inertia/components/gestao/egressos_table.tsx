@@ -517,6 +517,16 @@ export function EgressosTable({
     aplicar(busca, situacao, proximo, perPage)
   }
 
+  const algumFiltroAtivo = busca.length > 0 || situacao !== 'todos' || turmaFiltro !== TODAS_TURMAS
+
+  const limparFiltros = () => {
+    setBusca('')
+    setSituacao('todos')
+    setTurmaFiltro(TODAS_TURMAS)
+    if (timer.current) clearTimeout(timer.current)
+    aplicar('', 'todos', TODAS_TURMAS, perPage)
+  }
+
   const egressosSelecionados = useMemo(
     () => egressos.data.filter((egresso) => selecionados[String(egresso.egressoId)]),
     [egressos.data, selecionados]
@@ -592,6 +602,12 @@ export function EgressosTable({
               ))}
             </SelectContent>
           </Select>
+        )}
+
+        {algumFiltroAtivo && (
+          <Button variant="ghost" size="sm" onClick={limparFiltros}>
+            Limpar
+          </Button>
         )}
       </div>
 
