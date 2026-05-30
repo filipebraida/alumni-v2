@@ -1,10 +1,11 @@
-import { Transmit } from '@adonisjs/transmit-client'
+import type { Transmit } from '@adonisjs/transmit-client'
 
 let singleton: Transmit | null = null
+let promise: Promise<Transmit> | null = null
 
 /**
  * UID por aba para o canal SSE. O default do transmit-client usa
- * `crypto.randomUUID()`, que so existe em secure contexts (HTTPS ou localhost);
+ * `crypto.randomUUID()`, que so existe em secure contexts (HTTPS ou loopback);
  * fora disso (HTTP em IP/dominio interno) explode. Esse fallback usa
  * `getRandomValues` (disponivel em qualquer contexto) e cai em `Math.random` se
  * nem isso existir — colisao e irrelevante (so identifica a aba dentro do
@@ -31,15 +32,23 @@ function gerarUid(): string {
 /**
  * Retorna o cliente SSE do `@adonisjs/transmit-client`, garantindo que cada
  * aba/janela use UMA conexao SSE (em `/__transmit/events`) compartilhada entre
- * todos os assinantes. Lazy: so abre a conexao na primeira inscricao.
+ * todos os assinantes. Lazy: so importa o pacote (chunk separado) e abre a
+ * conexao na primeira inscricao. Se duas chamadas concorrerem na primeira vez,
+ * ambas esperam o mesmo `import()` via `promise`.
  */
-export function getTransmitSingleton(): Transmit {
+export async function getTransmitSingleton(): Promise<Transmit> {
   if (singleton) return singleton
 
-  singleton = new Transmit({
-    baseUrl: window.location.origin,
-    uidGenerator: gerarUid,
-  })
+  if (!promise) {
+    promise = (async () => {
+      const { Transmit } = await import('@adonisjs/transmit-client')
+      singleton = new Transmit({
+        baseUrl: window.location.origin,
+        uidGenerator: gerarUid,
+      })
+      return singleton
+    })()
+  }
 
-  return singleton
+  return promise
 }

@@ -7,20 +7,30 @@ import { getTransmitSingleton } from '~/hooks/use_transmit'
  * (`notifications/user-<id>`) e dispara `onMessage` em cada evento recebido.
  *
  * A conexao SSE em si vive no singleton do `useTransmit` (uma EventSource por
- * aba); este hook so cuida do ciclo de vida da inscricao.
+ * aba); este hook so cuida do ciclo de vida da inscricao. Como o singleton
+ * importa o transmit-client dinamicamente, o ciclo de subscribe e async: se a
+ * tela desmontar antes do `import()` resolver, cancelamos sem assinar.
  */
 export function useNotificationsChannel(userId: number | undefined, onMessage: () => void) {
   useEffect(() => {
     if (!userId) return
 
-    const transmit = getTransmitSingleton()
-    const subscription = transmit.subscription(`notifications/user-${userId}`)
+    let cancelled = false
+    let subscription: { delete?: () => void } | null = null
 
-    subscription.onMessage(() => onMessage())
-    void subscription.create()
+    void (async () => {
+      const transmit = await getTransmitSingleton()
+      if (cancelled) return
+
+      const sub = transmit.subscription(`notifications/user-${userId}`)
+      sub.onMessage(() => onMessage())
+      void sub.create()
+      subscription = sub
+    })()
 
     return () => {
-      void subscription.delete()
+      cancelled = true
+      subscription?.delete?.()
     }
   }, [userId, onMessage])
 }
