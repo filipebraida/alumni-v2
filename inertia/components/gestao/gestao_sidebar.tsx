@@ -50,7 +50,10 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
       style={temaSidebarEscuro}
     >
       <SidebarHeader>
-        <div className="flex items-center gap-2.5 px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+        <Link
+          route="gestao.show"
+          className="flex items-center gap-2.5 px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+        >
           <div className="relative flex size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-bold text-sidebar-primary-foreground text-sm">
             R
             <span className="-right-0.5 -top-0.5 absolute size-2 rounded-full bg-brand-yellow" />
@@ -58,7 +61,7 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
           <div className="font-semibold text-sm tracking-tight group-data-[collapsible=icon]:hidden">
             SAE <span className="font-normal text-sidebar-foreground/55">· Coordenação</span>
           </div>
-        </div>
+        </Link>
         <CursoSwitcher />
       </SidebarHeader>
 
