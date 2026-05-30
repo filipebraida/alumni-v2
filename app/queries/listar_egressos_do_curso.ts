@@ -86,26 +86,28 @@ export default class ListarEgressosDoCurso {
       })
     }
 
-    // Sort por coluna. Sempre fechamos com matriculas.id como tiebreaker
-    // para paginação estável (mesmo critério, mesma ordem).
+    // Sort por coluna. Política dos NULLs: seguem a direção — `asc` joga NULL
+    // pro topo (o "menos preenchido"), `desc` empurra pra base. Sempre fechamos
+    // com matriculas.id como tiebreaker para paginação estável.
+    const nullsFirst = dir === 'asc'
     if (sort === 'egresso') {
       query
         .join('egressos', 'matriculas.egresso_id', 'egressos.id')
         .orderBy('egressos.nome_completo', dir)
     } else if (sort === 'turma') {
       query
-        .orderByRaw('matriculas.periodo_formatura IS NULL')
+        .orderByRaw(`matriculas.periodo_formatura IS ${nullsFirst ? 'NOT NULL' : 'NULL'}`)
         .orderBy('matriculas.periodo_formatura', dir)
     } else if (sort === 'situacao') {
       query.orderBy('matriculas.situacao', dir)
     } else if (sort === 'status') {
       // Subquery correlacionada com max(registrada_em) por egresso. Evita o
       // leftJoin com subquery (o Lucid/Knex 3 trata o objeto Raw como literal
-      // de alias e gera SQL inválido). Nulls last em qualquer direção.
+      // de alias e gera SQL inválido).
       const ultimaPorEgressoExpr =
         '(SELECT MAX(registrada_em) FROM respostas WHERE respostas.egresso_id = matriculas.egresso_id)'
       query
-        .orderByRaw(`${ultimaPorEgressoExpr} IS NULL`)
+        .orderByRaw(`${ultimaPorEgressoExpr} IS ${nullsFirst ? 'NOT NULL' : 'NULL'}`)
         .orderByRaw(`${ultimaPorEgressoExpr} ${dir === 'desc' ? 'DESC' : 'ASC'}`)
     } else {
       query.orderBy('matriculas.situacao', 'asc')

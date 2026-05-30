@@ -223,6 +223,7 @@ const colunas: ColumnDef<EgressoRow>[] = [
   },
   {
     id: 'egresso',
+    accessorKey: 'nome',
     header: 'Egresso',
     enableSorting: true,
     cell: ({ row }) => {
@@ -251,6 +252,7 @@ const colunas: ColumnDef<EgressoRow>[] = [
   },
   {
     id: 'turma',
+    accessorKey: 'periodoFormatura',
     header: 'Turma',
     enableSorting: true,
     meta: { responsiveClass: 'hidden md:table-cell' },
