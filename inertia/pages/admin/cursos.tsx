@@ -21,6 +21,7 @@ import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import {
   CriarCursoDialog,
   type InstitutoOption,
+  type ProgramaOption,
 } from '~/components/admin/criar_curso_dialog'
 import { useDataTable, type PaginatorMeta } from '~/hooks/use_data_table'
 import { type InertiaProps } from '~/types'
@@ -62,6 +63,7 @@ type Filtros = {
 type PageProps = InertiaProps<{
   cursos: { data: CursoRow[]; metadata: PaginatorMeta }
   institutos: InstitutoOption[]
+  programas: ProgramaOption[]
   filtros: Filtros
 }>
 
@@ -106,7 +108,7 @@ const COLUNAS: ColumnDef<CursoRow>[] = [
   },
 ]
 
-export default function AdminCursos({ cursos, institutos, filtros }: PageProps) {
+export default function AdminCursos({ cursos, institutos, programas, filtros }: PageProps) {
   const semInstitutos = institutos.length === 0
   const algumFiltro = !!(filtros.q || filtros.nivel || filtros.institutoId)
   const semDados = cursos.data.length === 0 && !algumFiltro && cursos.metadata.total === 0
@@ -123,7 +125,7 @@ export default function AdminCursos({ cursos, institutos, filtros }: PageProps) 
         <GestaoPageHeader
           titulo="Cursos"
           subtitulo={subtitulo}
-          acoes={<CriarCursoDialog institutos={institutos} />}
+          acoes={<CriarCursoDialog institutos={institutos} programas={programas} />}
         />
 
         {semDados ? (

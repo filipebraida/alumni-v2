@@ -13,12 +13,17 @@ export const criarInstitutoValidator = vine.create({
   nome: vine.string().trim().minLength(3).maxLength(120),
 })
 
-/** Cadastro de um Curso novo, vinculado a um Instituto existente. */
+/**
+ * Cadastro de um Curso novo, vinculado a um Instituto existente.
+ * `programaId` é opcional aqui — a obrigatoriedade quando `nivel` ≠ graduação
+ * e a consistência de instituto são validadas no action `CriarCurso`.
+ */
 export const criarCursoValidator = vine.create({
   codigo: vine.string().trim().minLength(2).maxLength(32),
   nome: vine.string().trim().minLength(3).maxLength(160),
   nivel: vine.enum(NIVEIS_ACADEMICOS),
   institutoId: vine.number().withoutDecimals().positive(),
+  programaId: vine.number().withoutDecimals().positive().optional(),
 })
 
 export const criarUsuarioValidator = vine.create({

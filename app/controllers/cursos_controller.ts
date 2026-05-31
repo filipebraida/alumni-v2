@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ListarCursos from '#queries/listar_cursos'
 import ListarInstitutos from '#queries/listar_institutos'
+import ListarProgramas from '#queries/listar_programas'
 import CriarCurso from '#actions/criar_curso'
 import { criarCursoValidator, listarCursosValidator } from '#validators/admin'
 
@@ -8,7 +9,7 @@ export default class CursosController {
   async index({ inertia, request }: HttpContext) {
     const { q, nivel, institutoId, page, perPage } =
       await request.validateUsing(listarCursosValidator)
-    const [cursos, institutos] = await Promise.all([
+    const [cursos, institutos, programas] = await Promise.all([
       new ListarCursos().handle({
         q,
         nivel,
@@ -17,10 +18,12 @@ export default class CursosController {
         perPage: perPage ?? 20,
       }),
       new ListarInstitutos().handle({ perPage: 200 }),
+      new ListarProgramas().handle({ ativo: true }),
     ])
     return inertia.render('admin/cursos', {
       cursos: { data: cursos.data, metadata: cursos.meta },
       institutos: institutos.data,
+      programas: programas.data,
       filtros: {
         q: q ?? null,
         nivel: nivel ?? null,
@@ -40,6 +43,26 @@ export default class CursosController {
 
     if (resultado.status === 'codigo_em_uso') {
       session.flashErrors({ codigo: 'Já existe um curso com este código.' })
+      return response.redirect().back()
+    }
+
+    if (resultado.status === 'programa_obrigatorio') {
+      session.flashErrors({ programaId: 'Selecione o programa de pós-graduação.' })
+      return response.redirect().back()
+    }
+
+    if (resultado.status === 'programa_inexistente') {
+      session.flashErrors({ programaId: 'Programa não encontrado.' })
+      return response.redirect().back()
+    }
+
+    if (resultado.status === 'programa_de_outro_instituto') {
+      session.flashErrors({ programaId: 'O programa pertence a outro instituto.' })
+      return response.redirect().back()
+    }
+
+    if (resultado.status === 'graduacao_sem_programa') {
+      session.flashErrors({ programaId: 'Cursos de graduação não usam programa.' })
       return response.redirect().back()
     }
 
