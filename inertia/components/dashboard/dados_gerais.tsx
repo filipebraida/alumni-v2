@@ -9,7 +9,7 @@ export function DashboardDadosGerais({ campos }: { campos: CampoMec[] }) {
   const pendentes = campos.filter((c) => c.confianca !== 'confirmado').length
 
   return (
-    <Card className="shadow-sm">
+    <Card className="overflow-hidden shadow-sm">
       <header className="flex flex-wrap items-end justify-between gap-4 px-5 pt-5 pb-3">
         <div className="min-w-0">
           <h2 className="flex items-center gap-2 font-semibold text-base tracking-tight">
