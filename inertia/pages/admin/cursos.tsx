@@ -1,15 +1,33 @@
 import { Head, router } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import type { ColumnDef } from '@tanstack/react-table'
-import { GraduationCap, SearchIcon } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
+import {
+  EyeIcon,
+  GraduationCap,
+  MoreHorizontalIcon,
+  PencilIcon,
+  SearchIcon,
+  TrashIcon,
+} from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
 
 import { urlFor } from '~/client'
 import GestaoLayout from '~/layouts/gestao'
+import {
+  AlertDialog,
+  AlertDialogClose,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogPopup,
+  AlertDialogTitle,
+} from '~/components/ui/alert_dialog'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/ui/data_table'
 import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
+import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '~/components/ui/menu'
 import {
   Select,
   SelectContent,
@@ -19,10 +37,12 @@ import {
 } from '~/components/ui/select'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import {
-  CriarCursoDialog,
+  CursoDialog,
+  NovoCursoButton,
+  type CursoEditavel,
   type InstitutoOption,
   type ProgramaOption,
-} from '~/components/admin/criar_curso_dialog'
+} from '~/components/admin/curso_dialog'
 import { useDataTable, type PaginatorMeta } from '~/hooks/use_data_table'
 import { type InertiaProps } from '~/types'
 
@@ -51,6 +71,7 @@ type CursoRow = {
   nome: string
   nivel: NivelAcademico
   ativo: boolean
+  programaId: number | null
   instituto: { id: number; nome: string; codigo: string }
 }
 
@@ -67,7 +88,11 @@ type PageProps = InertiaProps<{
   filtros: Filtros
 }>
 
-const COLUNAS: ColumnDef<CursoRow>[] = [
+function montarColunas(
+  institutos: InstitutoOption[],
+  programas: ProgramaOption[]
+): ColumnDef<CursoRow>[] {
+  return [
   {
     id: 'codigo',
     header: 'Código',
@@ -131,12 +156,116 @@ const COLUNAS: ColumnDef<CursoRow>[] = [
       </Badge>
     ),
   },
-]
+  {
+    id: 'acoes',
+    header: '',
+    cell: ({ row }) => (
+      <AcoesCursoRow curso={row.original} institutos={institutos} programas={programas} />
+    ),
+  },
+  ]
+}
+
+function AcoesCursoRow({
+  curso,
+  institutos,
+  programas,
+}: {
+  curso: CursoRow
+  institutos: InstitutoOption[]
+  programas: ProgramaOption[]
+}) {
+  const [editando, setEditando] = useState(false)
+  const [removendo, setRemovendo] = useState(false)
+  const [excluindo, setExcluindo] = useState(false)
+  const editavel = useMemo<CursoEditavel>(
+    () => ({
+      id: curso.id,
+      codigo: curso.codigo,
+      nome: curso.nome,
+      nivel: curso.nivel,
+      institutoId: curso.instituto.id,
+      programaId: curso.programaId ?? null,
+      ativo: curso.ativo,
+    }),
+    [curso.id, curso.codigo, curso.nome, curso.nivel, curso.instituto.id, curso.programaId, curso.ativo]
+  )
+
+  function remover() {
+    setExcluindo(true)
+    router.delete(urlFor('admin.cursos.destroy', { id: curso.id }), {
+      preserveScroll: true,
+      onFinish: () => {
+        setExcluindo(false)
+        setRemovendo(false)
+      },
+    })
+  }
+
+  return (
+    <div className="text-right">
+      <Menu>
+        <MenuTrigger
+          render={
+            <Button variant="ghost" size="icon-sm" aria-label={`Ações de ${curso.nome}`} />
+          }
+        >
+          <MoreHorizontalIcon />
+        </MenuTrigger>
+        <MenuPopup align="end" className="min-w-44">
+          <MenuItem render={<Link href={urlFor('admin.cursos.show', { id: curso.id })} />}>
+            <EyeIcon /> Ver
+          </MenuItem>
+          <MenuItem onClick={() => setEditando(true)}>
+            <PencilIcon /> Editar
+          </MenuItem>
+          <MenuSeparator />
+          <MenuItem
+            onClick={() => setRemovendo(true)}
+            className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
+          >
+            <TrashIcon /> Remover
+          </MenuItem>
+        </MenuPopup>
+      </Menu>
+
+      <CursoDialog
+        modo="editar"
+        curso={editavel}
+        institutos={institutos}
+        programas={programas}
+        open={editando}
+        onOpenChange={setEditando}
+      />
+
+      <AlertDialog open={removendo} onOpenChange={setRemovendo}>
+        <AlertDialogPopup>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remover {curso.nome}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Se o curso tiver matrículas ou coordenadores
+              vinculados, a remoção será bloqueada.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogClose render={<Button variant="ghost" type="button" />}>
+              Cancelar
+            </AlertDialogClose>
+            <Button variant="destructive" onClick={remover} disabled={excluindo}>
+              {excluindo ? 'Removendo…' : 'Remover'}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogPopup>
+      </AlertDialog>
+    </div>
+  )
+}
 
 export default function AdminCursos({ cursos, institutos, programas, filtros }: PageProps) {
   const semInstitutos = institutos.length === 0
   const algumFiltro = !!(filtros.q || filtros.nivel || filtros.institutoId)
   const semDados = cursos.data.length === 0 && !algumFiltro && cursos.metadata.total === 0
+  const colunas = useMemo(() => montarColunas(institutos, programas), [institutos, programas])
 
   const subtitulo = semInstitutos
     ? 'Cadastre um instituto antes de criar cursos.'
@@ -150,7 +279,7 @@ export default function AdminCursos({ cursos, institutos, programas, filtros }: 
         <GestaoPageHeader
           titulo="Cursos"
           subtitulo={subtitulo}
-          acoes={<CriarCursoDialog institutos={institutos} programas={programas} />}
+          acoes={<NovoCursoButton institutos={institutos} programas={programas} />}
         />
 
         {semDados ? (
@@ -162,7 +291,12 @@ export default function AdminCursos({ cursos, institutos, programas, filtros }: 
               filtros={filtros}
               perPage={cursos.metadata.perPage}
             />
-            <CursosDataTable cursos={cursos} filtros={filtros} algumFiltro={algumFiltro} />
+            <CursosDataTable
+              cursos={cursos}
+              filtros={filtros}
+              colunas={colunas}
+              algumFiltro={algumFiltro}
+            />
           </>
         )}
       </GestaoPage>
@@ -175,10 +309,12 @@ AdminCursos.layout = (page: ReactElement) => <GestaoLayout>{page}</GestaoLayout>
 function CursosDataTable({
   cursos,
   filtros,
+  colunas,
   algumFiltro,
 }: {
   cursos: { data: CursoRow[]; metadata: PaginatorMeta }
   filtros: Filtros
+  colunas: ColumnDef<CursoRow>[]
   algumFiltro: boolean
 }) {
   const remoteTableOptions = useDataTable({
@@ -204,7 +340,7 @@ function CursosDataTable({
 
   return (
     <DataTable
-      columns={COLUNAS}
+      columns={colunas}
       data={cursos.data}
       remoteTableOptions={remoteTableOptions}
       paginationVariant="numbered"

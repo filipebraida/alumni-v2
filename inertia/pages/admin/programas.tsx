@@ -1,15 +1,33 @@
 import { Head, router } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import type { ColumnDef } from '@tanstack/react-table'
-import { Layers, SearchIcon } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
+import {
+  EyeIcon,
+  Layers,
+  MoreHorizontalIcon,
+  PencilIcon,
+  SearchIcon,
+  TrashIcon,
+} from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
 
 import { urlFor } from '~/client'
 import GestaoLayout from '~/layouts/gestao'
+import {
+  AlertDialog,
+  AlertDialogClose,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogPopup,
+  AlertDialogTitle,
+} from '~/components/ui/alert_dialog'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/ui/data_table'
 import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
+import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '~/components/ui/menu'
 import {
   Select,
   SelectContent,
@@ -19,9 +37,11 @@ import {
 } from '~/components/ui/select'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import {
-  CriarProgramaDialog,
+  NovoProgramaButton,
+  ProgramaDialog,
   type InstitutoOption,
-} from '~/components/admin/criar_programa_dialog'
+  type ProgramaEditavel,
+} from '~/components/admin/programa_dialog'
 import { useDataTable, type PaginatorMeta } from '~/hooks/use_data_table'
 import { type InertiaProps } from '~/types'
 
@@ -58,7 +78,8 @@ type PageProps = InertiaProps<{
   filtros: Filtros
 }>
 
-const COLUNAS: ColumnDef<ProgramaRow>[] = [
+function montarColunas(institutos: InstitutoOption[]): ColumnDef<ProgramaRow>[] {
+  return [
   {
     id: 'codigo',
     header: 'Código',
@@ -144,13 +165,120 @@ const COLUNAS: ColumnDef<ProgramaRow>[] = [
       </Badge>
     ),
   },
-]
+  {
+    id: 'acoes',
+    header: '',
+    cell: ({ row }) => <AcoesProgramaRow programa={row.original} institutos={institutos} />,
+  },
+  ]
+}
+
+function AcoesProgramaRow({
+  programa,
+  institutos,
+}: {
+  programa: ProgramaRow
+  institutos: InstitutoOption[]
+}) {
+  const [editando, setEditando] = useState(false)
+  const [removendo, setRemovendo] = useState(false)
+  const [excluindo, setExcluindo] = useState(false)
+  const editavel = useMemo<ProgramaEditavel>(
+    () => ({
+      id: programa.id,
+      codigo: programa.codigo,
+      nome: programa.nome,
+      sigla: programa.sigla,
+      modalidade: programa.modalidade,
+      institutoId: programa.institutoId,
+      ativo: programa.ativo,
+    }),
+    [
+      programa.id,
+      programa.codigo,
+      programa.nome,
+      programa.sigla,
+      programa.modalidade,
+      programa.institutoId,
+      programa.ativo,
+    ]
+  )
+
+  function remover() {
+    setExcluindo(true)
+    router.delete(urlFor('admin.programas.destroy', { id: programa.id }), {
+      preserveScroll: true,
+      onFinish: () => {
+        setExcluindo(false)
+        setRemovendo(false)
+      },
+    })
+  }
+
+  return (
+    <div className="text-right">
+      <Menu>
+        <MenuTrigger
+          render={
+            <Button variant="ghost" size="icon-sm" aria-label={`Ações de ${programa.nome}`} />
+          }
+        >
+          <MoreHorizontalIcon />
+        </MenuTrigger>
+        <MenuPopup align="end" className="min-w-44">
+          <MenuItem render={<Link href={urlFor('admin.programas.show', { id: programa.id })} />}>
+            <EyeIcon /> Ver
+          </MenuItem>
+          <MenuItem onClick={() => setEditando(true)}>
+            <PencilIcon /> Editar
+          </MenuItem>
+          <MenuSeparator />
+          <MenuItem
+            onClick={() => setRemovendo(true)}
+            className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
+          >
+            <TrashIcon /> Remover
+          </MenuItem>
+        </MenuPopup>
+      </Menu>
+
+      <ProgramaDialog
+        modo="editar"
+        programa={editavel}
+        institutos={institutos}
+        open={editando}
+        onOpenChange={setEditando}
+      />
+
+      <AlertDialog open={removendo} onOpenChange={setRemovendo}>
+        <AlertDialogPopup>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remover {programa.nome}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Se o programa tiver cursos vinculados, a remoção
+              será bloqueada — remova-os antes.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogClose render={<Button variant="ghost" type="button" />}>
+              Cancelar
+            </AlertDialogClose>
+            <Button variant="destructive" onClick={remover} disabled={excluindo}>
+              {excluindo ? 'Removendo…' : 'Remover'}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogPopup>
+      </AlertDialog>
+    </div>
+  )
+}
 
 export default function AdminProgramas({ programas, institutos, filtros }: PageProps) {
   const semInstitutos = institutos.length === 0
   const algumFiltro = !!(filtros.q || filtros.institutoId)
   const semDados =
     programas.data.length === 0 && !algumFiltro && programas.metadata.total === 0
+  const colunas = useMemo(() => montarColunas(institutos), [institutos])
 
   const subtitulo = semInstitutos
     ? 'Cadastre um instituto antes de criar programas.'
@@ -164,7 +292,7 @@ export default function AdminProgramas({ programas, institutos, filtros }: PageP
         <GestaoPageHeader
           titulo="Programas"
           subtitulo={subtitulo}
-          acoes={<CriarProgramaDialog institutos={institutos} />}
+          acoes={<NovoProgramaButton institutos={institutos} />}
         />
 
         {semDados ? (
@@ -179,6 +307,7 @@ export default function AdminProgramas({ programas, institutos, filtros }: PageP
             <ProgramasDataTable
               programas={programas}
               filtros={filtros}
+              colunas={colunas}
               algumFiltro={algumFiltro}
             />
           </>
@@ -193,10 +322,12 @@ AdminProgramas.layout = (page: ReactElement) => <GestaoLayout>{page}</GestaoLayo
 function ProgramasDataTable({
   programas,
   filtros,
+  colunas,
   algumFiltro,
 }: {
   programas: { data: ProgramaRow[]; metadata: PaginatorMeta }
   filtros: Filtros
+  colunas: ColumnDef<ProgramaRow>[]
   algumFiltro: boolean
 }) {
   const remoteTableOptions = useDataTable({
@@ -221,7 +352,7 @@ function ProgramasDataTable({
 
   return (
     <DataTable
-      columns={COLUNAS}
+      columns={colunas}
       data={programas.data}
       remoteTableOptions={remoteTableOptions}
       paginationVariant="numbered"

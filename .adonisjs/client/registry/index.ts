@@ -228,6 +228,24 @@ const routes = {
     tokens: [{"old":"/admin/institutos","type":0,"val":"admin","end":""},{"old":"/admin/institutos","type":0,"val":"institutos","end":""}],
     types: placeholder as Registry['admin.institutos.store']['types'],
   },
+  'admin.institutos.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/institutos/:id',
+    tokens: [{"old":"/admin/institutos/:id","type":0,"val":"admin","end":""},{"old":"/admin/institutos/:id","type":0,"val":"institutos","end":""},{"old":"/admin/institutos/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.institutos.show']['types'],
+  },
+  'admin.institutos.update': {
+    methods: ["PUT"],
+    pattern: '/admin/institutos/:id',
+    tokens: [{"old":"/admin/institutos/:id","type":0,"val":"admin","end":""},{"old":"/admin/institutos/:id","type":0,"val":"institutos","end":""},{"old":"/admin/institutos/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.institutos.update']['types'],
+  },
+  'admin.institutos.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/institutos/:id',
+    tokens: [{"old":"/admin/institutos/:id","type":0,"val":"admin","end":""},{"old":"/admin/institutos/:id","type":0,"val":"institutos","end":""},{"old":"/admin/institutos/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.institutos.destroy']['types'],
+  },
   'admin.programas': {
     methods: ["GET","HEAD"],
     pattern: '/admin/programas',
@@ -240,6 +258,24 @@ const routes = {
     tokens: [{"old":"/admin/programas","type":0,"val":"admin","end":""},{"old":"/admin/programas","type":0,"val":"programas","end":""}],
     types: placeholder as Registry['admin.programas.store']['types'],
   },
+  'admin.programas.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/programas/:id',
+    tokens: [{"old":"/admin/programas/:id","type":0,"val":"admin","end":""},{"old":"/admin/programas/:id","type":0,"val":"programas","end":""},{"old":"/admin/programas/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.programas.show']['types'],
+  },
+  'admin.programas.update': {
+    methods: ["PUT"],
+    pattern: '/admin/programas/:id',
+    tokens: [{"old":"/admin/programas/:id","type":0,"val":"admin","end":""},{"old":"/admin/programas/:id","type":0,"val":"programas","end":""},{"old":"/admin/programas/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.programas.update']['types'],
+  },
+  'admin.programas.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/programas/:id',
+    tokens: [{"old":"/admin/programas/:id","type":0,"val":"admin","end":""},{"old":"/admin/programas/:id","type":0,"val":"programas","end":""},{"old":"/admin/programas/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.programas.destroy']['types'],
+  },
   'admin.cursos': {
     methods: ["GET","HEAD"],
     pattern: '/admin/cursos',
@@ -251,6 +287,24 @@ const routes = {
     pattern: '/admin/cursos',
     tokens: [{"old":"/admin/cursos","type":0,"val":"admin","end":""},{"old":"/admin/cursos","type":0,"val":"cursos","end":""}],
     types: placeholder as Registry['admin.cursos.store']['types'],
+  },
+  'admin.cursos.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/cursos/:id',
+    tokens: [{"old":"/admin/cursos/:id","type":0,"val":"admin","end":""},{"old":"/admin/cursos/:id","type":0,"val":"cursos","end":""},{"old":"/admin/cursos/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.cursos.show']['types'],
+  },
+  'admin.cursos.update': {
+    methods: ["PUT"],
+    pattern: '/admin/cursos/:id',
+    tokens: [{"old":"/admin/cursos/:id","type":0,"val":"admin","end":""},{"old":"/admin/cursos/:id","type":0,"val":"cursos","end":""},{"old":"/admin/cursos/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.cursos.update']['types'],
+  },
+  'admin.cursos.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/cursos/:id',
+    tokens: [{"old":"/admin/cursos/:id","type":0,"val":"admin","end":""},{"old":"/admin/cursos/:id","type":0,"val":"cursos","end":""},{"old":"/admin/cursos/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.cursos.destroy']['types'],
   },
   'admin.usuarios': {
     methods: ["GET","HEAD"],

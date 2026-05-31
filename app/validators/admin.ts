@@ -14,6 +14,18 @@ export const criarInstitutoValidator = vine.create({
   nome: vine.string().trim().minLength(3).maxLength(120),
 })
 
+export const atualizarInstitutoValidator = vine.create({
+  codigo: vine
+    .string()
+    .trim()
+    .toUpperCase()
+    .minLength(2)
+    .maxLength(16)
+    .regex(/^[A-Z0-9-]+$/),
+  nome: vine.string().trim().minLength(3).maxLength(120),
+  ativo: vine.boolean(),
+})
+
 /**
  * Cadastro de um Curso novo, vinculado a um Instituto existente.
  * `programaId` é opcional aqui — a obrigatoriedade quando `nivel` ≠ graduação
@@ -25,6 +37,15 @@ export const criarCursoValidator = vine.create({
   nivel: vine.enum(NIVEIS_ACADEMICOS),
   institutoId: vine.number().withoutDecimals().positive(),
   programaId: vine.number().withoutDecimals().positive().optional(),
+})
+
+export const atualizarCursoValidator = vine.create({
+  codigo: vine.string().trim().minLength(2).maxLength(32),
+  nome: vine.string().trim().minLength(3).maxLength(160),
+  nivel: vine.enum(NIVEIS_ACADEMICOS),
+  institutoId: vine.number().withoutDecimals().positive(),
+  programaId: vine.number().withoutDecimals().positive().optional(),
+  ativo: vine.boolean(),
 })
 
 export const criarUsuarioValidator = vine.create({
@@ -53,6 +74,15 @@ export const criarProgramaValidator = vine.create({
   sigla: vine.string().trim().minLength(2).maxLength(32).optional(),
   modalidade: vine.enum(MODALIDADES_PROGRAMA).optional(),
   institutoId: vine.number().withoutDecimals().positive(),
+})
+
+export const atualizarProgramaValidator = vine.create({
+  codigo: vine.string().trim().minLength(2).maxLength(32),
+  nome: vine.string().trim().minLength(3).maxLength(160),
+  sigla: vine.string().trim().minLength(2).maxLength(32).optional(),
+  modalidade: vine.enum(MODALIDADES_PROGRAMA).optional(),
+  institutoId: vine.number().withoutDecimals().positive(),
+  ativo: vine.boolean(),
 })
 
 export const listarProgramasValidator = vine.create({

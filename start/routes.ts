@@ -128,10 +128,46 @@ router
   .group(() => {
     router.get('/admin/institutos', [controllers.Institutos, 'index']).as('admin.institutos')
     router.post('/admin/institutos', [controllers.Institutos, 'store']).as('admin.institutos.store')
+    router
+      .get('/admin/institutos/:id', [controllers.Institutos, 'show'])
+      .where('id', router.matchers.number())
+      .as('admin.institutos.show')
+    router
+      .put('/admin/institutos/:id', [controllers.Institutos, 'update'])
+      .where('id', router.matchers.number())
+      .as('admin.institutos.update')
+    router
+      .delete('/admin/institutos/:id', [controllers.Institutos, 'destroy'])
+      .where('id', router.matchers.number())
+      .as('admin.institutos.destroy')
     router.get('/admin/programas', [controllers.Programas, 'index']).as('admin.programas')
     router.post('/admin/programas', [controllers.Programas, 'store']).as('admin.programas.store')
+    router
+      .get('/admin/programas/:id', [controllers.Programas, 'show'])
+      .where('id', router.matchers.number())
+      .as('admin.programas.show')
+    router
+      .put('/admin/programas/:id', [controllers.Programas, 'update'])
+      .where('id', router.matchers.number())
+      .as('admin.programas.update')
+    router
+      .delete('/admin/programas/:id', [controllers.Programas, 'destroy'])
+      .where('id', router.matchers.number())
+      .as('admin.programas.destroy')
     router.get('/admin/cursos', [controllers.Cursos, 'index']).as('admin.cursos')
     router.post('/admin/cursos', [controllers.Cursos, 'store']).as('admin.cursos.store')
+    router
+      .get('/admin/cursos/:id', [controllers.Cursos, 'show'])
+      .where('id', router.matchers.number())
+      .as('admin.cursos.show')
+    router
+      .put('/admin/cursos/:id', [controllers.Cursos, 'update'])
+      .where('id', router.matchers.number())
+      .as('admin.cursos.update')
+    router
+      .delete('/admin/cursos/:id', [controllers.Cursos, 'destroy'])
+      .where('id', router.matchers.number())
+      .as('admin.cursos.destroy')
     router.get('/admin/usuarios', [controllers.Usuarios, 'index']).as('admin.usuarios')
     router.post('/admin/usuarios', [controllers.Usuarios, 'store']).as('admin.usuarios.store')
     router

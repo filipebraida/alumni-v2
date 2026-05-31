@@ -41,10 +41,19 @@ export type ScannedRoutes = {
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
     'admin.institutos.store': { paramsTuple?: []; params?: {} }
+    'admin.institutos.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.institutos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.institutos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.programas': { paramsTuple?: []; params?: {} }
     'admin.programas.store': { paramsTuple?: []; params?: {} }
+    'admin.programas.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.programas.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.programas.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
     'admin.cursos.store': { paramsTuple?: []; params?: {} }
+    'admin.cursos.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.cursos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.cursos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.usuarios': { paramsTuple?: []; params?: {} }
     'admin.usuarios.store': { paramsTuple?: []; params?: {} }
     'admin.usuarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -69,8 +78,11 @@ export type ScannedRoutes = {
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
+    'admin.institutos.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.programas': { paramsTuple?: []; params?: {} }
+    'admin.programas.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
+    'admin.cursos.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
@@ -93,8 +105,11 @@ export type ScannedRoutes = {
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
+    'admin.institutos.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.programas': { paramsTuple?: []; params?: {} }
+    'admin.programas.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
+    'admin.cursos.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
   POST: {
@@ -119,10 +134,16 @@ export type ScannedRoutes = {
   }
   DELETE: {
     'codigo_acesso.destroy': { paramsTuple?: []; params?: {} }
+    'admin.institutos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.programas.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.cursos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   PUT: {
     'perfil.update': { paramsTuple?: []; params?: {} }
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
+    'admin.institutos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.programas.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.cursos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.usuarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }

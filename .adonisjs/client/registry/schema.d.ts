@@ -451,6 +451,42 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'admin.institutos.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/institutos/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['show']>>>
+    }
+  }
+  'admin.institutos.update': {
+    methods: ["PUT"]
+    pattern: '/admin/institutos/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/admin').atualizarInstitutoValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/admin').atualizarInstitutoValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.institutos.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/institutos/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['destroy']>>>
+    }
+  }
   'admin.programas': {
     methods: ["GET","HEAD"]
     pattern: '/admin/programas'
@@ -475,6 +511,42 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'admin.programas.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/programas/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['show']>>>
+    }
+  }
+  'admin.programas.update': {
+    methods: ["PUT"]
+    pattern: '/admin/programas/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['update']>>>
+    }
+  }
+  'admin.programas.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/programas/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['destroy']>>>
+    }
+  }
   'admin.cursos': {
     methods: ["GET","HEAD"]
     pattern: '/admin/cursos'
@@ -497,6 +569,42 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/admin').criarCursoValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.cursos.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/cursos/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['show']>>>
+    }
+  }
+  'admin.cursos.update': {
+    methods: ["PUT"]
+    pattern: '/admin/cursos/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['update']>>>
+    }
+  }
+  'admin.cursos.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/cursos/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['destroy']>>>
     }
   }
   'admin.usuarios': {

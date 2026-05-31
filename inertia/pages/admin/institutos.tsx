@@ -1,17 +1,39 @@
 import { Head, router } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import type { ColumnDef } from '@tanstack/react-table'
-import { Building2, SearchIcon } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
+import {
+  Building2,
+  EyeIcon,
+  MoreHorizontalIcon,
+  PencilIcon,
+  SearchIcon,
+  TrashIcon,
+} from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
 
 import { urlFor } from '~/client'
 import GestaoLayout from '~/layouts/gestao'
+import {
+  AlertDialog,
+  AlertDialogClose,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogPopup,
+  AlertDialogTitle,
+} from '~/components/ui/alert_dialog'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/ui/data_table'
 import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
+import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '~/components/ui/menu'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
-import { CriarInstitutoDialog } from '~/components/admin/criar_instituto_dialog'
+import {
+  InstitutoDialog,
+  NovoInstitutoButton,
+  type InstitutoEditavel,
+} from '~/components/admin/instituto_dialog'
 import { useDataTable, type PaginatorMeta } from '~/hooks/use_data_table'
 import { type InertiaProps } from '~/types'
 
@@ -84,6 +106,11 @@ const COLUNAS: ColumnDef<InstitutoRow>[] = [
       </Badge>
     ),
   },
+  {
+    id: 'acoes',
+    header: '',
+    cell: ({ row }) => <AcoesInstitutoRow instituto={row.original} />,
+  },
 ]
 
 export default function AdminInstitutos({ institutos, filtros }: PageProps) {
@@ -98,7 +125,7 @@ export default function AdminInstitutos({ institutos, filtros }: PageProps) {
         <GestaoPageHeader
           titulo="Institutos"
           subtitulo="Unidades da UFRRJ. Cada curso pertence a um instituto."
-          acoes={<CriarInstitutoDialog />}
+          acoes={<NovoInstitutoButton />}
         />
 
         {semDados ? (
@@ -115,6 +142,88 @@ export default function AdminInstitutos({ institutos, filtros }: PageProps) {
 }
 
 AdminInstitutos.layout = (page: ReactElement) => <GestaoLayout>{page}</GestaoLayout>
+
+function AcoesInstitutoRow({ instituto }: { instituto: InstitutoRow }) {
+  const [editando, setEditando] = useState(false)
+  const [removendo, setRemovendo] = useState(false)
+  const [excluindo, setExcluindo] = useState(false)
+  const editavel = useMemo<InstitutoEditavel>(
+    () => ({
+      id: instituto.id,
+      codigo: instituto.codigo,
+      nome: instituto.nome,
+      ativo: instituto.ativo,
+    }),
+    [instituto.id, instituto.codigo, instituto.nome, instituto.ativo]
+  )
+
+  function remover() {
+    setExcluindo(true)
+    router.delete(urlFor('admin.institutos.destroy', { id: instituto.id }), {
+      preserveScroll: true,
+      onFinish: () => {
+        setExcluindo(false)
+        setRemovendo(false)
+      },
+    })
+  }
+
+  return (
+    <div className="text-right">
+      <Menu>
+        <MenuTrigger
+          render={
+            <Button variant="ghost" size="icon-sm" aria-label={`Ações de ${instituto.nome}`} />
+          }
+        >
+          <MoreHorizontalIcon />
+        </MenuTrigger>
+        <MenuPopup align="end" className="min-w-44">
+          <MenuItem render={<Link href={urlFor('admin.institutos.show', { id: instituto.id })} />}>
+            <EyeIcon /> Ver
+          </MenuItem>
+          <MenuItem onClick={() => setEditando(true)}>
+            <PencilIcon /> Editar
+          </MenuItem>
+          <MenuSeparator />
+          <MenuItem
+            onClick={() => setRemovendo(true)}
+            className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
+          >
+            <TrashIcon /> Remover
+          </MenuItem>
+        </MenuPopup>
+      </Menu>
+
+      <InstitutoDialog
+        modo="editar"
+        instituto={editavel}
+        open={editando}
+        onOpenChange={setEditando}
+      />
+
+      <AlertDialog open={removendo} onOpenChange={setRemovendo}>
+        <AlertDialogPopup>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remover {instituto.nome}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Se o instituto tiver cursos ou programas vinculados,
+              a remoção será bloqueada — remova-os antes.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogClose render={<Button variant="ghost" type="button" />}>
+              Cancelar
+            </AlertDialogClose>
+            <Button variant="destructive" onClick={remover} disabled={excluindo}>
+              {excluindo ? 'Removendo…' : 'Remover'}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogPopup>
+      </AlertDialog>
+    </div>
+  )
+}
 
 function InstitutosDataTable({
   institutos,
@@ -227,4 +336,3 @@ function EstadoVazio() {
     </Empty>
   )
 }
-

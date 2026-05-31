@@ -59,12 +59,21 @@ export interface ApiDefinition {
   admin: {
     institutos: typeof routes['admin.institutos'] & {
       store: typeof routes['admin.institutos.store']
+      show: typeof routes['admin.institutos.show']
+      update: typeof routes['admin.institutos.update']
+      destroy: typeof routes['admin.institutos.destroy']
     }
     programas: typeof routes['admin.programas'] & {
       store: typeof routes['admin.programas.store']
+      show: typeof routes['admin.programas.show']
+      update: typeof routes['admin.programas.update']
+      destroy: typeof routes['admin.programas.destroy']
     }
     cursos: typeof routes['admin.cursos'] & {
       store: typeof routes['admin.cursos.store']
+      show: typeof routes['admin.cursos.show']
+      update: typeof routes['admin.cursos.update']
+      destroy: typeof routes['admin.cursos.destroy']
     }
     usuarios: typeof routes['admin.usuarios'] & {
       store: typeof routes['admin.usuarios.store']

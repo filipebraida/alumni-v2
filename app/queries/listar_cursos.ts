@@ -8,6 +8,7 @@ export type CursoRow = {
   nome: string
   nivel: NivelAcademico
   ativo: boolean
+  programaId: number | null
   instituto: { id: number; nome: string; codigo: string }
 }
 
@@ -52,6 +53,7 @@ export default class ListarCursos {
       nome: curso.nome,
       nivel: curso.nivel,
       ativo: curso.ativo,
+      programaId: curso.programaId,
       instituto: {
         id: curso.instituto.id,
         nome: curso.instituto.nome,
