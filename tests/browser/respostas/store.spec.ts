@@ -100,11 +100,7 @@ test.group('RespostasController.store', (group) => {
     await page.assertVisible(
       'text=Pronto! Seus dados foram atualizados — obrigado por manter seu cadastro fresquinho.'
     )
-    await db.assertHas(
-      'respostas_pessoa',
-      { egresso_id: egresso.id, ano: DateTime.now().year },
-      1
-    )
+    await db.assertHas('respostas_pessoa', { egresso_id: egresso.id, ano: DateTime.now().year }, 1)
     await db.assertHas('respostas_curso', { matricula_id: matricula.id }, 1)
   })
 

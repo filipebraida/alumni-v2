@@ -22,6 +22,10 @@ export default class extends BaseSchema {
       table.string('codigo').notNullable().unique() // matrícula SIGAA — âncora imutável
       table.string('periodo_formatura').nullable() // ex.: "2022.2"
       table.date('data_colacao').nullable()
+      // Ordenação cronológica do seletor de formações no painel
+      // (`coalesce(data_ingresso, created_at)`). Nullable — quando a
+      // coordenação não informa, cai pro created_at.
+      table.date('data_ingresso').nullable()
       table.string('situacao').notNullable().defaultTo('formado')
 
       table.timestamp('created_at').notNullable()

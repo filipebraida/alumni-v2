@@ -21,13 +21,15 @@ export default class extends BaseSchema {
       table.integer('ano').notNullable()
       table.timestamp('registrada_em').notNullable()
 
-      // 4 dados gerais (compartilhados por todas as formações do egresso)
+      // 7 dados gerais (compartilhados por todas as formações do egresso).
+      // Faixa salarial mora aqui — é da pessoa num instante, não do diploma.
       table.string('localizacao_cidade', 120).nullable()
       table.string('localizacao_uf', 2).nullable()
       table.string('localizacao_pais', 80).nullable()
       table.string('empregador', 160).nullable()
       table.string('cargo', 160).nullable()
       table.string('setor', 30).nullable()
+      table.string('faixa_salarial', 20).nullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()

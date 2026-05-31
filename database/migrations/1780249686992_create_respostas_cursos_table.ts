@@ -4,7 +4,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
  * `respostas_curso` — campos por matrícula/ano dentro de uma foto consolidada.
  * Filha de `respostas_pessoa`; uma linha por matrícula não-evadida do egresso
  * no instante da revisão. Colunas de graduação só são preenchidas quando
- * `matricula.curso.nivel = 'graduacao'`; pós nasce identidade-só (3 colunas
+ * `matricula.curso.nivel = 'graduacao'`; pós nasce identidade-só (2 colunas
  * `null`) nesta entrega.
  *
  * `matricula_id` é RESTRICT — não permite apagar matrícula com histórico de
@@ -31,8 +31,8 @@ export default class extends BaseSchema {
         .onDelete('RESTRICT')
       table.integer('ano').notNullable()
 
-      // graduação — preenchidos só quando matricula.curso.nivel = 'graduacao'
-      table.string('faixa_salarial', 20).nullable()
+      // Graduação — preenchidos só quando matricula.curso.nivel = 'graduacao'.
+      // Faixa salarial vive em respostas_pessoa (é da pessoa, não do diploma).
       table.string('relacao_formacao', 20).nullable()
       table.string('tempo_primeiro_emprego', 20).nullable()
 
