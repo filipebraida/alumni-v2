@@ -3,11 +3,6 @@ import { Progress, ProgressIndicator, ProgressTrack } from '~/components/ui/prog
 import { cn } from '~/lib/utils'
 import type { Formacao } from '~/components/dashboard/types'
 
-/**
- * Tab cards do seletor de formação: cada um é botão E resumo. O selecionado
- * ganha borda + ring + glow inferior; ao clicar reescopa mapa/colegas/insights
- * abaixo. Status (Concluído/Em curso) e frescor% individual ficam à mostra.
- */
 export function FormacaoTab({
   formacao,
   selecionada,

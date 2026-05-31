@@ -14,7 +14,6 @@ import { type InertiaProps } from '~/types'
 
 type PageProps = InertiaProps<DashboardData>
 
-/** Conta itens MEC com confiança != confirmado. */
 const pendentes = (campos: { confianca: string }[]) =>
   campos.filter((c) => c.confianca !== 'confirmado').length
 
@@ -33,8 +32,7 @@ export default function Dashboard({
 
   const pendentesPorFormacao = formacoes.reduce((soma, f) => soma + pendentes(f.camposMec), 0)
 
-  // Modo "primeira" quando ainda não houve nenhuma resposta arquivada — a
-  // snapshot é a verdade (controller marca ultimaFoto = '—' quando null).
+  // '—' = sentinela do controller pra "sem resposta arquivada"
   const modo: 'manutencao' | 'primeira' = snapshot.ultimaFoto === '—' ? 'primeira' : 'manutencao'
   const camposVazios =
     camposGerais.filter((c) => c.confianca === 'ausente').length +
@@ -68,8 +66,7 @@ export default function Dashboard({
             <GraduationCap className="size-4 shrink-0 text-primary" /> Suas formações
           </h2>
           <p className="mt-1 text-muted-foreground text-sm">
-            Selecione uma formação para ver a identidade e os campos próprios. Pós-graduação ainda
-            aparece com identidade-só.
+            Cada formação tem seus próprios dados. Selecione uma para ver.
           </p>
         </div>
 

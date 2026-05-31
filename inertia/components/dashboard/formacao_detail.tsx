@@ -1,57 +1,55 @@
 import { Check } from 'lucide-react'
 import { type ReactNode } from 'react'
 import { Badge } from '~/components/ui/badge'
+import { Separator } from '~/components/ui/separator'
 import { MecCard } from '~/components/dashboard/mec_card'
 import { FormacaoCamposEmBreve } from '~/components/dashboard/formacao_campos_em_breve'
 import type { Formacao } from '~/components/dashboard/types'
 
-/**
- * Detalhe da formação ativa: à esquerda um sumário (nível, período, campus,
- * mapeados) com link pro histórico; à direita os campos MEC específicos
- * daquela formação. Cabe abaixo do seletor de formações.
- */
 export function DashboardFormacaoDetail({ formacao }: { formacao: Formacao }) {
   const pendentes = formacao.camposMec.filter((c) => c.confianca !== 'confirmado').length
 
   return (
-    <div className="grid grid-cols-1 gap-px bg-border lg:grid-cols-12">
-      <aside className="bg-card p-5 lg:col-span-3">
-        <div className="font-medium text-muted-foreground text-xs uppercase tracking-widest">
-          Sobre esta formação
-        </div>
-        <div className="mt-2 font-semibold text-sm leading-snug">{formacao.diploma}</div>
-        <dl className="mt-3 space-y-2 text-xs">
-          <Linha rotulo="Nível" valor={formacao.nivel} />
-          <Linha rotulo="Período" valor={formacao.periodo} />
-          <Linha rotulo="Campus" valor={formacao.campus} />
-          <Linha rotulo="Código" valor={formacao.codigo} />
-        </dl>
-      </aside>
-
-      <div className="bg-card lg:col-span-9">
-        <div className="flex flex-wrap items-center justify-between gap-2 px-5 pt-4 pb-2">
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-4 pb-3">
+        <div className="min-w-0">
           <div className="font-medium text-muted-foreground text-xs uppercase tracking-widest">
-            Dados de {formacao.curto}
+            Detalhes da formação
           </div>
-          {formacao.camposMec.length === 0 ? null : pendentes > 0 ? (
-            <Badge variant="warning">{pendentes}&nbsp;a revisar</Badge>
+          <div className="mt-1 font-semibold text-sm leading-snug">{formacao.diploma}</div>
+        </div>
+        {formacao.camposMec.length === 0 ? null : pendentes > 0 ? (
+          <Badge variant="warning">{pendentes}&nbsp;a revisar</Badge>
+        ) : (
+          <Badge variant="secondary" className="gap-1">
+            <Check className="size-3" /> em dia
+          </Badge>
+        )}
+      </div>
+
+      <Separator />
+
+      <div className="grid grid-cols-1 gap-px bg-border lg:grid-cols-12">
+        <aside className="bg-card p-5 lg:col-span-3">
+          <dl className="space-y-2 text-xs">
+            <Linha rotulo="Nível" valor={formacao.nivel} />
+            <Linha rotulo="Período" valor={formacao.periodo} />
+            <Linha rotulo="Campus" valor={formacao.campus} />
+            <Linha rotulo="Código" valor={formacao.codigo} />
+          </dl>
+        </aside>
+
+        <div className="flex flex-col bg-card lg:col-span-9">
+          {formacao.camposMec.length === 0 ? (
+            <FormacaoCamposEmBreve />
           ) : (
-            <Badge variant="secondary" className="gap-1">
-              <Check className="size-3" /> em dia
-            </Badge>
+            <div className="grid flex-1 grid-cols-1 gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
+              {formacao.camposMec.map((campo) => (
+                <MecCard key={campo.chave} campo={campo} />
+              ))}
+            </div>
           )}
         </div>
-        {formacao.camposMec.length === 0 ? (
-          <div className="border-t">
-            <FormacaoCamposEmBreve />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-px border-t bg-border sm:grid-cols-2 lg:grid-cols-3">
-            {formacao.camposMec.map((campo) => (
-              <MecCard key={campo.chave} campo={campo} />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )

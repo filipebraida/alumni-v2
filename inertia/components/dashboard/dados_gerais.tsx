@@ -5,10 +5,6 @@ import { Separator } from '~/components/ui/separator'
 import { MecCard } from '~/components/dashboard/mec_card'
 import type { CampoMec } from '~/components/dashboard/types'
 
-/**
- * "Dados gerais": campos pessoais/profissionais que valem para TODAS as
- * formações do egresso. Uma confirmação só, embaixo da página.
- */
 export function DashboardDadosGerais({ campos }: { campos: CampoMec[] }) {
   const pendentes = campos.filter((c) => c.confianca !== 'confirmado').length
 
@@ -20,8 +16,7 @@ export function DashboardDadosGerais({ campos }: { campos: CampoMec[] }) {
             <User className="size-4 shrink-0 text-primary" /> Dados gerais
           </h2>
           <p className="mt-1 text-muted-foreground text-sm">
-            Valem para todas as suas formações. Edite o que mudou — a confirmação é feita de uma vez
-            só, embaixo.
+            Seus dados pessoais e profissionais.
           </p>
         </div>
         {pendentes > 0 ? (

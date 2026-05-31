@@ -5,14 +5,6 @@ import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { cn } from '~/lib/utils'
 import type { Frescor } from '~/components/dashboard/types'
 
-/**
- * Frescor geral: % linear na janela de 12 meses + prazo até expirar + última
- * revisão. Adapta o copy conforme o modo:
- * - manutenção: "%", "Expira em X", "Revisão há Y"
- * - primeira: "0% · sem resposta ainda" + nota "Primeira revisão dá origem à
- *   sua linha de base"
- * O CTA de atualização vive no hero — este cartão é resumo.
- */
 export function DashboardFrescor({
   frescor,
   modo,

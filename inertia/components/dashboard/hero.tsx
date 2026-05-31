@@ -9,13 +9,8 @@ import type { Egresso } from '~/components/dashboard/types'
 
 type Modo = 'manutencao' | 'primeira'
 
-/**
- * Faixa de boas-vindas multi-formação: avatar, saudação adaptativa (modo
- * "manutenção" pra quem já tem resposta arquivada, modo "primeira resposta"
- * pra quem nunca respondeu) e o CTA único de revisão. A saudação só conta
- * pendências por formação — pendência de dados gerais vive no header daquele
- * bloco (per brief decision).
- */
+// `globalPendentes` conta só pendências por formação. Pendência de dados gerais
+// fica no header daquele bloco (decisão do brief multi-formação).
 export function DashboardHero({
   egresso,
   totalFormacoes,

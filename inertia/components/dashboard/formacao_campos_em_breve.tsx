@@ -1,11 +1,7 @@
 import { Clock } from 'lucide-react'
 
-/**
- * Placeholder pro detalhe de formações de pós-graduação nesta entrega: o
- * modelo `RespostaCurso` ainda não carrega campos próprios pra pós (status,
- * bolsa, continuidade). A view exibe a microcopy de espera até a change D2
- * trazer a matriz CAPES por modalidade.
- */
+// `RespostaCurso` só carrega campos próprios de graduação nesta entrega; pós
+// (status, bolsa, continuidade) vem com a matriz CAPES numa change futura.
 export function FormacaoCamposEmBreve() {
   return (
     <div className="flex flex-col items-start gap-2 p-5 text-sm">

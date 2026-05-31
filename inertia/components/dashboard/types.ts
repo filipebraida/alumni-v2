@@ -1,11 +1,3 @@
-/**
- * Formato dos dados do painel do egresso — proposta multi-formação. Um egresso
- * pode ter 1+ vínculo com a UFRRJ (graduação, pós, etc). "Dados gerais" valem
- * pra todas; cada formação carrega sua própria turma, colegas e insights.
- * Hoje servido por mock em `DashboardController`; quando houver persistência,
- * um transformer deve produzir exatamente este formato.
- */
-
 export type Egresso = {
   nome: string
   primeiroNome: string
