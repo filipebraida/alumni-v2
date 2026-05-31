@@ -1,5 +1,6 @@
 import vine from '@vinejs/vine'
 import { NIVEIS_ACADEMICOS } from '#enums/nivel_academico'
+import { MODALIDADES_PROGRAMA } from '#enums/modalidade_programa'
 
 /** Cadastro de um Instituto novo. Código curto (chave natural) + nome. */
 export const criarInstitutoValidator = vine.create({
@@ -41,6 +42,22 @@ export const atualizarUsuarioValidator = vine.create({
 
 export const listarInstitutosValidator = vine.create({
   q: vine.string().trim().minLength(1).maxLength(120).optional(),
+  page: vine.number().withoutDecimals().positive().optional(),
+  perPage: vine.number().withoutDecimals().positive().optional(),
+})
+
+/** Cadastro de um Programa (PPG) novo, vinculado a um Instituto existente. */
+export const criarProgramaValidator = vine.create({
+  codigo: vine.string().trim().minLength(2).maxLength(32),
+  nome: vine.string().trim().minLength(3).maxLength(160),
+  sigla: vine.string().trim().minLength(2).maxLength(32).optional(),
+  modalidade: vine.enum(MODALIDADES_PROGRAMA).optional(),
+  institutoId: vine.number().withoutDecimals().positive(),
+})
+
+export const listarProgramasValidator = vine.create({
+  q: vine.string().trim().minLength(1).maxLength(120).optional(),
+  institutoId: vine.number().withoutDecimals().positive().optional(),
   page: vine.number().withoutDecimals().positive().optional(),
   perPage: vine.number().withoutDecimals().positive().optional(),
 })

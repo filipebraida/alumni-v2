@@ -451,6 +451,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/institutos_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'admin.programas': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/programas'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/admin').listarProgramasValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.programas.store': {
+    methods: ["POST"]
+    pattern: '/admin/programas'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/admin').criarProgramaValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/admin').criarProgramaValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'admin.cursos': {
     methods: ["GET","HEAD"]
     pattern: '/admin/cursos'

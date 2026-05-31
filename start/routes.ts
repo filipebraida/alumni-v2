@@ -128,6 +128,8 @@ router
   .group(() => {
     router.get('/admin/institutos', [controllers.Institutos, 'index']).as('admin.institutos')
     router.post('/admin/institutos', [controllers.Institutos, 'store']).as('admin.institutos.store')
+    router.get('/admin/programas', [controllers.Programas, 'index']).as('admin.programas')
+    router.post('/admin/programas', [controllers.Programas, 'store']).as('admin.programas.store')
     router.get('/admin/cursos', [controllers.Cursos, 'index']).as('admin.cursos')
     router.post('/admin/cursos', [controllers.Cursos, 'store']).as('admin.cursos.store')
     router.get('/admin/usuarios', [controllers.Usuarios, 'index']).as('admin.usuarios')

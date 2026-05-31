@@ -60,6 +60,9 @@ export interface ApiDefinition {
     institutos: typeof routes['admin.institutos'] & {
       store: typeof routes['admin.institutos.store']
     }
+    programas: typeof routes['admin.programas'] & {
+      store: typeof routes['admin.programas.store']
+    }
     cursos: typeof routes['admin.cursos'] & {
       store: typeof routes['admin.cursos.store']
     }

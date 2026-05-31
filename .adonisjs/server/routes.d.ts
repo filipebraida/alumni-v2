@@ -41,6 +41,8 @@ export type ScannedRoutes = {
     'gestao.curso_ativo': { paramsTuple?: []; params?: {} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
     'admin.institutos.store': { paramsTuple?: []; params?: {} }
+    'admin.programas': { paramsTuple?: []; params?: {} }
+    'admin.programas.store': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
     'admin.cursos.store': { paramsTuple?: []; params?: {} }
     'admin.usuarios': { paramsTuple?: []; params?: {} }
@@ -67,6 +69,7 @@ export type ScannedRoutes = {
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
+    'admin.programas': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
     'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
@@ -90,6 +93,7 @@ export type ScannedRoutes = {
     'gestao.egressos.importacoes.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos.show': { paramsTuple: [ParamValue]; params: {'egressoId': ParamValue} }
     'admin.institutos': { paramsTuple?: []; params?: {} }
+    'admin.programas': { paramsTuple?: []; params?: {} }
     'admin.cursos': { paramsTuple?: []; params?: {} }
     'admin.usuarios': { paramsTuple?: []; params?: {} }
   }
@@ -109,6 +113,7 @@ export type ScannedRoutes = {
     'gestao.egressos.pedir_atualizacao': { paramsTuple?: []; params?: {} }
     'gestao.egressos.importacoes.store': { paramsTuple?: []; params?: {} }
     'admin.institutos.store': { paramsTuple?: []; params?: {} }
+    'admin.programas.store': { paramsTuple?: []; params?: {} }
     'admin.cursos.store': { paramsTuple?: []; params?: {} }
     'admin.usuarios.store': { paramsTuple?: []; params?: {} }
   }

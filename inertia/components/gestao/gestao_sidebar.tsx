@@ -7,6 +7,7 @@ import {
   FileBarChart,
   FileText,
   GraduationCap,
+  Layers,
   LayoutDashboard,
   LogOut,
   ShieldUser,
@@ -133,6 +134,17 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
                 >
                   <Building2 />
                   <span>Institutos</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={navAtivo}
+                  tooltip="Programas"
+                  render={<Link href={urlFor('admin.programas')} />}
+                  isActive={page.url.startsWith('/admin/programas')}
+                >
+                  <Layers />
+                  <span>Programas</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>

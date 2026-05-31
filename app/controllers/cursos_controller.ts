@@ -18,7 +18,7 @@ export default class CursosController {
         perPage: perPage ?? 20,
       }),
       new ListarInstitutos().handle({ perPage: 200 }),
-      new ListarProgramas().handle({ ativo: true }),
+      new ListarProgramas().handle({ ativo: true, perPage: 200 }),
     ])
     return inertia.render('admin/cursos', {
       cursos: { data: cursos.data, metadata: cursos.meta },

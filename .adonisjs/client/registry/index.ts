@@ -228,6 +228,18 @@ const routes = {
     tokens: [{"old":"/admin/institutos","type":0,"val":"admin","end":""},{"old":"/admin/institutos","type":0,"val":"institutos","end":""}],
     types: placeholder as Registry['admin.institutos.store']['types'],
   },
+  'admin.programas': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/programas',
+    tokens: [{"old":"/admin/programas","type":0,"val":"admin","end":""},{"old":"/admin/programas","type":0,"val":"programas","end":""}],
+    types: placeholder as Registry['admin.programas']['types'],
+  },
+  'admin.programas.store': {
+    methods: ["POST"],
+    pattern: '/admin/programas',
+    tokens: [{"old":"/admin/programas","type":0,"val":"admin","end":""},{"old":"/admin/programas","type":0,"val":"programas","end":""}],
+    types: placeholder as Registry['admin.programas.store']['types'],
+  },
   'admin.cursos': {
     methods: ["GET","HEAD"],
     pattern: '/admin/cursos',

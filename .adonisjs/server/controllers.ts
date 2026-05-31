@@ -15,6 +15,7 @@ export const controllers = {
   Notificacoes: () => import('#controllers/notificacoes_controller'),
   Onboarding: () => import('#controllers/onboarding_controller'),
   Perfil: () => import('#controllers/perfil_controller'),
+  Programas: () => import('#controllers/programas_controller'),
   Respostas: () => import('#controllers/respostas_controller'),
   Session: () => import('#controllers/session_controller'),
   Usuarios: () => import('#controllers/usuarios_controller'),
