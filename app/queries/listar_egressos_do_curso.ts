@@ -83,7 +83,10 @@ export default class ListarEgressosDoCurso {
       const like = `%${q}%`
       query.where((sub) => {
         sub.where('matriculas.codigo', 'like', like).orWhereHas('egresso', (egresso) => {
-          egresso.where('nomeCompleto', 'like', like).orWhere('emailPessoal', 'like', like)
+          egresso
+            .where('nomeCompleto', 'like', like)
+            .orWhere('emailPessoal', 'like', like)
+            .orWhereHas('user', (user) => user.where('email', 'like', like))
         })
       })
     }
@@ -157,7 +160,7 @@ export default class ListarEgressosDoCurso {
       return {
         egressoId: matricula.egressoId,
         nome: egresso.nomeCompleto,
-        email: egresso.emailPessoal ?? egresso.user?.email ?? null,
+        email: egresso.user?.email ?? egresso.emailPessoal ?? null,
         matriculaCodigo: matricula.codigo,
         situacao: matricula.situacao,
         periodoFormatura: matricula.periodoFormatura,
