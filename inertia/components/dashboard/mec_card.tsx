@@ -12,8 +12,8 @@ import {
   Star,
   type LucideIcon,
 } from 'lucide-react'
-import { type Data } from '@generated/data'
 import { cn } from '~/lib/utils'
+import { type CampoMec } from '~/pages/dashboard'
 
 const ICONES: Record<string, LucideIcon> = {
   pin: MapPin,
@@ -29,7 +29,7 @@ const ICONES: Record<string, LucideIcon> = {
   calendar: Calendar,
 }
 
-export function MecCard({ campo }: { campo: Data.CampoMec }) {
+export function MecCard({ campo }: { campo: CampoMec }) {
   const Icone = ICONES[campo.icone] ?? Check
   const ausente = campo.confianca === 'ausente'
   const precisaRevisar = campo.confianca === 'desatualizado'

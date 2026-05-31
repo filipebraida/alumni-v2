@@ -12,12 +12,20 @@ import {
 import { CadastrarEgressoDialog } from '~/components/gestao/cadastrar_egresso_dialog'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { ImportarEgressosDialog } from '~/components/gestao/importar_egressos_dialog'
-import { type Data } from '@generated/data'
-import { type InertiaProps } from '~/types'
+import { type GestaoShared, type InertiaProps } from '~/types'
+
+type EgressosEstatisticas = {
+  total: number
+  emDia: number
+  desatualizado: number
+  semRegistro: number
+  pctEmDia: number
+  janelaFrescorMeses: number
+}
 
 type PageProps = InertiaProps<{
   egressos: EgressosResponse
-  estatisticas: Data.EgressosEstatisticas | null
+  estatisticas: EgressosEstatisticas | null
   turmas: string[]
   q: string | null
   situacoes: Situacao[]
@@ -36,7 +44,7 @@ export default function GestaoEgressos({
   sort,
   order,
 }: PageProps) {
-  const { gestao } = usePage<{ gestao: Data.GestaoShared }>().props
+  const { gestao } = usePage<{ gestao: GestaoShared }>().props
   const curso = gestao.cursos.find((c) => c.id === gestao.cursoAtivoId) ?? null
 
   return (

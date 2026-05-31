@@ -8,7 +8,7 @@ import { GestaoSidebar } from '~/components/gestao/gestao_sidebar'
 import { GestaoUserMenu } from '~/components/gestao/gestao_user_menu'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
 import { AnchoredToastProvider, ToastProvider } from '~/components/ui/toast'
-import { type Data } from '@generated/data'
+import { type GestaoShared } from '~/types'
 
 /** Rótulo da página atual no breadcrumb, derivado da URL (mapa explícito). */
 function rotuloDaPagina(url: string): string {
@@ -33,7 +33,7 @@ function secaoDaPagina(url: string): string {
 export default function GestaoLayout({ children }: { children: ReactElement }) {
   useFlashToasts()
 
-  const { gestao } = usePage<{ gestao: Data.GestaoShared }>().props
+  const { gestao } = usePage<{ gestao: GestaoShared }>().props
   const url = usePage().url
   const curso = gestao.cursos.find((c) => c.id === gestao.cursoAtivoId) ?? null
   const pagina = rotuloDaPagina(url)

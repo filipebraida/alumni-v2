@@ -9,12 +9,12 @@ import {
   Star,
   type LucideIcon,
 } from 'lucide-react'
-import { type Data } from '@generated/data'
 import { Button } from '~/components/ui/button'
 import { Card } from '~/components/ui/card'
 import { SoftBadge } from '~/components/portal/soft_badge'
 import { EditorLocal, EditorOpcoes, EditorTexto } from '~/components/respostas/editores'
 import { cn } from '~/lib/utils'
+import { type Opcoes } from '~/pages/respostas/create'
 
 export type Status = 'pendente' | 'confirmado' | 'atualizado'
 
@@ -27,7 +27,7 @@ export type CampoConfig = {
   ajuda?: string
   editor: EditorTipo
   campo?: string
-  opcoesKey?: keyof Data.Opcoes
+  opcoesKey?: keyof Opcoes
 }
 
 const ICONES: Record<string, LucideIcon> = {
@@ -42,7 +42,7 @@ const ICONES: Record<string, LucideIcon> = {
 
 type Patch = Record<string, string | null>
 
-function valorExibido(config: CampoConfig, data: Patch, opcoes: Data.Opcoes): string {
+function valorExibido(config: CampoConfig, data: Patch, opcoes: Opcoes): string {
   if (config.editor === 'local') {
     return data.localizacaoCidade
       ? `${data.localizacaoCidade} · ${data.localizacaoUf ?? ''}`.trim()
@@ -57,7 +57,7 @@ function valorExibido(config: CampoConfig, data: Patch, opcoes: Data.Opcoes): st
 type Props = {
   config: CampoConfig
   data: Patch
-  opcoes: Data.Opcoes
+  opcoes: Opcoes
   status: Status
   editando: boolean
   onConfirmar: () => void

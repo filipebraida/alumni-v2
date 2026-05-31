@@ -1,7 +1,9 @@
 import { Lock } from 'lucide-react'
 
+import { type Data } from '@generated/data'
 import { cn } from '~/lib/utils'
-import { type Perfil } from '~/components/perfil/types'
+
+type Perfil = Data.User.Variants['forPerfil']
 
 type Item = {
   ativa: boolean

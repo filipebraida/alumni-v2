@@ -13,7 +13,7 @@ import { cn } from '~/lib/utils'
 import { Separator } from '~/components/ui/separator'
 import { GlifoIcone, GlifoTexto } from '~/components/perfil/glifo'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
-import { type PerfilFormState } from '~/components/perfil/types'
+import { type PerfilFormState } from '~/components/perfil/use_perfil_form'
 
 type Props = {
   form: PerfilFormState

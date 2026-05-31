@@ -6,9 +6,30 @@ import { FAIXA_SALARIAL_LABELS } from '#enums/faixa_salarial'
 import { RELACAO_FORMACAO_LABELS } from '#enums/relacao_formacao'
 import { SETOR_LABELS } from '#enums/setor'
 import { TEMPO_PRIMEIRO_EMPREGO_LABELS } from '#enums/tempo_primeiro_emprego'
-import { type CampoMec, type Confianca } from '#transformers/campo_mec_transformer'
 
 const JANELA_MESES = 12
+
+export type Confianca = 'confirmado' | 'desatualizado' | 'ausente'
+
+export type CampoMec = {
+  chave: string
+  icone: string
+  rotulo: string
+  valor: string
+  atualizadoEm: string
+  confianca: Confianca
+}
+
+export type Frescor = {
+  geral: number
+  expiraEm: string
+  ultimaRevisao: string
+}
+
+export type SnapshotPainel = {
+  hoje: string
+  ultimaFoto: string
+}
 
 function idadeMeses(d: DateTime, agora: DateTime): number {
   return Math.floor(agora.diff(d, 'months').months)
@@ -145,7 +166,7 @@ export function camposDaFormacao(
 }
 
 /** % de frescor da última resposta + quanto tempo até expirar. */
-export function calcularFrescor(r: RespostaPessoa | null, agora: DateTime) {
+export function calcularFrescor(r: RespostaPessoa | null, agora: DateTime): Frescor {
   if (!r) return { geral: 0, expiraEm: '—', ultimaRevisao: 'nunca' }
   const ageM = idadeMeses(r.registradaEm, agora)
   const restantes = JANELA_MESES - ageM
@@ -159,7 +180,7 @@ export function calcularFrescor(r: RespostaPessoa | null, agora: DateTime) {
 }
 
 /** Quando a foto atual foi registrada — pra barra sticky de confirmar tudo. */
-export function montarSnapshot(r: RespostaPessoa | null, agora: DateTime) {
+export function montarSnapshot(r: RespostaPessoa | null, agora: DateTime): SnapshotPainel {
   return {
     hoje: agora.toFormat("d 'de' LLLL yyyy"),
     ultimaFoto: r ? r.registradaEm.setLocale('pt-BR').toFormat("d 'de' LLLL yyyy") : '—',

@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Button } from '~/components/ui/button'
 import { PerfilField, PerfilInput, PerfilTextarea } from '~/components/perfil/field'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
-import { type PerfilFormState } from '~/components/perfil/types'
+import { type PerfilFormState } from '~/components/perfil/use_perfil_form'
 
 const TAMANHO_MAX_BIO = 280
 

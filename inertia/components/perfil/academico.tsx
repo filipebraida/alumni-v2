@@ -1,10 +1,12 @@
 import { Calendar, FileText, GraduationCap, Info, MapPin, Plus } from 'lucide-react'
 
+import { type Data } from '@generated/data'
 import { cn } from '~/lib/utils'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
-import { type Vinculo } from '~/components/perfil/types'
+
+type Vinculo = Data.Matricula.Variants['forPerfil']
 
 type Props = {
   vinculos: Vinculo[]

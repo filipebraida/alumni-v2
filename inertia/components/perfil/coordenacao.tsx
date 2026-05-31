@@ -1,11 +1,11 @@
 import { Briefcase, Info, MapPin } from 'lucide-react'
 
+import { type Data } from '@generated/data'
 import { Badge } from '~/components/ui/badge'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
-import { type PerfilGestor } from '~/components/perfil/types'
 
 type Props = {
-  gestor: PerfilGestor
+  gestor: Data.Gestor.Variants['forPerfil']
 }
 
 /**

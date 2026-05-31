@@ -4,7 +4,7 @@ import type Gestor from '#models/gestor'
 import type Curso from '#models/curso'
 import ListarTodosOsCursos from '#queries/listar_todos_os_cursos'
 import { loadPerfilFlags } from '#services/perfil_flags'
-import GestaoSharedTransformer from '#transformers/gestao_shared_transformer'
+import { NIVEL_LABELS } from '#enums/nivel_academico'
 
 /** Chave de sessão do curso ativo na área de gestão. */
 export const CURSO_GESTAO_ATIVO_KEY = 'cursoGestaoAtivo'
@@ -53,11 +53,17 @@ export default class GestorMiddleware {
 
     ctx.gestao = { gestor, cursos, cursoAtivo, isAdmin }
     ctx.inertia.share({
-      gestao: GestaoSharedTransformer.transform({
+      gestao: {
         cursoAtivoId: cursoAtivo?.id ?? null,
         isAdmin,
-        cursos,
-      }),
+        cursos: cursos.map((curso) => ({
+          id: curso.id,
+          nome: curso.nome,
+          codigo: curso.codigo,
+          nivel: NIVEL_LABELS[curso.nivel],
+          instituto: curso.instituto.nome,
+        })),
+      },
     })
 
     return next()

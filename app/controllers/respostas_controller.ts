@@ -14,7 +14,6 @@ import BuscarUltimaRespostaPessoaDoEgresso from '#queries/buscar_ultima_resposta
 import BuscarUltimasRespostasCursoDasMatriculas from '#queries/buscar_ultimas_respostas_curso_das_matriculas'
 import RegistrarRevisaoDoEgresso from '#actions/registrar_revisao_do_egresso'
 import MatriculaTransformer from '#transformers/matricula_transformer'
-import OpcoesTransformer from '#transformers/opcoes_transformer'
 import RespostaPessoaTransformer from '#transformers/resposta_pessoa_transformer'
 
 /**
@@ -49,7 +48,7 @@ export default class RespostasController {
       matriculas: MatriculaTransformer.transform(matriculas, {
         revisao: ultimasCurso,
       }).useVariant('forRevisao'),
-      opcoes: OpcoesTransformer.transform({
+      opcoes: {
         setor: SETORES.map((v) => ({ valor: v, rotulo: SETOR_LABELS[v] })),
         faixaSalarial: FAIXAS_SALARIAIS.map((v) => ({
           valor: v,
@@ -63,7 +62,7 @@ export default class RespostasController {
           valor: v,
           rotulo: TEMPO_PRIMEIRO_EMPREGO_LABELS[v],
         })),
-      }),
+      },
     })
   }
 

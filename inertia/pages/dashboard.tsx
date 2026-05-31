@@ -12,12 +12,15 @@ import { DashboardHero } from '~/components/dashboard/hero'
 import { FormacaoTab } from '~/components/dashboard/formacao_tab'
 import { type InertiaProps } from '~/types'
 
+type Formacao = Data.Matricula.Variants['forPainel']
+export type CampoMec = Formacao['camposMec'][number]
+
 type PageProps = InertiaProps<{
   egresso: Data.Egresso.Variants['forPainel']
-  frescor: Data.Frescor
-  snapshot: Data.SnapshotPainel
-  camposGerais: Data.CampoMec[]
-  formacoes: Data.Matricula.Variants['forPainel'][]
+  frescor: { geral: number; expiraEm: string; ultimaRevisao: string }
+  snapshot: { hoje: string; ultimaFoto: string }
+  camposGerais: CampoMec[]
+  formacoes: Formacao[]
 }>
 
 const pendentes = (campos: { confianca: string }[]) =>

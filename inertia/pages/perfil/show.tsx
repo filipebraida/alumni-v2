@@ -17,11 +17,17 @@ import { PerfilPrivacidadeShow } from '~/components/perfil/privacidade_show'
 import { PerfilRail } from '~/components/perfil/rail'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
 import { contarPreenchidos, secoesParaPerfil, useSecaoAtiva } from '~/components/perfil/secoes'
-import { type Perfil, type PerfilEgresso, type PerfilGestor } from '~/components/perfil/types'
+import { type Data } from '@generated/data'
 import { type InertiaProps } from '~/types'
 
+type Perfil = Data.User.Variants['forPerfil']
+type PerfilEgresso = Data.Egresso.Variants['forPerfil']
+type PerfilGestor = Data.Gestor.Variants['forPerfil']
+
 type PageProps = InertiaProps<{
-  perfil: Perfil
+  // `usuario` (não `perfil`) pra não colidir com o `perfil` flags do
+  // InertiaMiddleware.share (isEgresso/isGestor/isAdmin).
+  usuario: Perfil
   egresso: PerfilEgresso | null
   gestor: PerfilGestor | null
 }>
@@ -31,7 +37,7 @@ type PageProps = InertiaProps<{
  * "Vínculos acadêmicos" (se egresso) e "Coordenação" (se gestor) aparecem
  * condicionais ao papel do usuário.
  */
-export default function PerfilShow({ perfil, egresso, gestor }: PageProps) {
+export default function PerfilShow({ usuario: perfil, egresso, gestor }: PageProps) {
   const secoes = useMemo(
     () => secoesParaPerfil({ temEgresso: !!egresso, temGestor: !!gestor }),
     [egresso, gestor]

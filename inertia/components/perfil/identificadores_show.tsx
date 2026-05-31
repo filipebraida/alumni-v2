@@ -2,9 +2,11 @@ import { Link } from '@adonisjs/inertia/react'
 import { BookOpen, Briefcase, GraduationCap, Globe, Link as LinkIcon } from 'lucide-react'
 import { type ReactNode } from 'react'
 
+import { type Data } from '@generated/data'
 import { urlFor } from '~/client'
 import { GlifoIcone, GlifoTexto } from '~/components/perfil/glifo'
-import { type Perfil } from '~/components/perfil/types'
+
+type Perfil = Data.User.Variants['forPerfil']
 
 type IdLink = {
   key: string

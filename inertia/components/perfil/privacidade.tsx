@@ -2,7 +2,7 @@ import { Lock } from 'lucide-react'
 
 import { Switch } from '~/components/ui/switch'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
-import { type PerfilFormState } from '~/components/perfil/types'
+import { type PerfilFormState } from '~/components/perfil/use_perfil_form'
 
 type Props = {
   form: PerfilFormState

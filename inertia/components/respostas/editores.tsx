@@ -1,11 +1,9 @@
 import { Check } from 'lucide-react'
 import { useState } from 'react'
-import { type Data } from '@generated/data'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { cn } from '~/lib/utils'
-
-type Opcao = Data.Opcoes['setor'][number]
+import { type Opcao } from '~/pages/respostas/create'
 
 // Salvar / Cancelar alinhados à direita (primário mais à direita), no mesmo
 // padrão das ações do card.

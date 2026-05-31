@@ -3,7 +3,7 @@ import { Check, Mail } from 'lucide-react'
 import { Badge } from '~/components/ui/badge'
 import { PerfilField, PerfilInput } from '~/components/perfil/field'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
-import { type PerfilFormState } from '~/components/perfil/types'
+import { type PerfilFormState } from '~/components/perfil/use_perfil_form'
 
 type Props = {
   form: PerfilFormState

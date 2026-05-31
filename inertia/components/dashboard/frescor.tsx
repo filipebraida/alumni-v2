@@ -1,15 +1,16 @@
-import { type Data } from '@generated/data'
 import { Badge } from '~/components/ui/badge'
 import { Card } from '~/components/ui/card'
 import { Progress, ProgressIndicator, ProgressTrack } from '~/components/ui/progress'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { cn } from '~/lib/utils'
 
+type Frescor = { geral: number; expiraEm: string; ultimaRevisao: string }
+
 export function DashboardFrescor({
   frescor,
   modo,
 }: {
-  frescor: Data.Frescor
+  frescor: Frescor
   modo: 'manutencao' | 'primeira'
 }) {
   const alerta = frescor.geral < 60

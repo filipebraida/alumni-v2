@@ -4,11 +4,8 @@ import { DateTime } from 'luxon'
 import BuscarEgressoDoUsuario from '#queries/buscar_egresso_do_usuario'
 import BuscarUltimaRespostaPessoaDoEgresso from '#queries/buscar_ultima_resposta_pessoa_do_egresso'
 import BuscarUltimasRespostasCursoDasMatriculas from '#queries/buscar_ultimas_respostas_curso_das_matriculas'
-import CampoMecTransformer from '#transformers/campo_mec_transformer'
 import EgressoTransformer from '#transformers/egresso_transformer'
-import FrescorTransformer from '#transformers/frescor_transformer'
 import MatriculaTransformer from '#transformers/matricula_transformer'
-import SnapshotPainelTransformer from '#transformers/snapshot_painel_transformer'
 import {
   calcularFrescor,
   camposDaFormacao,
@@ -72,9 +69,9 @@ export default class DashboardController {
         campus: ancora.curso.instituto?.nome ?? '—',
       }).useVariant('forPainel'),
 
-      frescor: FrescorTransformer.transform(frescor),
-      snapshot: SnapshotPainelTransformer.transform(montarSnapshot(ultimaResposta, agora)),
-      camposGerais: CampoMecTransformer.transform(camposGeraisDaResposta(ultimaResposta, agora)),
+      frescor,
+      snapshot: montarSnapshot(ultimaResposta, agora),
+      camposGerais: camposGeraisDaResposta(ultimaResposta, agora),
 
       formacoes: MatriculaTransformer.transform(matriculas, {
         painel: extrasPorMatricula,

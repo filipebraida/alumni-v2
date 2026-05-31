@@ -22,17 +22,19 @@ import { PerfilPrivacidade } from '~/components/perfil/privacidade'
 import { PerfilRail } from '~/components/perfil/rail'
 import { PerfilSaveBar } from '~/components/perfil/save_bar'
 import { contarPreenchidos, secoesParaPerfil, useSecaoAtiva } from '~/components/perfil/secoes'
-import { type Perfil, type PerfilEgresso, type PerfilGestor } from '~/components/perfil/types'
 import { usePerfilForm } from '~/components/perfil/use_perfil_form'
+import { type Data } from '@generated/data'
 import { type InertiaProps } from '~/types'
 
 type PageProps = InertiaProps<{
-  perfil: Perfil
-  egresso: PerfilEgresso | null
-  gestor: PerfilGestor | null
+  // `usuario` (não `perfil`) pra não colidir com o `perfil` flags do
+  // InertiaMiddleware.share (isEgresso/isGestor/isAdmin).
+  usuario: Data.User.Variants['forPerfil']
+  egresso: Data.Egresso.Variants['forPerfil'] | null
+  gestor: Data.Gestor.Variants['forPerfil'] | null
 }>
 
-export default function PerfilEdit({ perfil, egresso, gestor }: PageProps) {
+export default function PerfilEdit({ usuario: perfil, egresso, gestor }: PageProps) {
   const formApi = usePerfilForm(perfil, {
     update: urlFor('perfil.update'),
     voltar: urlFor('perfil.show'),

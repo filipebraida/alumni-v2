@@ -1,5 +1,6 @@
 import type Egresso from '#models/egresso'
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import MatriculaTransformer from '#transformers/matricula_transformer'
 
 export type EgressoPainelExtras = {
   saudacao: string
@@ -44,6 +45,19 @@ export default class EgressoTransformer extends BaseTransformer<Egresso> {
       saudacao: this.painelExtras.saudacao,
       agora: this.painelExtras.agora,
       campus: this.painelExtras.campus,
+    }
+  }
+
+  forPerfil() {
+    const e = this.resource
+    // `matriculas` é sempre preloadado por BuscarPerfil; o `!` reflete a invariante
+    return {
+      cpf: e.cpf,
+      nomeAcademico: e.nomeCompleto,
+      emailPessoal: e.emailPessoal,
+      vinculos: MatriculaTransformer.transform(this.whenLoaded(e.matriculas))!.useVariant(
+        'forPerfil'
+      ),
     }
   }
 }

@@ -2,8 +2,7 @@ import { Head, usePage } from '@inertiajs/react'
 import { type ReactElement } from 'react'
 import GestaoLayout from '~/layouts/gestao'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
-import { type Data } from '@generated/data'
-import { type InertiaProps } from '~/types'
+import { type GestaoShared, type InertiaProps } from '~/types'
 
 type Estatisticas = {
   totalFormados: number
@@ -25,7 +24,7 @@ function Stat({ rotulo, valor }: { rotulo: string; valor: string }) {
 }
 
 export default function GestaoDashboard({ estatisticas }: PageProps) {
-  const { gestao } = usePage<{ gestao: Data.GestaoShared }>().props
+  const { gestao } = usePage<{ gestao: GestaoShared }>().props
   const curso = gestao.cursos.find((c) => c.id === gestao.cursoAtivoId) ?? null
 
   return (

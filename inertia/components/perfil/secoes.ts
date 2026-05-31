@@ -1,7 +1,10 @@
 import { Award, Briefcase, Camera, GraduationCap, Lock, type LucideIcon, Mail } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-import { type Perfil, type PerfilFormState } from '~/components/perfil/types'
+import { type Data } from '@generated/data'
+import { type PerfilFormState } from '~/components/perfil/use_perfil_form'
+
+type Perfil = Data.User.Variants['forPerfil']
 
 export type PerfilSecaoId = 'foto' | 'contato' | 'academico' | 'coordenacao' | 'ids' | 'privacidade'
 

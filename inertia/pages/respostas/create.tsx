@@ -18,6 +18,14 @@ type ValoresGerais = Data.RespostaPessoa.Variants['forRevisao']
 type MatriculaItem = Data.Matricula.Variants['forRevisao']
 type ValoresMatricula = NonNullable<MatriculaItem['valoresAtuais']>
 
+export type Opcao = { valor: string; rotulo: string }
+export type Opcoes = {
+  setor: Opcao[]
+  faixaSalarial: Opcao[]
+  relacaoFormacao: Opcao[]
+  tempoPrimeiroEmprego: Opcao[]
+}
+
 const CAMPOS_GERAIS: CampoConfig[] = [
   {
     id: 'localizacao',
@@ -79,7 +87,7 @@ type FormShape = ValoresGerais & {
 type PageProps = InertiaProps<{
   valores: ValoresGerais
   matriculas: MatriculaItem[]
-  opcoes: Data.Opcoes
+  opcoes: Opcoes
 }>
 
 const keyGeral = (id: string) => `gerais:${id}`

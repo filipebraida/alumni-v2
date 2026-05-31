@@ -2,7 +2,7 @@ import type Matricula from '#models/matricula'
 import type RespostaCurso from '#models/resposta_curso'
 import { BaseTransformer } from '@adonisjs/core/transformers'
 import { NIVEL_LABELS } from '#enums/nivel_academico'
-import CampoMecTransformer, { type CampoMec } from '#transformers/campo_mec_transformer'
+import { type CampoMec } from '#services/painel_egresso'
 import RespostaCursoTransformer from '#transformers/resposta_curso_transformer'
 
 export type MatriculaPainelExtras = {
@@ -50,7 +50,7 @@ export default class MatriculaTransformer extends BaseTransformer<Matricula> {
     return {
       ...this.toObject(),
       frescor: painel.frescor,
-      camposMec: CampoMecTransformer.transform(painel.camposMec),
+      camposMec: painel.camposMec,
     }
   }
 
@@ -61,6 +61,19 @@ export default class MatriculaTransformer extends BaseTransformer<Matricula> {
       curto: this.resource.curso.nome,
       ehGraduacao: this.resource.curso.nivel === 'graduacao',
       valoresAtuais: rc ? RespostaCursoTransformer.transform(rc) : null,
+    }
+  }
+
+  forPerfil() {
+    const m = this.resource
+    return {
+      id: m.id,
+      nivel: NIVEL_LABELS[m.curso.nivel],
+      curso: m.curso.nome,
+      instituto: m.curso.instituto?.nome ?? '—',
+      codigo: m.codigo,
+      periodoFormatura: m.periodoFormatura,
+      situacao: m.situacao,
     }
   }
 }
