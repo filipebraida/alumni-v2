@@ -1,17 +1,16 @@
 /**
- * Formato dos dados do painel do egresso. Hoje alimentado por dados fictícios
- * em `DashboardController`; quando houver persistência, um transformer deve
- * produzir exatamente este formato. Usamos `type` (não `interface`) para que as
- * props aninhadas resolvam corretamente nas páginas Inertia.
+ * Formato dos dados do painel do egresso — proposta multi-formação. Um egresso
+ * pode ter 1+ vínculo com a UFRRJ (graduação, pós, etc). "Dados gerais" valem
+ * pra todas; cada formação carrega sua própria turma, colegas e insights.
+ * Hoje servido por mock em `DashboardController`; quando houver persistência,
+ * um transformer deve produzir exatamente este formato.
  */
 
 export type Egresso = {
   nome: string
   primeiroNome: string
   iniciais: string
-  curso: string
-  turma: string
-  instituto: string
+  campus: string
   saudacao: string
   agora: string
   verificada: boolean
@@ -23,12 +22,20 @@ export type Frescor = {
   ultimaRevisao: string
 }
 
+export type Snapshot = {
+  hoje: string
+  ultimaFoto: string
+}
+
+export type Confianca = 'confirmado' | 'desatualizado' | 'ausente'
+
 export type CampoMec = {
   chave: string
   icone: string
   rotulo: string
-  /** `null` = não informado nesta foto (coluna nula na última `resposta`). */
-  valor: string | null
+  valor: string
+  atualizadoEm: string
+  confianca: Confianca
 }
 
 export type EstadoTurma = {
@@ -42,8 +49,6 @@ export type EstadoTurma = {
 export type MapaTurma = {
   mapeados: number
   turmaTotal: number
-  curso: string
-  ano: string
   estados: EstadoTurma[]
 }
 
@@ -55,49 +60,58 @@ export type Colega = {
   status: 'ativo' | 'pendente'
 }
 
-export type Colegas = {
-  total: number
-  lista: Colega[]
-}
-
-export type FaixaSalarial = {
+export type FaixaPct = {
   rotulo: string
   pct: number
   destaque?: boolean
 }
 
-export type FaixaTempo = {
-  rotulo: string
-  pct: number
-}
-
-export type TempoEmprego = {
+export type InsightSalario = {
+  tipo: 'salario'
   mediana: string
-  distribuicao: FaixaTempo[]
-}
-
-export type Carreira = {
-  medianaSalarial: string
   suaFaixa: string
-  faixas: FaixaSalarial[]
-  tempoEmprego: TempoEmprego
+  faixas: FaixaPct[]
+  ladoTitulo: string
+  ladoMediana: string
+  ladoDistribuicao: FaixaPct[]
+  ladoEgresso: string
 }
 
-export type Experiencia = {
+export type InsightSituacao = {
+  tipo: 'situacao'
+  resumo: string
+  distribuicao: FaixaPct[]
+  ladoTitulo: string
+  ladoMediana: string
+  ladoDistribuicao: FaixaPct[]
+  ladoEgresso: string
+}
+
+export type Insight = InsightSalario | InsightSituacao
+
+export type StatusFormacao = 'concluido' | 'em_curso'
+
+export type Formacao = {
   id: string
-  sigla: string
-  cargo: string
-  org: string
-  inicio: string
-  fim: string
+  nivel: string
+  diploma: string
+  curto: string
+  campus: string
+  rotuloTurma: string
+  periodo: string
+  status: StatusFormacao
+  frescor: number
+  camposMec: CampoMec[]
+  mapa: MapaTurma
+  totalColegas: number
+  colegas: Colega[]
+  insight: Insight
 }
 
 export type DashboardData = {
   egresso: Egresso
   frescor: Frescor
-  camposMec: CampoMec[]
-  mapaTurma: MapaTurma
-  colegas: Colegas
-  carreira: Carreira
-  experiencias: Experiencia[]
+  snapshot: Snapshot
+  camposGerais: CampoMec[]
+  formacoes: Formacao[]
 }

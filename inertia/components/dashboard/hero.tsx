@@ -1,25 +1,32 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Leaf, RefreshCw } from 'lucide-react'
 import { Avatar, AvatarFallback } from '~/components/ui/avatar'
+import { Badge } from '~/components/ui/badge'
 import { buttonVariants } from '~/components/ui/button'
 import { Card } from '~/components/ui/card'
-import { SoftBadge } from '~/components/portal/soft_badge'
 import { cn } from '~/lib/utils'
 import type { Egresso } from '~/components/dashboard/types'
 
 /**
- * Faixa de boas-vindas: avatar, saudação com o progresso da turma e o que ainda
- * falta, e o CTA de atualização (leva ao fluxo dedicado, não edita aqui).
+ * Faixa de boas-vindas multi-formação: avatar, saudação que conta quantas
+ * formações o egresso tem e quantos itens faltam revisar antes da próxima
+ * foto; CTA leva ao fluxo de atualização (não edita aqui).
  */
 export function DashboardHero({
   egresso,
-  faltando,
-  mapeadoPct,
+  totalFormacoes,
+  concluidas,
+  emCurso,
+  globalPendentes,
 }: {
   egresso: Egresso
-  faltando: number
-  mapeadoPct: number
+  totalFormacoes: number
+  concluidas: number
+  emCurso: number
+  globalPendentes: number
 }) {
+  const fmtFormacoes = `${totalFormacoes} ${totalFormacoes === 1 ? 'formação' : 'formações'}`
+
   return (
     <Card className="flex flex-col gap-4 p-5 shadow-sm sm:flex-row sm:items-center sm:gap-5">
       <Avatar className="size-12 shrink-0 sm:size-14">
@@ -30,39 +37,41 @@ export function DashboardHero({
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-muted-foreground text-xs uppercase tracking-widest">
+          <span className="font-medium text-muted-foreground text-xs uppercase tracking-widest">
             {egresso.agora}
           </span>
           {egresso.verificada && (
-            <SoftBadge tone="primary">
+            <Badge variant="secondary" className="gap-1">
               <Leaf className="size-3" /> Egressa verificada
-            </SoftBadge>
+            </Badge>
           )}
         </div>
 
-        <h1 className="mt-1 font-semibold text-lg leading-tight tracking-tight sm:text-xl">
+        <h1 className="mt-1 font-semibold text-xl leading-tight tracking-tight sm:text-2xl">
           {egresso.saudacao}, {egresso.primeiroNome}.{' '}
           <span className="font-normal text-muted-foreground">
-            Sua turma já é <span className="font-medium text-foreground">{mapeadoPct}%</span>{' '}
-            mapeada
-            {faltando > 0 ? (
+            Você tem <span className="font-medium text-foreground">{fmtFormacoes}</span> na UFRRJ
+            {globalPendentes > 0 ? (
               <>
                 {' '}
-                — faltam <span className="font-medium text-foreground">{faltando} dados</span> seus.
+                e{' '}
+                <span className="font-medium text-foreground">{globalPendentes} itens</span> para
+                revisar antes da próxima foto.
               </>
             ) : (
-              '.'
+              <> — tudo conferido pra próxima foto.</>
             )}
           </span>
         </h1>
 
         <div className="mt-1 text-muted-foreground text-sm">
-          {egresso.curso} · Turma {egresso.turma} · {egresso.instituto}
+          {concluidas} concluída{concluidas !== 1 ? 's' : ''} · {emCurso} em curso ·{' '}
+          {egresso.campus}
         </div>
       </div>
 
-      <Link route="respostas.create" className={cn(buttonVariants(), 'w-full shrink-0 sm:w-auto')}>
-        <RefreshCw /> Atualizar meus dados
+      <Link route="respostas.create" className={cn(buttonVariants(), 'shrink-0')}>
+        <RefreshCw /> Revisar perfil
       </Link>
     </Card>
   )

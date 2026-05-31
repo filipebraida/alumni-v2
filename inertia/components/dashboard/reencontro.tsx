@@ -4,26 +4,35 @@ import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Card } from '~/components/ui/card'
 import { DashboardSectionHeader } from '~/components/dashboard/section_header'
-import type { Colegas } from '~/components/dashboard/types'
+import type { Colega } from '~/components/dashboard/types'
 
 const VISIVEIS = 3
 
 /**
- * "Reencontre sua turma": colegas que estudaram com o egresso, com ação de
- * conectar (perfil ativo) ou convidar (ainda sem perfil).
+ * "Reencontre sua turma": colegas da formação escopada — perfis preenchidos
+ * ganham botão de conectar; quem ainda não preencheu aparece como "ainda não
+ * preencheu o perfil" com convite. Mostra os 3 primeiros + atalho pra lista.
  */
-export function DashboardReencontro({ colegas }: { colegas: Colegas }) {
+export function DashboardReencontro({
+  colegas,
+  total,
+  contexto,
+}: {
+  colegas: Colega[]
+  total: number
+  contexto: string
+}) {
   return (
     <Card className="overflow-hidden shadow-sm">
       <DashboardSectionHeader
         icon={Users}
         title="Reencontre sua turma"
-        description="Pessoas que estudaram com você"
-        action={<Badge variant="outline">{colegas.total} colegas</Badge>}
+        description={`Quem estudou ${contexto} com você`}
+        action={<Badge variant="outline">{total}&nbsp;colegas</Badge>}
       />
 
       <ul className="divide-y border-t">
-        {colegas.lista.slice(0, VISIVEIS).map((colega) => (
+        {colegas.slice(0, VISIVEIS).map((colega) => (
           <li key={colega.nome} className="flex items-center gap-3 px-5 py-3">
             <Avatar className="size-10">
               <AvatarFallback className="bg-muted font-semibold text-foreground text-xs">
@@ -58,7 +67,7 @@ export function DashboardReencontro({ colegas }: { colegas: Colegas }) {
 
       <div className="border-t p-3">
         <Button variant="ghost" size="sm" className="ml-auto">
-          Ver os {colegas.total} colegas <ArrowRight />
+          Ver os {total} colegas <ArrowRight />
         </Button>
       </div>
     </Card>

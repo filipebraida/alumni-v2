@@ -1,19 +1,24 @@
 import { Globe } from 'lucide-react'
-import { type ReactNode } from 'react'
 import { Card } from '~/components/ui/card'
 import { SectionEyebrow } from '~/components/portal/section_eyebrow'
 import { BrasilMap } from '~/components/dashboard/brasil_map'
 import { DashboardSectionHeader } from '~/components/dashboard/section_header'
-import { cn } from '~/lib/utils'
 import type { MapaTurma } from '~/components/dashboard/types'
 
 const TOP = 5
 
 /**
  * "Onde sua turma está": mapa do Brasil com bolhas por estado + ranking dos
- * principais estados com barras proporcionais.
+ * principais estados com barras proporcionais. Recebe um label de contexto
+ * (ex. "Ciência da Computação · Turma 2022") já formatado pelo chamador.
  */
-export function DashboardMapaTurma({ mapa }: { mapa: MapaTurma }) {
+export function DashboardMapaTurma({
+  mapa,
+  contexto,
+}: {
+  mapa: MapaTurma
+  contexto: string
+}) {
   const top = mapa.estados.slice(0, TOP)
   const restantes = Math.max(mapa.estados.length - TOP, 0)
 
@@ -22,14 +27,7 @@ export function DashboardMapaTurma({ mapa }: { mapa: MapaTurma }) {
       <DashboardSectionHeader
         icon={Globe}
         title="Onde sua turma está"
-        description={`${mapa.curso} · ${mapa.ano} — ${mapa.mapeados} de ${mapa.turmaTotal} egressos mapeados`}
-        action={
-          <>
-            <Chip>Minha turma</Chip>
-            <Chip muted>Curso (5 anos)</Chip>
-            <Chip muted>UFRRJ</Chip>
-          </>
-        }
+        description={`${contexto} — ${mapa.mapeados} de ${mapa.turmaTotal} mapeados`}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12">
@@ -63,21 +61,5 @@ export function DashboardMapaTurma({ mapa }: { mapa: MapaTurma }) {
         </div>
       </div>
     </Card>
-  )
-}
-
-function Chip({ children, muted }: { children: ReactNode; muted?: boolean }) {
-  return (
-    <button
-      type="button"
-      className={cn(
-        'rounded-full border px-2.5 py-1 font-medium text-xs transition-colors',
-        muted
-          ? 'border-border bg-background text-muted-foreground hover:bg-muted'
-          : 'border-primary/30 bg-primary/10 text-primary'
-      )}
-    >
-      {children}
-    </button>
   )
 }

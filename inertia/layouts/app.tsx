@@ -16,7 +16,7 @@ export default function AppLayout({ children }: { children: ReactElement }) {
   useFlashToasts()
 
   return (
-    <div className="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased">
+    <div className="flex min-h-screen flex-col bg-muted/30 font-sans text-foreground antialiased">
       <AppHeader />
       <ToastProvider position="top-center">
         <AnchoredToastProvider>

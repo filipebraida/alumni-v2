@@ -1,11 +1,11 @@
 import { cn } from '~/lib/utils'
-import type { FaixaSalarial } from '~/components/dashboard/types'
+import type { FaixaPct } from '~/components/dashboard/types'
 
 /**
  * Histograma das faixas salariais da turma. A faixa do próprio egresso é
  * destacada (cor cheia + rótulo flutuante); as demais ficam esmaecidas.
  */
-export function SalaryBars({ faixas }: { faixas: FaixaSalarial[] }) {
+export function SalaryBars({ faixas }: { faixas: FaixaPct[] }) {
   const max = Math.max(...faixas.map((f) => f.pct))
 
   return (
