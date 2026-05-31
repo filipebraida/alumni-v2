@@ -12,7 +12,9 @@ export interface MarcarNotificacoesLidasInput {
  */
 export default class MarcarNotificacoesLidas {
   async handle({ userId }: MarcarNotificacoesLidasInput): Promise<void> {
-    const agora = DateTime.now()
+    // `.update()` raw não passa por serialização de modelo — DateTime precisa
+    // virar string SQL na mão (better-sqlite3 só aceita string/number/buffer/null)
+    const agora = DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss')
 
     await Notification.query()
       .where('notifiableId', String(userId))
