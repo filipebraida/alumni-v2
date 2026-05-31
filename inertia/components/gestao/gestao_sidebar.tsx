@@ -64,12 +64,15 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
       <SidebarHeader>
         <Link
           route="gestao.show"
-          className="flex items-center gap-2.5 px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+          className="flex h-14 w-full items-center gap-2.5 overflow-hidden rounded-md px-2 transition-[width,height,padding,gap] duration-200 ease-linear group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-1"
         >
-          <AlumniMark variant="dark" size={54} />
-          <div className="leading-tight group-data-[collapsible=icon]:hidden">
-            <div className="font-semibold text-base tracking-tight">alumni</div>
-            <div className="font-medium text-xs text-sidebar-foreground/55 uppercase tracking-widest">
+          <AlumniMark
+            variant="dark"
+            className="size-14 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:size-6"
+          />
+          <div className="min-w-0 flex-1 leading-tight">
+            <div className="truncate font-semibold text-base tracking-tight">alumni</div>
+            <div className="truncate font-medium text-xs text-sidebar-foreground/55 uppercase tracking-widest">
               SAE · Coordenação
             </div>
           </div>
