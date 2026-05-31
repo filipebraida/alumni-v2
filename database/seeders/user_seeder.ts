@@ -42,6 +42,16 @@ export default class extends BaseSeeder {
       }
     )
 
+    const ppgihd = await Curso.updateOrCreate(
+      { codigo: 'PPGIHD' },
+      {
+        codigo: 'PPGIHD',
+        nome: 'Programa de Pós-Graduação Interdisciplinar em Humanidades Digitais',
+        nivel: 'mestrado',
+        institutoId: im.id,
+      }
+    )
+
     await User.updateOrCreate(
       { email: 'filipebraida@ufrrj.br' },
       { email: 'filipebraida@ufrrj.br', fullName: 'Filipe Braida', role: 'admin' }
@@ -56,6 +66,20 @@ export default class extends BaseSeeder {
       { userId: julianaUser.id, nomeCompleto: 'Juliana Nascente', cargo: 'Coordenadora' }
     )
     await juliana.related('cursos').sync([computacao.id])
+
+    const marcelUser = await User.updateOrCreate(
+      { email: 'marcelsilva@ufrrj.br' },
+      { email: 'marcelsilva@ufrrj.br', fullName: 'Marcel William Rocha da Silva' }
+    )
+    const marcel = await Gestor.updateOrCreate(
+      { userId: marcelUser.id },
+      {
+        userId: marcelUser.id,
+        nomeCompleto: 'Marcel William Rocha da Silva',
+        cargo: 'Coordenador',
+      }
+    )
+    await marcel.related('cursos').sync([ppgihd.id])
 
     // Egresso de teste — pra abrir /perfil sem ter que importar CSV.
     const anaUser = await User.updateOrCreate(
