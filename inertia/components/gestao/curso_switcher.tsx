@@ -11,7 +11,7 @@ import {
   MenuTrigger,
 } from '~/components/ui/menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar'
-import type { CursoResumo, GestaoShared } from '~/components/gestao/types'
+import { type Data } from '@generated/data'
 
 function iniciaisCurso(nome: string) {
   return nome
@@ -24,7 +24,7 @@ function iniciaisCurso(nome: string) {
     .toUpperCase()
 }
 
-function CursoBadge({ curso, className }: { curso: CursoResumo | null; className?: string }) {
+function CursoBadge({ curso, className }: { curso: Data.Curso | null; className?: string }) {
   return (
     <span
       className={cn(
@@ -43,7 +43,7 @@ function CursoBadge({ curso, className }: { curso: CursoResumo | null; className
  * sessão; a página recarrega já escopada no novo curso.
  */
 export function CursoSwitcher() {
-  const { gestao } = usePage<{ gestao: GestaoShared }>().props
+  const { gestao } = usePage<{ gestao: Data.GestaoShared }>().props
   const { cursos, cursoAtivoId } = gestao
   const ativo = cursos.find((curso) => curso.id === cursoAtivoId) ?? null
 

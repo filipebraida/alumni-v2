@@ -7,8 +7,11 @@
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type CampoMecTransformer from '#transformers/campo_mec_transformer'
+import type CursoTransformer from '#transformers/curso_transformer'
 import type EgressoTransformer from '#transformers/egresso_transformer'
+import type EgressosEstatisticasTransformer from '#transformers/egressos_estatisticas_transformer'
 import type FrescorTransformer from '#transformers/frescor_transformer'
+import type GestaoSharedTransformer from '#transformers/gestao_shared_transformer'
 import type MatriculaTransformer from '#transformers/matricula_transformer'
 import type NotificationTransformer from '#transformers/notification_transformer'
 import type OpcoesTransformer from '#transformers/opcoes_transformer'
@@ -23,13 +26,25 @@ export namespace Data {
   export namespace CampoMec {
     export type Variants = InferVariants<CampoMecTransformer>
   }
+  export type Curso = InferData<CursoTransformer>
+  export namespace Curso {
+    export type Variants = InferVariants<CursoTransformer>
+  }
   export type Egresso = InferData<EgressoTransformer>
   export namespace Egresso {
     export type Variants = InferVariants<EgressoTransformer>
   }
+  export type EgressosEstatisticas = InferData<EgressosEstatisticasTransformer>
+  export namespace EgressosEstatisticas {
+    export type Variants = InferVariants<EgressosEstatisticasTransformer>
+  }
   export type Frescor = InferData<FrescorTransformer>
   export namespace Frescor {
     export type Variants = InferVariants<FrescorTransformer>
+  }
+  export type GestaoShared = InferData<GestaoSharedTransformer>
+  export namespace GestaoShared {
+    export type Variants = InferVariants<GestaoSharedTransformer>
   }
   export type Matricula = InferData<MatriculaTransformer>
   export namespace Matricula {

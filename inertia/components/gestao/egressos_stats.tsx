@@ -1,8 +1,8 @@
 import { CircleCheck, Clock, Inbox, Users, type LucideIcon } from 'lucide-react'
 
+import { type Data } from '@generated/data'
 import { Card } from '~/components/ui/card'
 import { cn } from '~/lib/utils'
-import type { EgressosEstatisticas } from '~/components/gestao/types'
 
 type Tone = 'primary' | 'success' | 'warning' | 'muted'
 
@@ -43,7 +43,7 @@ function StatCard({
 }
 
 /** Os 4 cards de frescor do curso, no topo da tela de egressos (responsivo 2→4). */
-export function EgressosStats({ estatisticas }: { estatisticas: EgressosEstatisticas }) {
+export function EgressosStats({ estatisticas }: { estatisticas: Data.EgressosEstatisticas }) {
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       <StatCard icon={Users} rotulo="Total de egressos" valor={estatisticas.total} tone="primary" />

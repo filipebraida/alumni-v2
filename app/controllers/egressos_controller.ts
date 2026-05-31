@@ -4,6 +4,7 @@ import ListarTurmasDoCurso from '#queries/listar_turmas_do_curso'
 import ResumoEgressosDoCurso from '#queries/resumo_egressos_do_curso'
 import BuscarEgressoPorCpf from '#queries/buscar_egresso_por_cpf'
 import BuscarEgressoDoCurso from '#queries/buscar_egresso_do_curso'
+import EgressosEstatisticasTransformer from '#transformers/egressos_estatisticas_transformer'
 import RespostaPessoaTransformer from '#transformers/resposta_pessoa_transformer'
 import CadastrarEgressoNoCurso from '#actions/cadastrar_egresso_no_curso'
 import EnviarPedidoDeAtualizacao from '#actions/enviar_pedido_de_atualizacao'
@@ -52,7 +53,7 @@ export default class EgressosController {
 
     return inertia.render('gestao/egressos', {
       egressos: { data: resultado.data, metadata: resultado.meta },
-      estatisticas,
+      estatisticas: estatisticas ? EgressosEstatisticasTransformer.transform(estatisticas) : null,
       turmas,
       q: q ?? null,
       situacoes: situacoes ?? [],
