@@ -65,11 +65,45 @@ export default function AdminUsuarios({ usuarios, cursos, filtros }: PageProps) 
     {
       id: 'nome',
       header: 'Nome',
-      cell: ({ row }) => <span className="font-medium">{row.original.fullName ?? '—'}</span>,
+      meta: { cellClass: 'max-w-0 w-full' },
+      cell: ({ row }) => {
+        const usuario = row.original
+        return (
+          <div className="min-w-0">
+            <div
+              className="truncate font-medium text-foreground"
+              title={usuario.fullName ?? undefined}
+            >
+              {usuario.fullName ?? '—'}
+            </div>
+            {/* xs: absorve email + admin + cursos coordenados */}
+            <div className="mt-1 truncate text-muted-foreground text-xs sm:hidden">
+              {usuario.email}
+            </div>
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+              {usuario.role === 'admin' && <Badge variant="success">Admin</Badge>}
+              {usuario.cursosCoordenados.map((curso) => (
+                <Badge
+                  key={curso.id}
+                  variant="outline"
+                  title={curso.nome}
+                  className="font-mono text-xs"
+                >
+                  {curso.codigo}
+                </Badge>
+              ))}
+              {usuario.role !== 'admin' && usuario.cursosCoordenados.length === 0 && (
+                <span className="text-muted-foreground/70 text-xs italic">sem papel</span>
+              )}
+            </div>
+          </div>
+        )
+      },
     },
     {
       id: 'email',
       header: 'E-mail',
+      meta: { responsiveClass: 'hidden sm:table-cell' },
       cell: ({ row }) => (
         <span className="text-muted-foreground text-sm">{row.original.email}</span>
       ),
@@ -77,6 +111,7 @@ export default function AdminUsuarios({ usuarios, cursos, filtros }: PageProps) 
     {
       id: 'admin',
       header: 'Admin',
+      meta: { responsiveClass: 'hidden md:table-cell' },
       cell: ({ row }) =>
         row.original.role === 'admin' ? (
           <Badge variant="success">Admin</Badge>
@@ -87,6 +122,7 @@ export default function AdminUsuarios({ usuarios, cursos, filtros }: PageProps) 
     {
       id: 'cursos',
       header: 'Cursos coordenados',
+      meta: { responsiveClass: 'hidden lg:table-cell' },
       cell: ({ row }) => {
         const lista = row.original.cursosCoordenados
         if (lista.length === 0) return <span className="text-muted-foreground text-sm">—</span>
@@ -250,7 +286,7 @@ function FiltrosBar({ filtros, perPage }: { filtros: Filtros; perPage: number })
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <InputGroup className="w-full sm:w-72">
         <InputGroupAddon>
           <SearchIcon />
@@ -266,7 +302,7 @@ function FiltrosBar({ filtros, perPage }: { filtros: Filtros; perPage: number })
       </InputGroup>
 
       <Select value={tipoValor} onValueChange={(v) => aplicar(busca, v ?? TODOS)}>
-        <SelectTrigger className="w-44">
+        <SelectTrigger className="w-full sm:w-44">
           <SelectValue>
             {(v) => (!v || v === TODOS ? 'Todos os papéis' : TIPO_LABEL[v as TipoFiltro])}
           </SelectValue>

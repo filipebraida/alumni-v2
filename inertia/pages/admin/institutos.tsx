@@ -34,6 +34,7 @@ const COLUNAS: ColumnDef<InstitutoRow>[] = [
   {
     id: 'codigo',
     header: 'Código',
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => (
       <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
     ),
@@ -41,10 +42,33 @@ const COLUNAS: ColumnDef<InstitutoRow>[] = [
   {
     id: 'nome',
     header: 'Nome',
-    cell: ({ row }) => <span className="font-medium">{row.original.nome}</span>,
+    meta: { cellClass: 'max-w-0 w-full' },
+    cell: ({ row }) => {
+      const instituto = row.original
+      return (
+        <div className="min-w-0">
+          <div className="truncate font-medium text-foreground" title={instituto.nome}>
+            {instituto.nome}
+          </div>
+          {/* xs: absorve código + cursos + status */}
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+            <span className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+              {instituto.codigo}
+            </span>
+            <span className="text-muted-foreground text-xs tabular-nums">
+              {instituto.totalCursos} curso{instituto.totalCursos === 1 ? '' : 's'}
+            </span>
+            <Badge variant={instituto.ativo ? 'success' : 'outline'}>
+              {instituto.ativo ? 'Ativo' : 'Inativo'}
+            </Badge>
+          </div>
+        </div>
+      )
+    },
   },
   {
     id: 'totalCursos',
+    meta: { responsiveClass: 'hidden md:table-cell' },
     header: () => <span className="block text-end">Cursos</span>,
     cell: ({ row }) => (
       <div className="text-end tabular-nums">{row.original.totalCursos}</div>
@@ -53,6 +77,7 @@ const COLUNAS: ColumnDef<InstitutoRow>[] = [
   {
     id: 'ativo',
     header: 'Status',
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => (
       <Badge variant={row.original.ativo ? 'success' : 'outline'}>
         {row.original.ativo ? 'Ativo' : 'Inativo'}
@@ -166,7 +191,7 @@ function FiltrosBar({ filtros, perPage }: { filtros: Filtros; perPage: number })
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <InputGroup className="w-full sm:w-72">
         <InputGroupAddon>
           <SearchIcon />

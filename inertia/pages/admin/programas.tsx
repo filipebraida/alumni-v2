@@ -62,6 +62,7 @@ const COLUNAS: ColumnDef<ProgramaRow>[] = [
   {
     id: 'codigo',
     header: 'Código',
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => (
       <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
     ),
@@ -69,18 +70,45 @@ const COLUNAS: ColumnDef<ProgramaRow>[] = [
   {
     id: 'nome',
     header: 'Nome',
-    cell: ({ row }) => (
-      <div className="flex flex-col">
-        <span className="font-medium">{row.original.nome}</span>
-        {row.original.sigla && (
-          <span className="text-muted-foreground text-xs">{row.original.sigla}</span>
-        )}
-      </div>
-    ),
+    meta: { cellClass: 'max-w-0 w-full' },
+    cell: ({ row }) => {
+      const programa = row.original
+      return (
+        <div className="min-w-0">
+          <div className="truncate font-medium text-foreground" title={programa.nome}>
+            {programa.nome}
+          </div>
+          {programa.sigla && (
+            <div className="truncate text-muted-foreground text-xs">{programa.sigla}</div>
+          )}
+          {/* xs: absorve código + modalidade + instituto + cursos + status */}
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+            <span className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+              {programa.codigo}
+            </span>
+            {programa.modalidade && (
+              <span className="text-muted-foreground text-xs">
+                {MODALIDADE_LABELS[programa.modalidade]}
+              </span>
+            )}
+            <span className="text-muted-foreground text-xs">
+              · {programa.institutoCodigo}
+            </span>
+            <span className="text-muted-foreground text-xs tabular-nums">
+              {programa.totalCursos} curso{programa.totalCursos === 1 ? '' : 's'}
+            </span>
+            <Badge variant={programa.ativo ? 'success' : 'outline'}>
+              {programa.ativo ? 'Ativo' : 'Inativo'}
+            </Badge>
+          </div>
+        </div>
+      )
+    },
   },
   {
     id: 'modalidade',
     header: 'Modalidade',
+    meta: { responsiveClass: 'hidden md:table-cell' },
     cell: ({ row }) => (
       <span className="text-muted-foreground text-sm">
         {row.original.modalidade ? MODALIDADE_LABELS[row.original.modalidade] : '—'}
@@ -90,6 +118,7 @@ const COLUNAS: ColumnDef<ProgramaRow>[] = [
   {
     id: 'instituto',
     header: 'Instituto',
+    meta: { responsiveClass: 'hidden lg:table-cell' },
     cell: ({ row }) => (
       <span className="text-sm">
         {row.original.institutoNome}{' '}
@@ -99,6 +128,7 @@ const COLUNAS: ColumnDef<ProgramaRow>[] = [
   },
   {
     id: 'totalCursos',
+    meta: { responsiveClass: 'hidden md:table-cell' },
     header: () => <span className="block text-end">Cursos</span>,
     cell: ({ row }) => (
       <div className="text-end tabular-nums">{row.original.totalCursos}</div>
@@ -107,6 +137,7 @@ const COLUNAS: ColumnDef<ProgramaRow>[] = [
   {
     id: 'ativo',
     header: 'Status',
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => (
       <Badge variant={row.original.ativo ? 'success' : 'outline'}>
         {row.original.ativo ? 'Ativo' : 'Inativo'}
@@ -250,7 +281,7 @@ function FiltrosBar({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <InputGroup className="w-full sm:w-72">
         <InputGroupAddon>
           <SearchIcon />
@@ -269,7 +300,7 @@ function FiltrosBar({
         value={institutoValor}
         onValueChange={(v) => aplicar(busca, v ?? TODOS)}
       >
-        <SelectTrigger className="w-48">
+        <SelectTrigger className="w-full sm:w-48">
           <SelectValue>
             {(v) =>
               !v || v === TODOS

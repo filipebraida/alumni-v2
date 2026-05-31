@@ -24,6 +24,13 @@ declare module '@tanstack/react-table' {
      * larguras menores sem mexer no DOM.
      */
     responsiveClass?: string
+    /**
+     * Tailwind classes aplicadas apenas às `<td>` da coluna (não ao header).
+     * Use `'max-w-0 w-full'` na coluna "Nome" pra ela pegar o espaço restante
+     * da linha e truncar quando o conteúdo passar — sem `max-w` fixo deixando
+     * espaço sobrando à direita.
+     */
+    cellClass?: string
   }
 }
 import {
@@ -220,7 +227,10 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={cell.column.columnDef.meta?.responsiveClass}
+                      className={cn(
+                        cell.column.columnDef.meta?.responsiveClass,
+                        cell.column.columnDef.meta?.cellClass
+                      )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>

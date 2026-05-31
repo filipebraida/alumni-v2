@@ -71,6 +71,7 @@ const COLUNAS: ColumnDef<CursoRow>[] = [
   {
     id: 'codigo',
     header: 'Código',
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => (
       <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
     ),
@@ -78,11 +79,33 @@ const COLUNAS: ColumnDef<CursoRow>[] = [
   {
     id: 'nome',
     header: 'Nome',
-    cell: ({ row }) => <span className="font-medium">{row.original.nome}</span>,
+    meta: { cellClass: 'max-w-0 w-full' },
+    cell: ({ row }) => {
+      const curso = row.original
+      return (
+        <div className="min-w-0">
+          <div className="truncate font-medium text-foreground" title={curso.nome}>
+            {curso.nome}
+          </div>
+          {/* xs: absorve código + nível + instituto + status */}
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+            <span className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+              {curso.codigo}
+            </span>
+            <span className="text-muted-foreground text-xs">{NIVEL_LABELS[curso.nivel]}</span>
+            <span className="text-muted-foreground text-xs">· {curso.instituto.codigo}</span>
+            <Badge variant={curso.ativo ? 'success' : 'outline'}>
+              {curso.ativo ? 'Ativo' : 'Inativo'}
+            </Badge>
+          </div>
+        </div>
+      )
+    },
   },
   {
     id: 'nivel',
     header: 'Nível',
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => (
       <span className="text-muted-foreground text-sm">{NIVEL_LABELS[row.original.nivel]}</span>
     ),
@@ -90,6 +113,7 @@ const COLUNAS: ColumnDef<CursoRow>[] = [
   {
     id: 'instituto',
     header: 'Instituto',
+    meta: { responsiveClass: 'hidden md:table-cell' },
     cell: ({ row }) => (
       <span className="text-sm">
         {row.original.instituto.nome}{' '}
@@ -100,6 +124,7 @@ const COLUNAS: ColumnDef<CursoRow>[] = [
   {
     id: 'ativo',
     header: 'Status',
+    meta: { responsiveClass: 'hidden sm:table-cell' },
     cell: ({ row }) => (
       <Badge variant={row.original.ativo ? 'success' : 'outline'}>
         {row.original.ativo ? 'Ativo' : 'Inativo'}
@@ -241,7 +266,7 @@ function FiltrosBar({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <InputGroup className="w-full sm:w-72">
         <InputGroupAddon>
           <SearchIcon />
@@ -260,7 +285,7 @@ function FiltrosBar({
         value={nivelValor}
         onValueChange={(v) => aplicar(busca, v ?? TODOS, institutoValor)}
       >
-        <SelectTrigger className="w-44">
+        <SelectTrigger className="w-full sm:w-44">
           <SelectValue>
             {(v) =>
               !v || v === TODOS ? 'Todos os níveis' : NIVEL_LABELS[v as NivelAcademico]
@@ -281,7 +306,7 @@ function FiltrosBar({
         value={institutoValor}
         onValueChange={(v) => aplicar(busca, nivelValor, v ?? TODOS)}
       >
-        <SelectTrigger className="w-48">
+        <SelectTrigger className="w-full sm:w-48">
           <SelectValue>
             {(v) =>
               !v || v === TODOS

@@ -272,6 +272,7 @@ function montarColunas(onPedirAtualizacao: (egresso: EgressoRow) => void): Colum
       accessorKey: 'nome',
       header: 'Egresso',
       enableSorting: true,
+      meta: { cellClass: 'max-w-0 w-full' },
       cell: ({ row }) => {
         const egresso = row.original
         return (
@@ -282,9 +283,13 @@ function montarColunas(onPedirAtualizacao: (egresso: EgressoRow) => void): Colum
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0">
-              <div className="truncate font-medium text-foreground">{egresso.nome}</div>
+              <div className="truncate font-medium text-foreground" title={egresso.nome}>
+                {egresso.nome}
+              </div>
               {egresso.email && (
-                <div className="truncate text-muted-foreground text-xs">{egresso.email}</div>
+                <div className="truncate text-muted-foreground text-xs" title={egresso.email}>
+                  {egresso.email}
+                </div>
               )}
               {/* xs: absorve a info das colunas escondidas (situação + questionário) */}
               <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
