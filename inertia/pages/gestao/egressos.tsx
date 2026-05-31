@@ -1,5 +1,6 @@
-import { Head, usePage } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import { type ReactElement } from 'react'
+import { useGestao } from '~/hooks/use_gestao'
 import GestaoLayout from '~/layouts/gestao'
 import { EgressosStats } from '~/components/gestao/egressos_stats'
 import {
@@ -12,7 +13,7 @@ import {
 import { CadastrarEgressoDialog } from '~/components/gestao/cadastrar_egresso_dialog'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { ImportarEgressosDialog } from '~/components/gestao/importar_egressos_dialog'
-import { type GestaoShared, type InertiaProps } from '~/types'
+import { type InertiaProps } from '~/types'
 
 type EgressosEstatisticas = {
   total: number
@@ -44,7 +45,7 @@ export default function GestaoEgressos({
   sort,
   order,
 }: PageProps) {
-  const { gestao } = usePage<{ gestao: GestaoShared }>().props
+  const gestao = useGestao()
   const curso = gestao.cursos.find((c) => c.id === gestao.cursoAtivoId) ?? null
 
   return (

@@ -3,6 +3,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import ContarNotificacoesNaoVistas from '#queries/contar_notificacoes_nao_vistas'
 import { loadPerfilFlags } from '#services/perfil_flags'
 import UserTransformer from '#transformers/user_transformer'
+import { NIVEL_LABELS } from '#enums/nivel_academico'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -41,6 +42,24 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       ? await new ContarNotificacoesNaoVistas().handle({ userId: auth.user.id })
       : 0
 
+    // `ctx.gestao` é populado pelo `gestor_middleware` quando o request entra
+    // na área de gestão. Projetamos a shape pro frontend; rotas fora da gestão
+    // recebem `undefined` (Inertia rejeita `null` no `always`).
+    const gestaoCtx = (ctx as Partial<HttpContext>).gestao
+    const gestao = gestaoCtx
+      ? {
+          cursoAtivoId: gestaoCtx.cursoAtivo?.id ?? null,
+          isAdmin: gestaoCtx.isAdmin,
+          cursos: gestaoCtx.cursos.map((curso) => ({
+            id: curso.id,
+            nome: curso.nome,
+            codigo: curso.codigo,
+            nivel: NIVEL_LABELS[curso.nivel],
+            instituto: curso.instituto.nome,
+          })),
+        }
+      : undefined
+
     /**
      * Data shared with all Inertia pages. Make sure you are using
      * transformers for rich data-types like Models.
@@ -55,6 +74,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       perfil: ctx.inertia.always(perfil),
       csrf: ctx.inertia.always(ctx.request.csrfToken),
       unseenNotificationsCount: ctx.inertia.always(unseenNotificationsCount),
+      gestao: ctx.inertia.always(gestao),
     }
   }
 
