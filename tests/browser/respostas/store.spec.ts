@@ -73,7 +73,7 @@ async function concluir(page: PageDriver) {
 }
 
 test.group('RespostasController.store', (group) => {
-  group.each.setup(() => testUtils.db().truncate())
+  group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('submissão completa cria 1 RespostaPessoa + N RespostaCurso e redirect /dashboard com flash', async ({
     visit,

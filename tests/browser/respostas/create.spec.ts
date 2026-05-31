@@ -10,7 +10,7 @@ import { RespostaPessoaFactory } from '#database/factories/resposta_pessoa_facto
 import { RespostaCursoFactory } from '#database/factories/resposta_curso_factory'
 
 test.group('RespostasController.create', (group) => {
-  group.each.setup(() => testUtils.db().truncate())
+  group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('renderiza wizard com seção Dados gerais + 1 seção por matrícula não-evadida', async ({
     visit,

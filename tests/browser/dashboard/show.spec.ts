@@ -32,7 +32,7 @@ async function egressoCom1Graduacao(opts: { nomeCurso?: string } = {}) {
 }
 
 test.group('DashboardController.show', (group) => {
-  group.each.setup(() => testUtils.db().truncate())
+  group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
 
   test('egressa autenticada com resposta recente vê saudação modo manutenção em /dashboard', async ({
     visit,
