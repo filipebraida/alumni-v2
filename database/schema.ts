@@ -10,9 +10,9 @@ import type { NivelAcademico } from '#enums/nivel_academico'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
 import type { NotificationStatus } from '#models/notification'
 import type { ModalidadePrograma } from '#enums/modalidade_programa'
-import type { FaixaSalarial } from '#enums/faixa_salarial'
 import type { RelacaoFormacao } from '#enums/relacao_formacao'
 import type { TempoPrimeiroEmprego } from '#enums/tempo_primeiro_emprego'
+import type { FaixaSalarial } from '#enums/faixa_salarial'
 import type { Setor } from '#enums/setor'
 import type { RoleUsuario } from '#enums/role_usuario'
 
@@ -236,14 +236,12 @@ export class RateLimitSchema extends BaseModel {
 }
 
 export class RespostasCursoSchema extends BaseModel {
-  static $columns = ['ano', 'createdAt', 'faixaSalarial', 'id', 'matriculaId', 'relacaoFormacao', 'respostaPessoaId', 'tempoPrimeiroEmprego', 'updatedAt'] as const
+  static $columns = ['ano', 'createdAt', 'id', 'matriculaId', 'relacaoFormacao', 'respostaPessoaId', 'tempoPrimeiroEmprego', 'updatedAt'] as const
   $columns = RespostasCursoSchema.$columns
   @column()
   declare ano: number
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
-  @column()
-  declare faixaSalarial: FaixaSalarial | null
   @column({ isPrimary: true })
   declare id: number
   @column()
@@ -259,7 +257,7 @@ export class RespostasCursoSchema extends BaseModel {
 }
 
 export class RespostasPessoaSchema extends BaseModel {
-  static $columns = ['ano', 'cargo', 'createdAt', 'egressoId', 'empregador', 'id', 'localizacaoCidade', 'localizacaoPais', 'localizacaoUf', 'registradaEm', 'setor', 'updatedAt'] as const
+  static $columns = ['ano', 'cargo', 'createdAt', 'egressoId', 'empregador', 'faixaSalarial', 'id', 'localizacaoCidade', 'localizacaoPais', 'localizacaoUf', 'registradaEm', 'setor', 'updatedAt'] as const
   $columns = RespostasPessoaSchema.$columns
   @column()
   declare ano: number
@@ -271,6 +269,8 @@ export class RespostasPessoaSchema extends BaseModel {
   declare egressoId: number
   @column()
   declare empregador: string | null
+  @column()
+  declare faixaSalarial: FaixaSalarial | null
   @column({ isPrimary: true })
   declare id: number
   @column()

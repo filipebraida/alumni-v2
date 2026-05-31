@@ -44,6 +44,7 @@ export default class RespostasController {
             empregador: null,
             cargo: null,
             setor: null,
+            faixaSalarial: null,
           },
       matriculas: MatriculaTransformer.transform(matriculas, {
         revisao: ultimasCurso,

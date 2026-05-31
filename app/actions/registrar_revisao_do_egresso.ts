@@ -16,11 +16,11 @@ export interface PayloadDadosGerais {
   empregador?: string | null
   cargo?: string | null
   setor?: Setor | null
+  faixaSalarial?: FaixaSalarial | null
 }
 
 export interface PayloadMatricula {
   id: number
-  faixaSalarial?: FaixaSalarial | null
   relacaoFormacao?: RelacaoFormacao | null
   tempoPrimeiroEmprego?: TempoPrimeiroEmprego | null
 }
@@ -44,7 +44,7 @@ export interface RegistrarRevisaoDoEgressoInput {
  *   mesmo quando o cliente não enviou entrada (campos vão null ou herdados).
  * - Campos não enviados (undefined) herdam o valor da última RespostaPessoa /
  *   RespostaCurso correspondente. Envio explícito de null zera o campo.
- * - Para matrículas com nivel ≠ 'graduacao', os 3 campos próprios ficam null
+ * - Para matrículas com nivel ≠ 'graduacao', os 2 campos próprios ficam null
  *   (identidade-só nesta entrega).
  */
 export default class RegistrarRevisaoDoEgresso {
@@ -111,6 +111,10 @@ export default class RegistrarRevisaoDoEgresso {
         payload.empregador !== undefined ? payload.empregador : (ultimaPessoa?.empregador ?? null)
       pessoa.cargo = payload.cargo !== undefined ? payload.cargo : (ultimaPessoa?.cargo ?? null)
       pessoa.setor = payload.setor !== undefined ? payload.setor : (ultimaPessoa?.setor ?? null)
+      pessoa.faixaSalarial =
+        payload.faixaSalarial !== undefined
+          ? payload.faixaSalarial
+          : (ultimaPessoa?.faixaSalarial ?? null)
       await pessoa.save()
 
       for (const matricula of matriculas) {
@@ -125,10 +129,6 @@ export default class RegistrarRevisaoDoEgresso {
         curso.ano = ano
 
         if (ehGraduacao) {
-          curso.faixaSalarial =
-            enviada?.faixaSalarial !== undefined
-              ? enviada.faixaSalarial
-              : (ultima?.faixaSalarial ?? null)
           curso.relacaoFormacao =
             enviada?.relacaoFormacao !== undefined
               ? enviada.relacaoFormacao
@@ -138,8 +138,7 @@ export default class RegistrarRevisaoDoEgresso {
               ? enviada.tempoPrimeiroEmprego
               : (ultima?.tempoPrimeiroEmprego ?? null)
         } else {
-          // Pós: identidade-só nesta entrega — 3 colunas null por construção.
-          curso.faixaSalarial = null
+          // Pós: identidade-só nesta entrega — 2 colunas null por construção.
           curso.relacaoFormacao = null
           curso.tempoPrimeiroEmprego = null
         }

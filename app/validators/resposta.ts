@@ -5,10 +5,11 @@ import { RELACOES_FORMACAO } from '#enums/relacao_formacao'
 import { TEMPOS_PRIMEIRO_EMPREGO } from '#enums/tempo_primeiro_emprego'
 
 /**
- * Envelope de revisão do painel do egresso: 6 colunas de dados gerais
- * (compartilhadas) + uma entrada por matrícula com os 3 campos de graduação.
- * Pós-graduações entram na lista só com `id` — esta entrega trata identidade
- * apenas. O action descarta IDs que não pertençam ao egresso autenticado.
+ * Envelope de revisão do painel do egresso: 7 colunas de dados gerais
+ * (compartilhadas, incluindo faixa salarial) + uma entrada por matrícula com
+ * os 2 campos de graduação (relacao + tempo até 1º emprego). Pós-graduações
+ * entram na lista só com `id` — esta entrega trata identidade apenas. O
+ * action descarta IDs que não pertençam ao egresso autenticado.
  */
 export const registrarRespostaValidator = vine.create(
   vine.object({
@@ -18,13 +19,13 @@ export const registrarRespostaValidator = vine.create(
     empregador: vine.string().trim().maxLength(160).nullable().optional(),
     cargo: vine.string().trim().maxLength(160).nullable().optional(),
     setor: vine.enum(SETORES).nullable().optional(),
+    faixaSalarial: vine.enum(FAIXAS_SALARIAIS).nullable().optional(),
 
     matriculas: vine
       .array(
         vine.object({
           id: vine.number().withoutDecimals().positive(),
           relacaoFormacao: vine.enum(RELACOES_FORMACAO).nullable().optional(),
-          faixaSalarial: vine.enum(FAIXAS_SALARIAIS).nullable().optional(),
           tempoPrimeiroEmprego: vine.enum(TEMPOS_PRIMEIRO_EMPREGO).nullable().optional(),
         })
       )

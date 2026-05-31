@@ -100,10 +100,12 @@ test.group('RespostasController.store', (group) => {
     await page.assertVisible(
       'text=Pronto! Seus dados foram atualizados — obrigado por manter seu cadastro fresquinho.'
     )
-    await db.assertCount('respostas_pessoa', 1)
-    await db.assertHas('respostas_pessoa', { egresso_id: egresso.id, ano: DateTime.now().year })
-    await db.assertCount('respostas_curso', 1)
-    await db.assertHas('respostas_curso', { matricula_id: matricula.id })
+    await db.assertHas(
+      'respostas_pessoa',
+      { egresso_id: egresso.id, ano: DateTime.now().year },
+      1
+    )
+    await db.assertHas('respostas_curso', { matricula_id: matricula.id }, 1)
   })
 
   test('submissão parcial herda valores não tocados da última resposta', async ({
@@ -128,15 +130,16 @@ test.group('RespostasController.store', (group) => {
     await concluir(page)
     await page.assertPath('/dashboard')
 
-    await db.assertCount('respostas_pessoa', 2)
+    await db.assertHas('respostas_pessoa', { egresso_id: egresso.id }, 2)
     await db.assertHas('respostas_pessoa', {
+      egresso_id: egresso.id,
       cargo: 'Coordenadora',
       setor: 'pesquisa_publica',
       empregador: 'Embrapa',
     })
   })
 
-  test('RespostaCurso de matrícula de pós nasce com 3 colunas de graduação null', async ({
+  test('RespostaCurso de matrícula de pós nasce com colunas de graduação null', async ({
     visit,
     route,
     browserContext,
@@ -159,17 +162,22 @@ test.group('RespostasController.store', (group) => {
     await browserContext.loginAs(user)
     const page = await visit(route('respostas.create'))
 
-    // Preenche só campos da graduação; mestrado mostra "em breve".
+    // Preenche faixa salarial (vai pra RespostaPessoa); mestrado mostra "em breve".
     await escolherOpcao(page, 'faixaSalarial', 'R$ 9.000 — R$ 12.000')
     await concluir(page)
 
-    await db.assertCount('respostas_curso', 2)
-    await db.assertHas('respostas_curso', {
-      matricula_id: mestMat.id,
-      faixa_salarial: null,
-      relacao_formacao: null,
-      tempo_primeiro_emprego: null,
-    })
+    // 1 RespostaPessoa do egresso + 2 RespostaCurso (uma por matrícula).
+    await db.assertHas('respostas_pessoa', { egresso_id: egresso.id }, 1)
+    await db.assertHas('respostas_pessoa', { egresso_id: egresso.id, faixa_salarial: 'de_9k_12k' })
+    await db.assertHas(
+      'respostas_curso',
+      {
+        matricula_id: mestMat.id,
+        relacao_formacao: null,
+        tempo_primeiro_emprego: null,
+      },
+      1
+    )
   })
 
   test('validação falha (UF com 1 caractere) → banner mostra erro Vine', async ({
@@ -178,7 +186,7 @@ test.group('RespostasController.store', (group) => {
     browserContext,
     db,
   }) => {
-    const { user } = await egressoCom1Graduacao()
+    const { user, egresso } = await egressoCom1Graduacao()
 
     await browserContext.loginAs(user)
     const page = await visit(route('respostas.create'))
@@ -189,7 +197,7 @@ test.group('RespostasController.store', (group) => {
     await page.assertPath('/respostas/create')
     // Vine reporta erro de fixedLength; o copy default contém "characters".
     await page.assertVisible('text=characters')
-    await db.assertCount('respostas_pessoa', 0)
+    await db.assertMissing('respostas_pessoa', { egresso_id: egresso.id })
   })
 
   test('append-only: duas submissões consecutivas criam 2 linhas em respostas_pessoa', async ({
@@ -198,7 +206,7 @@ test.group('RespostasController.store', (group) => {
     browserContext,
     db,
   }) => {
-    const { user } = await egressoCom1Graduacao()
+    const { user, egresso, matricula } = await egressoCom1Graduacao()
 
     await browserContext.loginAs(user)
 
@@ -214,7 +222,7 @@ test.group('RespostasController.store', (group) => {
     await concluir(page2)
     await page2.assertPath('/dashboard')
 
-    await db.assertCount('respostas_pessoa', 2)
-    await db.assertCount('respostas_curso', 2)
+    await db.assertHas('respostas_pessoa', { egresso_id: egresso.id }, 2)
+    await db.assertHas('respostas_curso', { matricula_id: matricula.id }, 2)
   })
 })

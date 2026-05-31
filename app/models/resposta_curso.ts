@@ -6,9 +6,11 @@ import Matricula from '#models/matricula'
 
 /**
  * Campos por matrícula/ano dentro de uma foto consolidada (`RespostaPessoa`).
- * Para matrículas de graduação preenche faixa salarial / relação com a
- * formação / tempo até 1º emprego. Para pós-graduação fica identidade-só
- * (3 colunas null) nesta entrega — campos próprios entram em changes D2.
+ * Para graduação preenche relação com a formação + tempo até 1º emprego —
+ * ambos variam por diploma. Pós-graduação fica identidade-só (2 colunas null)
+ * nesta entrega; campos próprios entram em changes D2.
+ *
+ * Faixa salarial vive em `RespostaPessoa` (é da pessoa, não do curso).
  */
 export default class RespostaCurso extends RespostasCursoSchema {
   static table = 'respostas_curso'

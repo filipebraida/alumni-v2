@@ -101,8 +101,9 @@ test.group('DashboardController.show', (group) => {
     const page = await visit(route('dashboard'))
 
     await page.assertVisible('text=Engenheira de Software')
-    // Todos os 4 dados gerais herdam o mesmo timestamp da RespostaPessoa.
-    await page.assertElementsCount('text=confirmado há 3 sem.', 4)
+    // Os 5 dados gerais herdam o mesmo timestamp da RespostaPessoa (cidade,
+    // empresa, cargo, setor, faixa salarial).
+    await page.assertElementsCount('text=confirmado há 3 sem.', 5)
   })
 
   test('detalhe da formação de graduação mostra 3 cartões MEC + identidade', async ({
@@ -125,11 +126,13 @@ test.group('DashboardController.show', (group) => {
       .merge({ egressoId: egresso.id, cursoId: curso.id })
       .create()
 
-    const rp = await RespostaPessoaFactory.merge({ egressoId: egresso.id }).create()
+    const rp = await RespostaPessoaFactory.merge({
+      egressoId: egresso.id,
+      faixaSalarial: 'de_9k_12k',
+    }).create()
     await RespostaCursoFactory.merge({
       respostaPessoaId: rp.id,
       matriculaId: matricula.id,
-      faixaSalarial: 'de_9k_12k',
       relacaoFormacao: 'total',
       tempoPrimeiroEmprego: 'ate_3m',
     }).create()
@@ -251,8 +254,8 @@ test.group('DashboardController.show', (group) => {
     browserContext,
   }) => {
     const { user, egresso } = await egressoCom1Graduacao()
-    // 4 dados gerais todos null → cada cartão exibe "não informado" no valor
-    // e no rótulo de status (2 por cartão × 4 cartões = 8).
+    // 5 dados gerais todos null → cada cartão exibe "não informado" no valor
+    // e no rótulo de status (2 por cartão × 5 cartões = 10).
     await RespostaPessoaFactory.merge({
       egressoId: egresso.id,
       localizacaoCidade: null,
@@ -261,12 +264,13 @@ test.group('DashboardController.show', (group) => {
       empregador: null,
       cargo: null,
       setor: null,
+      faixaSalarial: null,
     }).create()
 
     await browserContext.loginAs(user)
     const page = await visit(route('dashboard'))
 
-    // 4 cartões de dados gerais (8) + 3 cartões MEC da graduação (6) também
+    // 5 cartões de dados gerais (10) + 2 cartões MEC da graduação (4) também
     // ausentes porque não criamos RespostaCurso = 14 ocorrências de "não informado".
     await page.assertElementsCount('text=não informado', 14)
   })

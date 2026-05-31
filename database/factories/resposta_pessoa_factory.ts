@@ -13,6 +13,7 @@ export const RespostaPessoaFactory = factory
       empregador: 'Embrapa Solos',
       cargo: 'Engenheira de Software',
       setor: 'pesquisa_publica' as const,
+      faixaSalarial: 'de_9k_12k' as const,
     }
   })
   .state('recente', (resposta) => {

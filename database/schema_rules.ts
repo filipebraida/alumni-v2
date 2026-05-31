@@ -42,15 +42,15 @@ export default {
           decorators: [{ name: '@column' }],
           imports: [{ source: '#enums/setor', typeImports: ['Setor'] }],
         },
-      },
-    },
-    respostas_curso: {
-      columns: {
         faixa_salarial: {
           tsType: 'FaixaSalarial',
           decorators: [{ name: '@column' }],
           imports: [{ source: '#enums/faixa_salarial', typeImports: ['FaixaSalarial'] }],
         },
+      },
+    },
+    respostas_curso: {
+      columns: {
         relacao_formacao: {
           tsType: 'RelacaoFormacao',
           decorators: [{ name: '@column' }],

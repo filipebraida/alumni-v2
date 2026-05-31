@@ -64,11 +64,11 @@ test.group('RespostasController.create', (group) => {
       empregador: 'Embrapa Solos',
       cargo: 'Engenheira',
       setor: 'pesquisa_publica',
+      faixaSalarial: 'de_9k_12k',
     }).create()
     await RespostaCursoFactory.merge({
       respostaPessoaId: rp.id,
       matriculaId: matricula.id,
-      faixaSalarial: 'de_9k_12k',
     }).create()
 
     await browserContext.loginAs(user)

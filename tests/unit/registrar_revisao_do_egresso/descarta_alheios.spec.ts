@@ -35,8 +35,8 @@ test.group('RegistrarRevisaoDoEgresso · IDs alheios', (group) => {
         cargo: 'Engenheira de Software',
         setor: 'pesquisa_publica',
         matriculas: [
-          { id: matriculaA.id, faixaSalarial: 'de_6k_9k' },
-          { id: matriculaB.id, faixaSalarial: 'acima_25k' },
+          { id: matriculaA.id, relacaoFormacao: 'total' },
+          { id: matriculaB.id, relacaoFormacao: 'diferente' },
         ],
       },
     })
@@ -44,13 +44,14 @@ test.group('RegistrarRevisaoDoEgresso · IDs alheios', (group) => {
     // Sem throw: action retorna a RespostaPessoa.
     assert.exists(resultado)
 
-    // Exatamente 1 RespostaPessoa (do egresso A) e 1 RespostaCurso (matrícula A).
-    await db.assertCount('respostas_pessoa', 1)
-    await db.assertCount('respostas_curso', 1)
-    await db.assertHas('respostas_curso', {
-      matricula_id: matriculaA.id,
-      faixa_salarial: 'de_6k_9k',
-    })
+    // Exatamente 1 RespostaPessoa do egresso A; 1 RespostaCurso da matrícula A;
+    // nenhuma da matrícula B.
+    await db.assertHas('respostas_pessoa', { egresso_id: egressoA.id }, 1)
+    await db.assertHas(
+      'respostas_curso',
+      { matricula_id: matriculaA.id, relacao_formacao: 'total' },
+      1
+    )
     await db.assertMissing('respostas_curso', { matricula_id: matriculaB.id })
   })
 })

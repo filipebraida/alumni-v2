@@ -50,9 +50,6 @@ const CAMPOS_GERAIS: CampoConfig[] = [
     campo: 'setor',
     opcoesKey: 'setor',
   },
-]
-
-const CAMPOS_MATRICULA: CampoConfig[] = [
   {
     id: 'faixaSalarial',
     icone: 'chart',
@@ -62,6 +59,9 @@ const CAMPOS_MATRICULA: CampoConfig[] = [
     opcoesKey: 'faixaSalarial',
     ajuda: 'Usada só em agregado, nunca individual.',
   },
+]
+
+const CAMPOS_MATRICULA: CampoConfig[] = [
   {
     id: 'relacaoFormacao',
     icone: 'check',
@@ -100,7 +100,6 @@ export default function RespostasCreate({ valores, matriculas, opcoes }: PagePro
     ...valores,
     matriculas: matriculas.map((m) => ({
       id: m.id,
-      faixaSalarial: m.valoresAtuais?.faixaSalarial ?? null,
       relacaoFormacao: m.valoresAtuais?.relacaoFormacao ?? null,
       tempoPrimeiroEmprego: m.valoresAtuais?.tempoPrimeiroEmprego ?? null,
     })),
@@ -155,6 +154,7 @@ export default function RespostasCreate({ valores, matriculas, opcoes }: PagePro
     empregador: form.data.empregador,
     cargo: form.data.cargo,
     setor: form.data.setor,
+    faixaSalarial: form.data.faixaSalarial,
   }
 
   return (
@@ -221,7 +221,6 @@ export default function RespostasCreate({ valores, matriculas, opcoes }: PagePro
                   const key = keyMatricula(m.id, c.id)
                   const mf = form.data.matriculas[i]
                   const dataMatricula: ValoresMatricula = {
-                    faixaSalarial: mf.faixaSalarial,
                     relacaoFormacao: mf.relacaoFormacao,
                     tempoPrimeiroEmprego: mf.tempoPrimeiroEmprego,
                   }

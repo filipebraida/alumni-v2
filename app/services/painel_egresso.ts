@@ -116,14 +116,25 @@ export function camposGeraisDaResposta(r: RespostaPessoa | null, agora: DateTime
       registradaEm: reg,
       agora,
     }),
+    montarCampo({
+      chave: 'salario',
+      icone: 'chart',
+      rotulo: 'Faixa salarial',
+      valor: r?.faixaSalarial ? FAIXA_SALARIAL_LABELS[r.faixaSalarial] : null,
+      registradaEm: reg,
+      agora,
+    }),
   ]
 }
 
 /**
  * Campos MEC específicos da formação. Hoje só graduação tem mapeamento real
- * (salário, relação com a formação, tempo até 1º emprego), lidos da
- * `RespostaCurso` da matrícula. Pós-graduação fica vazia (identidade-só nesta
- * entrega) — a view exibe "Campos da formação chegam em breve".
+ * (relação com a formação + tempo até 1º emprego — variam por diploma), lidos
+ * da `RespostaCurso` da matrícula. Pós-graduação fica vazia (identidade-só
+ * nesta entrega) — a view exibe "Campos da formação chegam em breve".
+ *
+ * Faixa salarial vive em `RespostaPessoa` (é da pessoa, não do curso) — é
+ * renderizada em `camposGeraisDaResposta`.
  *
  * `r` (RespostaCurso) é a foto mais recente da matrícula em questão; o
  * timestamp pra cálculo de confiança vem da `RespostaPessoa` mãe (uniforme
@@ -138,14 +149,6 @@ export function camposDaFormacao(
   if (nivel !== 'graduacao') return []
 
   return [
-    montarCampo({
-      chave: 'salario',
-      icone: 'chart',
-      rotulo: 'Faixa salarial',
-      valor: r?.faixaSalarial ? FAIXA_SALARIAL_LABELS[r.faixaSalarial] : null,
-      registradaEm,
-      agora,
-    }),
     montarCampo({
       chave: 'area',
       icone: 'check',

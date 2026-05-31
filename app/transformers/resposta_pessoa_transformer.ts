@@ -25,6 +25,7 @@ export default class RespostaPessoaTransformer extends BaseTransformer<RespostaP
       'empregador',
       'cargo',
       'setor',
+      'faixaSalarial',
     ])
   }
 }
