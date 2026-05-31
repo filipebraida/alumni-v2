@@ -13,6 +13,9 @@ import BuscarEgressoDoUsuario from '#queries/buscar_egresso_do_usuario'
 import BuscarUltimaRespostaPessoaDoEgresso from '#queries/buscar_ultima_resposta_pessoa_do_egresso'
 import BuscarUltimasRespostasCursoDasMatriculas from '#queries/buscar_ultimas_respostas_curso_das_matriculas'
 import RegistrarRevisaoDoEgresso from '#actions/registrar_revisao_do_egresso'
+import MatriculaTransformer from '#transformers/matricula_transformer'
+import OpcoesTransformer from '#transformers/opcoes_transformer'
+import RespostaPessoaTransformer from '#transformers/resposta_pessoa_transformer'
 
 /**
  * Fluxo de revisão (wizard): o egresso revisita os dados gerais + os campos
@@ -33,31 +36,20 @@ export default class RespostasController {
     })
 
     return inertia.render('respostas/create', {
-      valores: {
-        localizacaoCidade: ultimaPessoa?.localizacaoCidade ?? null,
-        localizacaoUf: ultimaPessoa?.localizacaoUf ?? null,
-        localizacaoPais: ultimaPessoa?.localizacaoPais ?? null,
-        empregador: ultimaPessoa?.empregador ?? null,
-        cargo: ultimaPessoa?.cargo ?? null,
-        setor: ultimaPessoa?.setor ?? null,
-      },
-      matriculas: matriculas.map((m) => {
-        const rc = ultimasCurso.get(m.id) ?? null
-        return {
-          id: m.id,
-          nivel: m.curso.nivel,
-          curto: m.curso.nome,
-          ehGraduacao: m.curso.nivel === 'graduacao',
-          valoresAtuais: rc
-            ? {
-                faixaSalarial: rc.faixaSalarial,
-                relacaoFormacao: rc.relacaoFormacao,
-                tempoPrimeiroEmprego: rc.tempoPrimeiroEmprego,
-              }
-            : null,
-        }
-      }),
-      opcoes: {
+      valores: ultimaPessoa
+        ? RespostaPessoaTransformer.transform(ultimaPessoa).useVariant('forRevisao')
+        : {
+            localizacaoCidade: null,
+            localizacaoUf: null,
+            localizacaoPais: null,
+            empregador: null,
+            cargo: null,
+            setor: null,
+          },
+      matriculas: MatriculaTransformer.transform(matriculas, {
+        revisao: ultimasCurso,
+      }).useVariant('forRevisao'),
+      opcoes: OpcoesTransformer.transform({
         setor: SETORES.map((v) => ({ valor: v, rotulo: SETOR_LABELS[v] })),
         faixaSalarial: FAIXAS_SALARIAIS.map((v) => ({
           valor: v,
@@ -71,7 +63,7 @@ export default class RespostasController {
           valor: v,
           rotulo: TEMPO_PRIMEIRO_EMPREGO_LABELS[v],
         })),
-      },
+      }),
     })
   }
 

@@ -74,8 +74,9 @@ test.group('RespostasController.create', (group) => {
     await browserContext.loginAs(user)
     const page = await visit(route('respostas.create'))
 
-    // Inputs renderizam com os valores da última resposta como defaults.
-    await page.assertExists('input[value="Embrapa Solos"]')
-    await page.assertExists('input[value="Engenheira"]')
+    // Cards mostram os valores da última resposta como display (read-only até
+    // o egresso clicar "Mudou"); inputs só aparecem ao editar.
+    await page.assertVisible('text=Embrapa Solos')
+    await page.assertVisible('text=Engenheira')
   })
 })

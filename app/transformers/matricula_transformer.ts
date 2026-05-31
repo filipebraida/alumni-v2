@@ -1,17 +1,24 @@
 import type Matricula from '#models/matricula'
+import type RespostaCurso from '#models/resposta_curso'
 import { BaseTransformer } from '@adonisjs/core/transformers'
 import { NIVEL_LABELS } from '#enums/nivel_academico'
 import CampoMecTransformer, { type CampoMec } from '#transformers/campo_mec_transformer'
+import RespostaCursoTransformer from '#transformers/resposta_curso_transformer'
 
 export type MatriculaPainelExtras = {
   frescor: number
   camposMec: CampoMec[]
 }
 
+export type MatriculaExtras = {
+  painel?: Map<number, MatriculaPainelExtras>
+  revisao?: Map<number, RespostaCurso>
+}
+
 export default class MatriculaTransformer extends BaseTransformer<Matricula> {
   constructor(
     resource: Matricula,
-    protected painelExtras?: Map<number, MatriculaPainelExtras>
+    protected extras?: MatriculaExtras
   ) {
     super(resource)
   }
@@ -34,16 +41,26 @@ export default class MatriculaTransformer extends BaseTransformer<Matricula> {
   }
 
   forPainel() {
-    const extras = this.painelExtras?.get(this.resource.id)
-    if (!extras) {
+    const painel = this.extras?.painel?.get(this.resource.id)
+    if (!painel) {
       throw new Error(
         `MatriculaTransformer.forPainel: faltam extras para matrícula ${this.resource.id}`
       )
     }
     return {
       ...this.toObject(),
-      frescor: extras.frescor,
-      camposMec: CampoMecTransformer.transform(extras.camposMec),
+      frescor: painel.frescor,
+      camposMec: CampoMecTransformer.transform(painel.camposMec),
+    }
+  }
+
+  forRevisao() {
+    const rc = this.extras?.revisao?.get(this.resource.id)
+    return {
+      id: this.resource.id,
+      curto: this.resource.curso.nome,
+      ehGraduacao: this.resource.curso.nivel === 'graduacao',
+      valoresAtuais: rc ? RespostaCursoTransformer.transform(rc) : null,
     }
   }
 }

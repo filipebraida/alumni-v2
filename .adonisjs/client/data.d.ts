@@ -11,6 +11,8 @@ import type EgressoTransformer from '#transformers/egresso_transformer'
 import type FrescorTransformer from '#transformers/frescor_transformer'
 import type MatriculaTransformer from '#transformers/matricula_transformer'
 import type NotificationTransformer from '#transformers/notification_transformer'
+import type OpcoesTransformer from '#transformers/opcoes_transformer'
+import type RespostaCursoTransformer from '#transformers/resposta_curso_transformer'
 import type RespostaPessoaTransformer from '#transformers/resposta_pessoa_transformer'
 import type SnapshotPainelTransformer from '#transformers/snapshot_painel_transformer'
 import type UserTransformer from '#transformers/user_transformer'
@@ -36,6 +38,14 @@ export namespace Data {
   export type Notification = InferData<NotificationTransformer>
   export namespace Notification {
     export type Variants = InferVariants<NotificationTransformer>
+  }
+  export type Opcoes = InferData<OpcoesTransformer>
+  export namespace Opcoes {
+    export type Variants = InferVariants<OpcoesTransformer>
+  }
+  export type RespostaCurso = InferData<RespostaCursoTransformer>
+  export namespace RespostaCurso {
+    export type Variants = InferVariants<RespostaCursoTransformer>
   }
   export type RespostaPessoa = InferData<RespostaPessoaTransformer>
   export namespace RespostaPessoa {

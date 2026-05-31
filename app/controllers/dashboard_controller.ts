@@ -76,9 +76,9 @@ export default class DashboardController {
       snapshot: SnapshotPainelTransformer.transform(montarSnapshot(ultimaResposta, agora)),
       camposGerais: CampoMecTransformer.transform(camposGeraisDaResposta(ultimaResposta, agora)),
 
-      formacoes: MatriculaTransformer.transform(matriculas, extrasPorMatricula).useVariant(
-        'forPainel'
-      ),
+      formacoes: MatriculaTransformer.transform(matriculas, {
+        painel: extrasPorMatricula,
+      }).useVariant('forPainel'),
     })
   }
 }

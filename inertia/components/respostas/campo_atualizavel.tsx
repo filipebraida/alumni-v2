@@ -3,19 +3,32 @@ import {
   Check,
   Clock,
   Flag,
-  GraduationCap,
   LineChart,
   MapPin,
   Plus,
   Star,
   type LucideIcon,
 } from 'lucide-react'
+import { type Data } from '@generated/data'
 import { Button } from '~/components/ui/button'
 import { Card } from '~/components/ui/card'
 import { SoftBadge } from '~/components/portal/soft_badge'
-import { EditorLocal, EditorOpcoes, EditorPos, EditorTexto } from '~/components/respostas/editores'
+import { EditorLocal, EditorOpcoes, EditorTexto } from '~/components/respostas/editores'
 import { cn } from '~/lib/utils'
-import type { CampoConfig, Opcoes, RegistrarResposta, Status } from '~/components/respostas/types'
+
+export type Status = 'pendente' | 'confirmado' | 'atualizado'
+
+export type EditorTipo = 'texto' | 'opcoes' | 'local'
+
+export type CampoConfig = {
+  id: string
+  icone: string
+  rotulo: string
+  ajuda?: string
+  editor: EditorTipo
+  campo?: string
+  opcoesKey?: keyof Data.Opcoes
+}
 
 const ICONES: Record<string, LucideIcon> = {
   pin: MapPin,
@@ -25,22 +38,15 @@ const ICONES: Record<string, LucideIcon> = {
   chart: LineChart,
   check: Check,
   clock: Clock,
-  cap: GraduationCap,
 }
 
-/** Valor legível do campo na foto atual (string vazia = não informado). */
-function valorExibido(config: CampoConfig, data: RegistrarResposta, opcoes: Opcoes): string {
+type Patch = Record<string, string | null>
+
+function valorExibido(config: CampoConfig, data: Patch, opcoes: Data.Opcoes): string {
   if (config.editor === 'local') {
     return data.localizacaoCidade
       ? `${data.localizacaoCidade} · ${data.localizacaoUf ?? ''}`.trim()
       : ''
-  }
-  if (config.editor === 'pos') {
-    if (!data.posGrau) return ''
-    const grau = opcoes.posGrau.find((o) => o.valor === data.posGrau)?.rotulo ?? ''
-    const status = opcoes.posStatus.find((o) => o.valor === data.posStatus)?.rotulo ?? ''
-    const partes = [grau, data.posCurso, data.posInstituicao].filter(Boolean)
-    return partes.join(' · ') + (status ? ` · ${status.toLowerCase()}` : '')
   }
   if (config.editor === 'opcoes') {
     return opcoes[config.opcoesKey!].find((o) => o.valor === data[config.campo!])?.rotulo ?? ''
@@ -50,23 +56,16 @@ function valorExibido(config: CampoConfig, data: RegistrarResposta, opcoes: Opco
 
 type Props = {
   config: CampoConfig
-  data: RegistrarResposta
-  opcoes: Opcoes
+  data: Patch
+  opcoes: Data.Opcoes
   status: Status
   editando: boolean
   onConfirmar: () => void
   onEditar: () => void
-  onSalvar: (patch: Partial<RegistrarResposta>) => void
+  onSalvar: (patch: Patch) => void
   onCancelar: () => void
 }
 
-/**
- * Card de um campo no fluxo: mostra o valor atual e oferece "Sim, ainda" /
- * "Mudou" (ou "Adicionar" quando vazio). Ao salvar, devolve só o patch do campo.
- *
- * No mobile as ações descem para baixo do conteúdo (senão espremem o texto) e o
- * editor ocupa a largura cheia do card.
- */
 export function CampoAtualizavel({
   config,
   data,
@@ -85,10 +84,9 @@ export function CampoAtualizavel({
   const atualizado = status === 'atualizado'
 
   return (
-    <Card className={cn('overflow-hidden', editando && 'border-primary/40')}>
+    <Card data-campo={config.id} className={cn('overflow-hidden', editando && 'border-primary/40')}>
       <div className="p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-          {/* ícone + identificação */}
           <div className="flex min-w-0 flex-1 items-start gap-3">
             <div
               className={cn(
@@ -115,7 +113,7 @@ export function CampoAtualizavel({
                   ausente ? 'text-muted-foreground italic' : 'text-foreground'
                 )}
               >
-                {display || '— não informado'}
+                {display || 'não informado'}
               </div>
 
               {config.ajuda && !editando && (
@@ -124,10 +122,9 @@ export function CampoAtualizavel({
             </div>
           </div>
 
-          {/* ações — abaixo do conteúdo no mobile, ao lado no desktop */}
           {!editando && (
             <div className="flex shrink-0 items-center justify-end gap-1.5 sm:self-start">
-              {ausente ? (
+              {ausente && status === 'pendente' ? (
                 <Button size="sm" variant="outline" onClick={onEditar}>
                   <Plus /> Adicionar
                 </Button>
@@ -141,20 +138,17 @@ export function CampoAtualizavel({
                   >
                     Mudou
                   </Button>
-                  <Button
-                    size="sm"
-                    variant={confirmado ? 'outline' : 'default'}
-                    onClick={onConfirmar}
-                  >
-                    <Check /> {confirmado ? 'Confirmado' : 'Sim, ainda'}
-                  </Button>
+                  {status === 'pendente' && (
+                    <Button size="sm" onClick={onConfirmar}>
+                      <Check /> Sim, ainda
+                    </Button>
+                  )}
                 </>
               )}
             </div>
           )}
         </div>
 
-        {/* editor — largura cheia do card */}
         {editando && (
           <div className="mt-3 rounded-lg border bg-muted/20 p-3">
             {config.editor === 'local' ? (
@@ -170,41 +164,18 @@ export function CampoAtualizavel({
                 }
                 onCancelar={onCancelar}
               />
-            ) : config.editor === 'pos' ? (
-              <EditorPos
-                inicial={{
-                  grau: data.posGrau ?? '',
-                  curso: data.posCurso ?? '',
-                  inst: data.posInstituicao ?? '',
-                  status: data.posStatus ?? '',
-                }}
-                grauOpcoes={opcoes.posGrau}
-                statusOpcoes={opcoes.posStatus}
-                onSalvar={({ grau, curso, inst, status: st }) =>
-                  onSalvar({
-                    posGrau: grau || null,
-                    posCurso: curso.trim() || null,
-                    posInstituicao: inst.trim() || null,
-                    posStatus: st || null,
-                  })
-                }
-                onCancelar={onCancelar}
-              />
             ) : config.editor === 'opcoes' ? (
               <EditorOpcoes
                 valorInicial={data[config.campo!] ?? ''}
                 opcoes={opcoes[config.opcoesKey!]}
-                onSalvar={(valor) =>
-                  onSalvar({ [config.campo!]: valor } as Partial<RegistrarResposta>)
-                }
+                onSalvar={(valor) => onSalvar({ [config.campo!]: valor })}
                 onCancelar={onCancelar}
               />
             ) : (
               <EditorTexto
                 valorInicial={data[config.campo!] ?? ''}
-                onSalvar={(valor) =>
-                  onSalvar({ [config.campo!]: valor.trim() || null } as Partial<RegistrarResposta>)
-                }
+                ariaLabel={config.rotulo}
+                onSalvar={(valor) => onSalvar({ [config.campo!]: valor.trim() || null })}
                 onCancelar={onCancelar}
               />
             )}

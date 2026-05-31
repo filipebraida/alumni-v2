@@ -1,15 +1,14 @@
 import { Check } from 'lucide-react'
 import { useState } from 'react'
+import { type Data } from '@generated/data'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { cn } from '~/lib/utils'
-import type { Opcao } from '~/components/respostas/types'
 
-const selectClass =
-  'h-9 w-full rounded-lg border border-input bg-background px-2.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring'
+type Opcao = Data.Opcoes['setor'][number]
 
-/** Ações comuns (Salvar / Cancelar) ao pé de um editor — alinhadas à direita,
- *  primário mais à direita, no mesmo padrão das ações do card. */
+// Salvar / Cancelar alinhados à direita (primário mais à direita), no mesmo
+// padrão das ações do card.
 function AcoesEditor({ onSalvar, onCancelar }: { onSalvar: () => void; onCancelar: () => void }) {
   return (
     <div className="flex items-center justify-end gap-2">
@@ -26,11 +25,13 @@ function AcoesEditor({ onSalvar, onCancelar }: { onSalvar: () => void; onCancela
 export function EditorTexto({
   valorInicial,
   placeholder,
+  ariaLabel,
   onSalvar,
   onCancelar,
 }: {
   valorInicial: string
   placeholder?: string
+  ariaLabel?: string
   onSalvar: (valor: string) => void
   onCancelar: () => void
 }) {
@@ -42,6 +43,7 @@ export function EditorTexto({
         size="lg"
         autoFocus
         value={valor}
+        aria-label={ariaLabel}
         placeholder={placeholder ?? 'Digite…'}
         onChange={(e) => setValor(e.target.value)}
       />
@@ -72,6 +74,7 @@ export function EditorLocal({
           autoFocus
           className="col-span-2"
           value={cidade}
+          aria-label="Cidade"
           placeholder="Cidade"
           onChange={(e) => setCidade(e.target.value)}
         />
@@ -79,6 +82,7 @@ export function EditorLocal({
           nativeInput
           size="lg"
           value={uf}
+          aria-label="UF"
           placeholder="UF"
           maxLength={2}
           onChange={(e) => setUf(e.target.value.toUpperCase())}
@@ -126,68 +130,6 @@ export function EditorOpcoes({
           Cancelar
         </Button>
       </div>
-    </div>
-  )
-}
-
-export function EditorPos({
-  inicial,
-  grauOpcoes,
-  statusOpcoes,
-  onSalvar,
-  onCancelar,
-}: {
-  inicial: { grau: string; curso: string; inst: string; status: string }
-  grauOpcoes: Opcao[]
-  statusOpcoes: Opcao[]
-  onSalvar: (valor: { grau: string; curso: string; inst: string; status: string }) => void
-  onCancelar: () => void
-}) {
-  const [grau, setGrau] = useState(inicial.grau)
-  const [curso, setCurso] = useState(inicial.curso)
-  const [inst, setInst] = useState(inicial.inst)
-  const [status, setStatus] = useState(inicial.status)
-
-  return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-2 gap-2">
-        <select className={selectClass} value={grau} onChange={(e) => setGrau(e.target.value)}>
-          <option value="">Nível…</option>
-          {grauOpcoes.map((o) => (
-            <option key={o.valor} value={o.valor}>
-              {o.rotulo}
-            </option>
-          ))}
-        </select>
-        <select className={selectClass} value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="">Situação…</option>
-          {statusOpcoes.map((o) => (
-            <option key={o.valor} value={o.valor}>
-              {o.rotulo}
-            </option>
-          ))}
-        </select>
-        <Input
-          nativeInput
-          size="lg"
-          className="col-span-2"
-          value={curso}
-          placeholder="Curso"
-          onChange={(e) => setCurso(e.target.value)}
-        />
-        <Input
-          nativeInput
-          size="lg"
-          className="col-span-2"
-          value={inst}
-          placeholder="Instituição"
-          onChange={(e) => setInst(e.target.value)}
-        />
-      </div>
-      <AcoesEditor
-        onSalvar={() => onSalvar({ grau, curso, inst, status })}
-        onCancelar={onCancelar}
-      />
     </div>
   )
 }

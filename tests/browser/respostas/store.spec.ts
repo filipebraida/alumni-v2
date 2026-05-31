@@ -24,6 +24,54 @@ async function egressoCom1Graduacao() {
   return { user, egresso, matricula }
 }
 
+// Helpers pro fluxo styled (card-por-campo com "Mudou/Adicionar" → editor → Salvar).
+// `page` é o Page decorado do @japa/browser-client; tipa-se via inferência no chamador.
+
+type PageDriver = any
+
+async function abrirEditor(page: PageDriver, campoId: string) {
+  await page
+    .locator(`[data-campo="${campoId}"]`)
+    .getByRole('button', { name: /Adicionar|Mudou/ })
+    .click()
+}
+
+async function salvarEditor(page: PageDriver, campoId: string) {
+  await page
+    .locator(`[data-campo="${campoId}"]`)
+    .getByRole('button', { name: /^Salvar$/ })
+    .click()
+}
+
+async function editarTexto(page: PageDriver, campoId: string, ariaLabel: string, valor: string) {
+  await abrirEditor(page, campoId)
+  // Escopa pelo card pra não colidir com aria-labels iguais em outros pontos
+  // (ex.: SVG do logo tem aria-label que casa com 'UFRRJ').
+  await page.locator(`[data-campo="${campoId}"]`).getByLabel(ariaLabel).fill(valor)
+  await salvarEditor(page, campoId)
+}
+
+async function editarLocal(page: PageDriver, cidade: string, uf: string) {
+  const card = page.locator('[data-campo="localizacao"]')
+  await abrirEditor(page, 'localizacao')
+  if (cidade) await card.getByLabel('Cidade').fill(cidade)
+  if (uf) await card.getByLabel('UF').fill(uf)
+  await salvarEditor(page, 'localizacao')
+}
+
+async function escolherOpcao(page: PageDriver, campoId: string, rotuloOpcao: string) {
+  await abrirEditor(page, campoId)
+  // EditorOpcoes salva no clique do botão da opção — sem Salvar separado.
+  await page
+    .locator(`[data-campo="${campoId}"]`)
+    .getByRole('button', { name: rotuloOpcao, exact: true })
+    .click()
+}
+
+async function concluir(page: PageDriver) {
+  await page.getByRole('button', { name: /Concluir/ }).click()
+}
+
 test.group('RespostasController.store', (group) => {
   group.each.setup(() => testUtils.db().truncate())
 
@@ -38,17 +86,15 @@ test.group('RespostasController.store', (group) => {
     await browserContext.loginAs(user)
     const page = await visit(route('respostas.create'))
 
-    await page.getByLabel('Cidade').fill('Rio de Janeiro')
-    await page.getByLabel('UF').fill('RJ')
-    await page.getByLabel('País').fill('Brasil')
-    await page.getByLabel('Empresa atual').fill('Embrapa Solos')
-    await page.getByLabel('Cargo / função').fill('Engenheira')
-    await page.getByLabel('Setor').selectOption('pesquisa_publica')
-    await page.getByLabel('Faixa salarial').selectOption('de_9k_12k')
-    await page.getByLabel('Atua na área formada?').selectOption('total')
-    await page.getByLabel('Tempo até o 1º emprego').selectOption('ate_3m')
+    await editarLocal(page, 'Rio de Janeiro', 'RJ')
+    await editarTexto(page, 'empregador', 'Empresa ou instituição', 'Embrapa Solos')
+    await editarTexto(page, 'cargo', 'Cargo / função', 'Engenheira')
+    await escolherOpcao(page, 'setor', 'Pesquisa pública')
+    await escolherOpcao(page, 'faixaSalarial', 'R$ 9.000 — R$ 12.000')
+    await escolherOpcao(page, 'relacaoFormacao', 'Sim, totalmente relacionado')
+    await escolherOpcao(page, 'tempoPrimeiroEmprego', 'Menos de 3 meses')
 
-    await page.getByRole('button', { name: 'Concluir' }).click()
+    await concluir(page)
 
     await page.assertPath('/dashboard')
     await page.assertVisible(
@@ -78,8 +124,8 @@ test.group('RespostasController.store', (group) => {
     const page = await visit(route('respostas.create'))
 
     // Só altera o cargo — setor e empregador devem ser herdados.
-    await page.getByLabel('Cargo / função').fill('Coordenadora')
-    await page.getByRole('button', { name: 'Concluir' }).click()
+    await editarTexto(page, 'cargo', 'Cargo / função', 'Coordenadora')
+    await concluir(page)
     await page.assertPath('/dashboard')
 
     await db.assertCount('respostas_pessoa', 2)
@@ -114,8 +160,8 @@ test.group('RespostasController.store', (group) => {
     const page = await visit(route('respostas.create'))
 
     // Preenche só campos da graduação; mestrado mostra "em breve".
-    await page.getByLabel('Faixa salarial').selectOption('de_9k_12k')
-    await page.getByRole('button', { name: 'Concluir' }).click()
+    await escolherOpcao(page, 'faixaSalarial', 'R$ 9.000 — R$ 12.000')
+    await concluir(page)
 
     await db.assertCount('respostas_curso', 2)
     await db.assertHas('respostas_curso', {
@@ -126,7 +172,7 @@ test.group('RespostasController.store', (group) => {
     })
   })
 
-  test('validação falha (UF com 1 caractere) → DOM mostra erro Vine', async ({
+  test('validação falha (UF com 1 caractere) → banner mostra erro Vine', async ({
     visit,
     route,
     browserContext,
@@ -137,8 +183,8 @@ test.group('RespostasController.store', (group) => {
     await browserContext.loginAs(user)
     const page = await visit(route('respostas.create'))
 
-    await page.getByLabel('UF').fill('R')
-    await page.getByRole('button', { name: 'Concluir' }).click()
+    await editarLocal(page, 'Rio', 'R')
+    await concluir(page)
 
     await page.assertPath('/respostas/create')
     // Vine reporta erro de fixedLength; o copy default contém "characters".
@@ -158,14 +204,14 @@ test.group('RespostasController.store', (group) => {
 
     // Submissão 1
     const page1 = await visit(route('respostas.create'))
-    await page1.getByLabel('Cargo / função').fill('Cargo A')
-    await page1.getByRole('button', { name: 'Concluir' }).click()
+    await editarTexto(page1, 'cargo', 'Cargo / função', 'Cargo A')
+    await concluir(page1)
     await page1.assertPath('/dashboard')
 
     // Submissão 2
     const page2 = await visit(route('respostas.create'))
-    await page2.getByLabel('Cargo / função').fill('Cargo B')
-    await page2.getByRole('button', { name: 'Concluir' }).click()
+    await editarTexto(page2, 'cargo', 'Cargo / função', 'Cargo B')
+    await concluir(page2)
     await page2.assertPath('/dashboard')
 
     await db.assertCount('respostas_pessoa', 2)
