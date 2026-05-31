@@ -1,7 +1,8 @@
 @email.layout({
   title: 'Atualize seu cadastro no SAE — UFRRJ',
   eyebrow: 'Passaporte do Egresso',
-  preview: 'A coordenação do curso pediu uma atualização. São 8 campos — cerca de 30 segundos.',
+  preview:
+    'A coordenação do curso pediu uma atualização. São 8 campos — cerca de 30 segundos.',
 })
   {{-- Hero band (verde institucional) --}}
   <mj-section background-color="#1F4E27" padding="40px 40px 42px">
@@ -25,15 +26,44 @@
         letter-spacing="-0.015em"
         padding="0"
       >
+        
+        
+        
+        
+        
         Atualize seu cadastro
+
+
+
+
+
         <br />
+        
+        
+        
+        
+        
         em
+
+
+
+
+
         <em style="color:#F5C826;font-style:italic;">{{ nomeCurso }}</em>
+        
+        
+        
+        
+        
         .
+
+
+
+
+
       </mj-text>
     </mj-column>
   </mj-section>
-
   {{-- Carta --}}
   <mj-section background-color="#ffffff" padding="32px 40px 4px">
     <mj-column>
@@ -43,7 +73,9 @@
         .
       </mj-text>
       <mj-text font-size="16px" color="#19211B" line-height="1.62" padding="0 0 16px 0">
-        A coordenação do curso pediu uma <strong>atualização do seu cadastro</strong> no SAE. São os mesmos 8 campos de sempre — você confirma os que continuam iguais e edita só os que mudaram.
+        A coordenação do curso pediu uma
+        <strong>atualização do seu cadastro</strong>
+        no SAE. São os mesmos 8 campos de sempre — você confirma os que continuam iguais e edita só os que mudaram.
       </mj-text>
       <mj-text font-size="15px" color="#656E68" line-height="1.62" padding="0 0 6px 0">
         A sua leitura individual nunca vira gráfico: o que aparece pra coordenação é só a turma agregada, sempre por coorte.
@@ -58,75 +90,163 @@
           background-color="#F3F5F4"
           container-background-color="#ffffff"
         >
-          “{{ mensagem }}”
+          
+          
+          
+          
+          
+          “
+
+
+
+
+          {{ mensagem }}
+          
+          
+          
+          
+          ”
+
+
+
+
+
           <br />
-          <span style="font-style:normal;color:#656E68;font-size:12.5px;">
-            —
-            {{ nomeGestor }}
-          </span>
+          <span style="font-style:normal;color:#656E68;font-size:12.5px;">— {{ nomeGestor }}</span>
         </mj-text>
       @end
     </mj-column>
   </mj-section>
-
   {{-- Recap card: 8 campos + nota LGPD --}}
   <mj-section background-color="#ffffff" padding="22px 40px 4px">
     <mj-column>
       <mj-raw>
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #DDE3DE;border-radius:14px;border-collapse:separate;overflow:hidden;font-family:Inter,system-ui,-apple-system,sans-serif;background:#ffffff;">
+        <table
+          role="presentation"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          width="100%"
+          style="border:1px solid #DDE3DE;border-radius:14px;border-collapse:separate;overflow:hidden;font-family:Inter,system-ui,-apple-system,sans-serif;background:#ffffff;"
+        >
           <tr>
             <td style="padding:14px 18px;background:#F3F5F4;border-bottom:1px solid #DDE3DE;">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="30" style="vertical-align:middle;">
-                    <div style="width:30px;height:30px;border-radius:8px;background:#E6EDE7;color:#1F4E27;font-size:14px;line-height:30px;text-align:center;font-weight:600;">&#10003;</div>
+                    <div
+                      style="width:30px;height:30px;border-radius:8px;background:#E6EDE7;color:#1F4E27;font-size:14px;line-height:30px;text-align:center;font-weight:600;"
+                    >
+                      &#10003;
+                    </div>
                   </td>
-                  <td style="padding-left:10px;vertical-align:middle;font-size:13.5px;font-weight:600;color:#19211B;">Os 8 campos de sempre</td>
-                  <td align="right" style="font-size:11.5px;color:#656E68;white-space:nowrap;">cerca de 30 segundos</td>
+                  <td
+                    style="padding-left:10px;vertical-align:middle;font-size:13.5px;font-weight:600;color:#19211B;"
+                  >
+                    Os 8 campos de sempre
+                  </td>
+                  <td align="right" style="font-size:11.5px;color:#656E68;white-space:nowrap;">
+                    cerca de 30 segundos
+                  </td>
                 </tr>
               </table>
             </td>
           </tr>
           <tr>
             <td style="padding:0;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+                style="border-collapse:collapse;"
+              >
                 <tr>
-                  <td width="50%" style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;border-bottom:1px solid #DDE3DE;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">1</span>
+                  <td
+                    width="50%"
+                    style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;border-bottom:1px solid #DDE3DE;"
+                  >
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      1
+                    </span>
                     <span style="vertical-align:middle;">Empresa ou instituição</span>
                   </td>
-                  <td width="50%" style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-bottom:1px solid #DDE3DE;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">2</span>
+                  <td
+                    width="50%"
+                    style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-bottom:1px solid #DDE3DE;"
+                  >
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      2
+                    </span>
                     <span style="vertical-align:middle;">Cargo ou função</span>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;border-bottom:1px solid #DDE3DE;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">3</span>
+                  <td
+                    style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;border-bottom:1px solid #DDE3DE;"
+                  >
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      3
+                    </span>
                     <span style="vertical-align:middle;">Setor de atuação</span>
                   </td>
-                  <td style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-bottom:1px solid #DDE3DE;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">4</span>
+                  <td
+                    style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-bottom:1px solid #DDE3DE;"
+                  >
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      4
+                    </span>
                     <span style="vertical-align:middle;">Onde você mora hoje</span>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;border-bottom:1px solid #DDE3DE;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">5</span>
+                  <td
+                    style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;border-bottom:1px solid #DDE3DE;"
+                  >
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      5
+                    </span>
                     <span style="vertical-align:middle;">Faixa salarial</span>
                   </td>
-                  <td style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-bottom:1px solid #DDE3DE;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">6</span>
+                  <td
+                    style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-bottom:1px solid #DDE3DE;"
+                  >
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      6
+                    </span>
                     <span style="vertical-align:middle;">Trabalho e formação</span>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">7</span>
+                  <td
+                    style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;border-right:1px solid #DDE3DE;"
+                  >
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      7
+                    </span>
                     <span style="vertical-align:middle;">Tempo até o 1º emprego</span>
                   </td>
                   <td style="padding:12px 18px;font-size:13.5px;font-weight:500;color:#19211B;">
-                    <span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;">8</span>
+                    <span
+                      style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#E6EDE7;color:#1F4E27;font-size:11.5px;line-height:22px;text-align:center;font-weight:600;margin-right:11px;vertical-align:middle;"
+                    >
+                      8
+                    </span>
                     <span style="vertical-align:middle;">Pós-graduação</span>
                   </td>
                 </tr>
@@ -134,8 +254,12 @@
             </td>
           </tr>
           <tr>
-            <td style="padding:13px 18px;border-top:1px solid #DDE3DE;background:#F8FAF8;font-size:11.5px;line-height:1.5;color:#656E68;">
-              <span style="color:#1F4E27;font-size:13px;vertical-align:-1px;margin-right:6px;">&#128274;</span>
+            <td
+              style="padding:13px 18px;border-top:1px solid #DDE3DE;background:#F8FAF8;font-size:11.5px;line-height:1.5;color:#656E68;"
+            >
+              <span style="color:#1F4E27;font-size:13px;vertical-align:-1px;margin-right:6px;">
+                &#128274;
+              </span>
               As suas respostas atuais não viajam por e-mail. Elas aparecem, prontas pra conferir, só depois que você entra pelo link.
             </td>
           </tr>
@@ -143,7 +267,6 @@
       </mj-raw>
     </mj-column>
   </mj-section>
-
   {{-- CTA --}}
   <mj-section background-color="#ffffff" padding="28px 40px 8px">
     <mj-column>
@@ -173,18 +296,30 @@
       </mj-text>
     </mj-column>
   </mj-section>
-
   {{-- Unlock strip --}}
   <mj-section background-color="#ffffff" padding="22px 40px 4px">
     <mj-column>
       <mj-raw>
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #DDE3DE;border-radius:12px;background:#F8FAF8;font-family:Inter,system-ui,-apple-system,sans-serif;">
+        <table
+          role="presentation"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          width="100%"
+          style="border:1px solid #DDE3DE;border-radius:12px;background:#F8FAF8;font-family:Inter,system-ui,-apple-system,sans-serif;"
+        >
           <tr>
             <td width="54" valign="top" style="padding:18px 0 18px 20px;">
-              <div style="width:34px;height:34px;border-radius:50%;background:#FDF2C9;color:#6B5A12;font-size:16px;line-height:34px;text-align:center;font-weight:600;">&#8599;</div>
+              <div
+                style="width:34px;height:34px;border-radius:50%;background:#FDF2C9;color:#6B5A12;font-size:16px;line-height:34px;text-align:center;font-weight:600;"
+              >
+                &#8599;
+              </div>
             </td>
             <td style="padding:18px 20px 18px 13px;font-size:13px;color:#656E68;line-height:1.55;">
-              <strong style="color:#19211B;font-weight:600;">Assim que você confirma, a leitura da sua turma se atualiza na hora</strong>
+              <strong style="color:#19211B;font-weight:600;">
+                Assim que você confirma, a leitura da sua turma se atualiza na hora
+              </strong>
               — faixa salarial mediana, quem foi pra pós, quem mudou de área. Tudo anonimizado, sempre por turma.
             </td>
           </tr>
@@ -192,7 +327,6 @@
       </mj-raw>
     </mj-column>
   </mj-section>
-
   {{-- Sign-off --}}
   <mj-section background-color="#ffffff" padding="30px 40px 28px">
     <mj-column>
@@ -204,10 +338,20 @@
       </mj-text>
       <mj-divider border-color="#DDE3DE" border-width="1px" padding="0 0 18px 0" />
       <mj-raw>
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Inter,system-ui,-apple-system,sans-serif;">
+        <table
+          role="presentation"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="font-family:Inter,system-ui,-apple-system,sans-serif;"
+        >
           <tr>
             <td width="54" valign="middle">
-              <div style="width:42px;height:42px;border-radius:50%;background:#E6EDE7;color:#1F4E27;font-size:13px;line-height:42px;text-align:center;font-weight:600;letter-spacing:0.02em;">{{ iniciaisGestor }}</div>
+              <div
+                style="width:42px;height:42px;border-radius:50%;background:#E6EDE7;color:#1F4E27;font-size:13px;line-height:42px;text-align:center;font-weight:600;letter-spacing:0.02em;"
+              >
+                {{ iniciaisGestor }}
+              </div>
             </td>
             <td valign="middle" style="padding-left:13px;">
               <div style="font-size:14px;font-weight:600;color:#19211B;">{{ nomeGestor }}</div>

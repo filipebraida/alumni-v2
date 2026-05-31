@@ -6,21 +6,22 @@ import { cn } from '~/lib/utils'
 import type { Frescor } from '~/components/dashboard/types'
 
 /**
- * Frescor geral: média ponderada do frescor entre as formações + prazo de
- * expiração + contador de itens a revisar. O CTA de atualização não mora aqui
- * — vive no hero e na barra sticky de confirmar tudo.
+ * Frescor geral: % linear na janela de 12 meses + prazo até expirar + última
+ * revisão. Adapta o copy conforme o modo:
+ * - manutenção: "%", "Expira em X", "Revisão há Y"
+ * - primeira: "0% · sem resposta ainda" + nota "Primeira revisão dá origem à
+ *   sua linha de base"
+ * O CTA de atualização vive no hero — este cartão é resumo.
  */
 export function DashboardFrescor({
   frescor,
-  totalFormacoes,
-  globalPendentes,
+  modo,
 }: {
   frescor: Frescor
-  totalFormacoes: number
-  globalPendentes: number
+  modo: 'manutencao' | 'primeira'
 }) {
   const alerta = frescor.geral < 60
-  const labelFormacoes = `${totalFormacoes} ${totalFormacoes === 1 ? 'formação' : 'formações'}`
+  const primeira = modo === 'primeira'
 
   return (
     <Card className="flex flex-col p-5 shadow-sm">
@@ -31,13 +32,17 @@ export function DashboardFrescor({
             <span className="font-semibold text-2xl tabular-nums tracking-tight">
               {frescor.geral}%
             </span>
-            <span className="text-muted-foreground text-xs">média das formações</span>
+            <span className="text-muted-foreground text-xs">
+              {primeira ? '· sem resposta ainda' : 'média das formações'}
+            </span>
           </div>
         </div>
-        <Badge variant="warning" className="shrink-0 gap-1.5 self-start">
-          <span className="size-1.5 rounded-full bg-warning" />
-          Expira em {frescor.expiraEm}
-        </Badge>
+        {!primeira && (
+          <Badge variant="warning" className="shrink-0 gap-1.5 self-start">
+            <span className="size-1.5 rounded-full bg-warning" />
+            Expira em {frescor.expiraEm}
+          </Badge>
+        )}
       </div>
 
       <Progress value={frescor.geral} className="mt-auto pt-4">
@@ -46,12 +51,12 @@ export function DashboardFrescor({
         </ProgressTrack>
       </Progress>
 
-      <div className="mt-3 flex items-center justify-between gap-2 text-muted-foreground text-xs">
-        <span className="whitespace-nowrap">
-          <span className="font-medium text-foreground tabular-nums">{labelFormacoes}</span> ·{' '}
-          <span className="tabular-nums">{globalPendentes}</span> a revisar
-        </span>
-        <span className="whitespace-nowrap">Revisão há {frescor.ultimaRevisao}</span>
+      <div className="mt-3 text-muted-foreground text-xs">
+        {primeira ? (
+          <span>Primeira revisão dá origem à sua linha de base.</span>
+        ) : (
+          <span>Revisão há {frescor.ultimaRevisao}</span>
+        )}
       </div>
     </Card>
   )

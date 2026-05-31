@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import { ArrowLeftIcon, Building2, GraduationCap } from 'lucide-react'
 import { type ReactElement } from 'react'
 
@@ -9,13 +10,7 @@ import { Button } from '~/components/ui/button'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { type InertiaProps } from '~/types'
 
-type NivelAcademico =
-  | 'graduacao'
-  | 'especializacao'
-  | 'mba'
-  | 'mestrado'
-  | 'doutorado'
-  | 'posdoc'
+type NivelAcademico = 'graduacao' | 'especializacao' | 'mba' | 'mestrado' | 'doutorado' | 'posdoc'
 
 type Modalidade = 'academico' | 'profissional'
 
@@ -117,7 +112,7 @@ export default function AdminProgramaShow({ programa }: PageProps) {
           </header>
           {programa.totalCursos === 0 ? (
             <p className="rounded-md border border-dashed bg-muted/20 p-4 text-center text-muted-foreground text-sm">
-              Nenhum curso vinculado. Cadastre mestrado e/ou doutorado em "Cursos".
+              Nenhum curso vinculado. Cadastre mestrado e/ou doutorado em &ldquo;Cursos&rdquo;.
             </p>
           ) : (
             <div className="flex flex-col gap-1.5">

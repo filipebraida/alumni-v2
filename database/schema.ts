@@ -6,15 +6,14 @@
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
-import type { NivelAcademico, NivelPos } from '#enums/nivel_academico'
+import type { NivelAcademico } from '#enums/nivel_academico'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
 import type { NotificationStatus } from '#models/notification'
 import type { ModalidadePrograma } from '#enums/modalidade_programa'
 import type { FaixaSalarial } from '#enums/faixa_salarial'
-import type { StatusPos } from '#enums/status_pos'
 import type { RelacaoFormacao } from '#enums/relacao_formacao'
-import type { Setor } from '#enums/setor'
 import type { TempoPrimeiroEmprego } from '#enums/tempo_primeiro_emprego'
+import type { Setor } from '#enums/setor'
 import type { RoleUsuario } from '#enums/role_usuario'
 
 export class CursoSchema extends BaseModel {
@@ -136,7 +135,7 @@ export class LoginCodeSchema extends BaseModel {
 }
 
 export class MatriculaSchema extends BaseModel {
-  static $columns = ['codigo', 'createdAt', 'cursoId', 'dataColacao', 'egressoId', 'id', 'periodoFormatura', 'situacao', 'updatedAt'] as const
+  static $columns = ['codigo', 'createdAt', 'cursoId', 'dataColacao', 'dataIngresso', 'egressoId', 'id', 'periodoFormatura', 'situacao', 'updatedAt'] as const
   $columns = MatriculaSchema.$columns
   @column()
   declare codigo: string
@@ -146,6 +145,8 @@ export class MatriculaSchema extends BaseModel {
   declare cursoId: number
   @column.date()
   declare dataColacao: DateTime | null
+  @column.date()
+  declare dataIngresso: DateTime | null
   @column()
   declare egressoId: number
   @column({ isPrimary: true })
@@ -234,9 +235,32 @@ export class RateLimitSchema extends BaseModel {
   declare points: number
 }
 
-export class RespostaSchema extends BaseModel {
-  static $columns = ['ano', 'cargo', 'createdAt', 'egressoId', 'empregador', 'faixaSalarial', 'id', 'localizacaoCidade', 'localizacaoPais', 'localizacaoUf', 'posCurso', 'posGrau', 'posInstituicao', 'posStatus', 'registradaEm', 'relacaoFormacao', 'setor', 'tempoPrimeiroEmprego', 'updatedAt'] as const
-  $columns = RespostaSchema.$columns
+export class RespostasCursoSchema extends BaseModel {
+  static $columns = ['ano', 'createdAt', 'faixaSalarial', 'id', 'matriculaId', 'relacaoFormacao', 'respostaPessoaId', 'tempoPrimeiroEmprego', 'updatedAt'] as const
+  $columns = RespostasCursoSchema.$columns
+  @column()
+  declare ano: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare faixaSalarial: FaixaSalarial | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare matriculaId: number
+  @column()
+  declare relacaoFormacao: RelacaoFormacao | null
+  @column()
+  declare respostaPessoaId: number
+  @column()
+  declare tempoPrimeiroEmprego: TempoPrimeiroEmprego | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class RespostasPessoaSchema extends BaseModel {
+  static $columns = ['ano', 'cargo', 'createdAt', 'egressoId', 'empregador', 'id', 'localizacaoCidade', 'localizacaoPais', 'localizacaoUf', 'registradaEm', 'setor', 'updatedAt'] as const
+  $columns = RespostasPessoaSchema.$columns
   @column()
   declare ano: number
   @column()
@@ -247,8 +271,6 @@ export class RespostaSchema extends BaseModel {
   declare egressoId: number
   @column()
   declare empregador: string | null
-  @column()
-  declare faixaSalarial: FaixaSalarial | null
   @column({ isPrimary: true })
   declare id: number
   @column()
@@ -257,22 +279,10 @@ export class RespostaSchema extends BaseModel {
   declare localizacaoPais: string | null
   @column()
   declare localizacaoUf: string | null
-  @column()
-  declare posCurso: string | null
-  @column()
-  declare posGrau: NivelPos | null
-  @column()
-  declare posInstituicao: string | null
-  @column()
-  declare posStatus: StatusPos | null
   @column.dateTime()
   declare registradaEm: DateTime
   @column()
-  declare relacaoFormacao: RelacaoFormacao | null
-  @column()
   declare setor: Setor | null
-  @column()
-  declare tempoPrimeiroEmprego: TempoPrimeiroEmprego | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 }

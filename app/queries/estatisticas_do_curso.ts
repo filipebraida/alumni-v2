@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import Matricula from '#models/matricula'
-import Resposta from '#models/resposta'
+import RespostaPessoa from '#models/resposta_pessoa'
 
 export interface EstatisticasDoCursoInput {
   cursoId: number
@@ -14,7 +14,7 @@ export interface EstatisticasDoCursoResult {
 
 /**
  * Métricas de frescor de um curso: do roster de formados, quantos têm uma
- * Resposta dentro da janela de frescor (Resposta.JANELA_FRESCOR_MESES).
+ * Resposta dentro da janela de frescor (RespostaPessoa.JANELA_FRESCOR_MESES).
  * População-alvo = matrículas com `situacao = 'formado'`.
  */
 export default class EstatisticasDoCurso {
@@ -33,9 +33,9 @@ export default class EstatisticasDoCurso {
       // `registrada_em` é gravado como 'yyyy-MM-dd HH:mm:ss'; comparamos no mesmo
       // formato (string) — o query builder não serializa DateTime aqui.
       const cutoff = DateTime.now()
-        .minus({ months: Resposta.JANELA_FRESCOR_MESES })
+        .minus({ months: RespostaPessoa.JANELA_FRESCOR_MESES })
         .toFormat('yyyy-MM-dd HH:mm:ss')
-      const [agg] = await Resposta.query()
+      const [agg] = await RespostaPessoa.query()
         .whereIn('egressoId', egressoIds)
         .where('registradaEm', '>=', cutoff)
         .countDistinct('egresso_id as total')

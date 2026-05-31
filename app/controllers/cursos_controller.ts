@@ -139,9 +139,7 @@ export default class CursosController {
     if (resultado.status === 'tem_dependencias') {
       const partes: string[] = []
       if (resultado.matriculas > 0) {
-        partes.push(
-          `${resultado.matriculas} matrícula${resultado.matriculas === 1 ? '' : 's'}`
-        )
+        partes.push(`${resultado.matriculas} matrícula${resultado.matriculas === 1 ? '' : 's'}`)
       }
       if (resultado.coordenadores > 0) {
         partes.push(

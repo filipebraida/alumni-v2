@@ -1,8 +1,8 @@
-import { Check, FileText } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { type ReactNode } from 'react'
 import { Badge } from '~/components/ui/badge'
-import { Button } from '~/components/ui/button'
 import { MecCard } from '~/components/dashboard/mec_card'
+import { FormacaoCamposEmBreve } from '~/components/dashboard/formacao_campos_em_breve'
 import type { Formacao } from '~/components/dashboard/types'
 
 /**
@@ -24,14 +24,8 @@ export function DashboardFormacaoDetail({ formacao }: { formacao: Formacao }) {
           <Linha rotulo="Nível" valor={formacao.nivel} />
           <Linha rotulo="Período" valor={formacao.periodo} />
           <Linha rotulo="Campus" valor={formacao.campus} />
-          <Linha
-            rotulo="Turma"
-            valor={`${formacao.mapa.mapeados} de ${formacao.mapa.turmaTotal} mapeados`}
-          />
+          <Linha rotulo="Código" valor={formacao.codigo} />
         </dl>
-        <Button variant="ghost" size="sm" className="mt-4 -ml-2 h-7 px-2 text-xs">
-          <FileText /> Ver histórico
-        </Button>
       </aside>
 
       <div className="bg-card lg:col-span-9">
@@ -39,7 +33,7 @@ export function DashboardFormacaoDetail({ formacao }: { formacao: Formacao }) {
           <div className="font-medium text-muted-foreground text-xs uppercase tracking-widest">
             Dados de {formacao.curto}
           </div>
-          {pendentes > 0 ? (
+          {formacao.camposMec.length === 0 ? null : pendentes > 0 ? (
             <Badge variant="warning">{pendentes}&nbsp;a revisar</Badge>
           ) : (
             <Badge variant="secondary" className="gap-1">
@@ -47,11 +41,17 @@ export function DashboardFormacaoDetail({ formacao }: { formacao: Formacao }) {
             </Badge>
           )}
         </div>
-        <div className="grid grid-cols-1 gap-px border-t bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {formacao.camposMec.map((campo) => (
-            <MecCard key={campo.chave} campo={campo} />
-          ))}
-        </div>
+        {formacao.camposMec.length === 0 ? (
+          <div className="border-t">
+            <FormacaoCamposEmBreve />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-px border-t bg-border sm:grid-cols-2 lg:grid-cols-3">
+            {formacao.camposMec.map((campo) => (
+              <MecCard key={campo.chave} campo={campo} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

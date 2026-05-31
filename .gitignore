@@ -24,6 +24,8 @@ yarn-error.log
 # Platform specific
 .DS_Store
 .flow/docs/
+.flow/changes/
+.flow/states/
 .claude/skills/flow-*
 .opencode/skills/flow-*
 .opencode/commands/flow-*

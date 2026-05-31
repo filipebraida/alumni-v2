@@ -35,13 +35,17 @@ export default {
         },
       },
     },
-    respostas: {
+    respostas_pessoa: {
       columns: {
         setor: {
           tsType: 'Setor',
           decorators: [{ name: '@column' }],
           imports: [{ source: '#enums/setor', typeImports: ['Setor'] }],
         },
+      },
+    },
+    respostas_curso: {
+      columns: {
         faixa_salarial: {
           tsType: 'FaixaSalarial',
           decorators: [{ name: '@column' }],
@@ -58,16 +62,6 @@ export default {
           imports: [
             { source: '#enums/tempo_primeiro_emprego', typeImports: ['TempoPrimeiroEmprego'] },
           ],
-        },
-        pos_grau: {
-          tsType: 'NivelPos',
-          decorators: [{ name: '@column' }],
-          imports: [{ source: '#enums/nivel_academico', typeImports: ['NivelPos'] }],
-        },
-        pos_status: {
-          tsType: 'StatusPos',
-          decorators: [{ name: '@column' }],
-          imports: [{ source: '#enums/status_pos', typeImports: ['StatusPos'] }],
         },
       },
     },

@@ -527,12 +527,12 @@ export interface Registry {
     methods: ["PUT"]
     pattern: '/admin/programas/:id'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/admin').atualizarProgramaValidator)>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/admin').atualizarProgramaValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/programas_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.programas.destroy': {
@@ -587,12 +587,12 @@ export interface Registry {
     methods: ["PUT"]
     pattern: '/admin/cursos/:id'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/admin').atualizarCursoValidator)>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/admin').atualizarCursoValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cursos_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.cursos.destroy': {

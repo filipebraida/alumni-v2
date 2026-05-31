@@ -20,8 +20,8 @@ export function DashboardDadosGerais({ campos }: { campos: CampoMec[] }) {
             <User className="size-4 shrink-0 text-primary" /> Dados gerais
           </h2>
           <p className="mt-1 text-muted-foreground text-sm">
-            Valem para todas as suas formações. Edite o que mudou — a confirmação é feita de uma
-            vez só, embaixo.
+            Valem para todas as suas formações. Edite o que mudou — a confirmação é feita de uma vez
+            só, embaixo.
           </p>
         </div>
         {pendentes > 0 ? (

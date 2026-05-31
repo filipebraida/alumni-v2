@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import { ArrowLeftIcon, Building2, Layers, ShieldUser, Users } from 'lucide-react'
 import { type ReactElement } from 'react'
 
@@ -9,13 +10,7 @@ import { Button } from '~/components/ui/button'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { type InertiaProps } from '~/types'
 
-type NivelAcademico =
-  | 'graduacao'
-  | 'especializacao'
-  | 'mba'
-  | 'mestrado'
-  | 'doutorado'
-  | 'posdoc'
+type NivelAcademico = 'graduacao' | 'especializacao' | 'mba' | 'mestrado' | 'doutorado' | 'posdoc'
 
 type Modalidade = 'academico' | 'profissional'
 
@@ -162,9 +157,7 @@ export default function AdminCursoShow({ curso }: PageProps) {
                     <div className="truncate font-medium text-sm">{c.nomeCompleto}</div>
                     <div className="truncate text-muted-foreground text-xs">{c.email}</div>
                   </div>
-                  {c.cargo && (
-                    <span className="text-muted-foreground text-xs">{c.cargo}</span>
-                  )}
+                  {c.cargo && <span className="text-muted-foreground text-xs">{c.cargo}</span>}
                 </div>
               ))}
             </div>

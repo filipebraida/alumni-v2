@@ -92,7 +92,8 @@ export type Insight = InsightSalario | InsightSituacao
 export type StatusFormacao = 'concluido' | 'em_curso'
 
 export type Formacao = {
-  id: string
+  id: number
+  codigo: string
   nivel: string
   diploma: string
   curto: string
@@ -102,10 +103,8 @@ export type Formacao = {
   status: StatusFormacao
   frescor: number
   camposMec: CampoMec[]
-  mapa: MapaTurma
-  totalColegas: number
-  colegas: Colega[]
-  insight: Insight
+  // Agregados de turma (mapa, colegas, insight) ficam fora desta entrega;
+  // entram em changes próprias com piso de privacidade pra turmas pequenas.
 }
 
 export type DashboardData = {

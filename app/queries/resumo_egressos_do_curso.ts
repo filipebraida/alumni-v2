@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import Matricula from '#models/matricula'
-import Resposta from '#models/resposta'
+import RespostaPessoa from '#models/resposta_pessoa'
 
 export interface ResumoEgressosDoCursoInput {
   cursoId: number
@@ -23,7 +23,7 @@ export interface ResumoEgressosDoCursoResult {
  */
 export default class ResumoEgressosDoCurso {
   async handle({ cursoId }: ResumoEgressosDoCursoInput): Promise<ResumoEgressosDoCursoResult> {
-    const janelaFrescorMeses = Resposta.JANELA_FRESCOR_MESES
+    const janelaFrescorMeses = RespostaPessoa.JANELA_FRESCOR_MESES
 
     const matriculas = await Matricula.query()
       .where('cursoId', cursoId)
@@ -44,7 +44,7 @@ export default class ResumoEgressosDoCurso {
 
     const egressoIds = [...new Set(matriculas.map((matricula) => matricula.egressoId))]
     const ultimaPorEgresso = new Map<number, DateTime>()
-    const respostas = await Resposta.query()
+    const respostas = await RespostaPessoa.query()
       .whereIn('egressoId', egressoIds)
       .select('egressoId', 'registradaEm')
     for (const resposta of respostas) {

@@ -114,10 +114,7 @@ export function AlumniMark({
         d="M 48.5 48.5 C 47.8 59, 49.3 68, 49 80 L 51 80 C 50.7 68, 52.2 59, 51.5 48.5 Z"
         fill={`url(#${uid}-stem)`}
       />
-      <path
-        d="M 50 63 C 37 60, 26 66, 21 79 C 34 77, 45 72, 50 63 Z"
-        fill={`url(#${uid}-leaf)`}
-      />
+      <path d="M 50 63 C 37 60, 26 66, 21 79 C 34 77, 45 72, 50 63 Z" fill={`url(#${uid}-leaf)`} />
       <path
         d="M 47.5 65 C 38 68, 30 72, 24.5 78"
         fill="none"
@@ -126,10 +123,7 @@ export function AlumniMark({
         strokeLinecap="round"
         opacity={0.5}
       />
-      <path
-        d="M 50 63 C 63 60, 74 66, 79 79 C 66 77, 55 72, 50 63 Z"
-        fill={`url(#${uid}-leaf)`}
-      />
+      <path d="M 50 63 C 63 60, 74 66, 79 79 C 66 77, 55 72, 50 63 Z" fill={`url(#${uid}-leaf)`} />
       <path
         d="M 52.5 65 C 62 68, 70 72, 75.5 78"
         fill="none"

@@ -25,7 +25,13 @@ import {
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/ui/data_table'
-import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyMedia,
+  EmptyTitle,
+} from '~/components/ui/empty'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '~/components/ui/menu'
 import {
@@ -80,96 +86,92 @@ type PageProps = InertiaProps<{
 
 function montarColunas(institutos: InstitutoOption[]): ColumnDef<ProgramaRow>[] {
   return [
-  {
-    id: 'codigo',
-    header: 'Código',
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    cell: ({ row }) => (
-      <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
-    ),
-  },
-  {
-    id: 'nome',
-    header: 'Nome',
-    meta: { cellClass: 'max-w-0 w-full' },
-    cell: ({ row }) => {
-      const programa = row.original
-      return (
-        <div className="min-w-0">
-          <div className="truncate font-medium text-foreground" title={programa.nome}>
-            {programa.nome}
-          </div>
-          {programa.sigla && (
-            <div className="truncate text-muted-foreground text-xs">{programa.sigla}</div>
-          )}
-          {/* xs: absorve código + modalidade + instituto + cursos + status */}
-          <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
-            <span className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
-              {programa.codigo}
-            </span>
-            {programa.modalidade && (
-              <span className="text-muted-foreground text-xs">
-                {MODALIDADE_LABELS[programa.modalidade]}
-              </span>
-            )}
-            <span className="text-muted-foreground text-xs">
-              · {programa.institutoCodigo}
-            </span>
-            <span className="text-muted-foreground text-xs tabular-nums">
-              {programa.totalCursos} curso{programa.totalCursos === 1 ? '' : 's'}
-            </span>
-            <Badge variant={programa.ativo ? 'success' : 'outline'}>
-              {programa.ativo ? 'Ativo' : 'Inativo'}
-            </Badge>
-          </div>
-        </div>
-      )
+    {
+      id: 'codigo',
+      header: 'Código',
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      cell: ({ row }) => (
+        <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
+      ),
     },
-  },
-  {
-    id: 'modalidade',
-    header: 'Modalidade',
-    meta: { responsiveClass: 'hidden md:table-cell' },
-    cell: ({ row }) => (
-      <span className="text-muted-foreground text-sm">
-        {row.original.modalidade ? MODALIDADE_LABELS[row.original.modalidade] : '—'}
-      </span>
-    ),
-  },
-  {
-    id: 'instituto',
-    header: 'Instituto',
-    meta: { responsiveClass: 'hidden lg:table-cell' },
-    cell: ({ row }) => (
-      <span className="text-sm">
-        {row.original.institutoNome}{' '}
-        <span className="text-muted-foreground text-xs">· {row.original.institutoCodigo}</span>
-      </span>
-    ),
-  },
-  {
-    id: 'totalCursos',
-    meta: { responsiveClass: 'hidden md:table-cell' },
-    header: () => <span className="block text-end">Cursos</span>,
-    cell: ({ row }) => (
-      <div className="text-end tabular-nums">{row.original.totalCursos}</div>
-    ),
-  },
-  {
-    id: 'ativo',
-    header: 'Status',
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    cell: ({ row }) => (
-      <Badge variant={row.original.ativo ? 'success' : 'outline'}>
-        {row.original.ativo ? 'Ativo' : 'Inativo'}
-      </Badge>
-    ),
-  },
-  {
-    id: 'acoes',
-    header: '',
-    cell: ({ row }) => <AcoesProgramaRow programa={row.original} institutos={institutos} />,
-  },
+    {
+      id: 'nome',
+      header: 'Nome',
+      meta: { cellClass: 'max-w-0 w-full' },
+      cell: ({ row }) => {
+        const programa = row.original
+        return (
+          <div className="min-w-0">
+            <div className="truncate font-medium text-foreground" title={programa.nome}>
+              {programa.nome}
+            </div>
+            {programa.sigla && (
+              <div className="truncate text-muted-foreground text-xs">{programa.sigla}</div>
+            )}
+            {/* xs: absorve código + modalidade + instituto + cursos + status */}
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+              <span className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+                {programa.codigo}
+              </span>
+              {programa.modalidade && (
+                <span className="text-muted-foreground text-xs">
+                  {MODALIDADE_LABELS[programa.modalidade]}
+                </span>
+              )}
+              <span className="text-muted-foreground text-xs">· {programa.institutoCodigo}</span>
+              <span className="text-muted-foreground text-xs tabular-nums">
+                {programa.totalCursos} curso{programa.totalCursos === 1 ? '' : 's'}
+              </span>
+              <Badge variant={programa.ativo ? 'success' : 'outline'}>
+                {programa.ativo ? 'Ativo' : 'Inativo'}
+              </Badge>
+            </div>
+          </div>
+        )
+      },
+    },
+    {
+      id: 'modalidade',
+      header: 'Modalidade',
+      meta: { responsiveClass: 'hidden md:table-cell' },
+      cell: ({ row }) => (
+        <span className="text-muted-foreground text-sm">
+          {row.original.modalidade ? MODALIDADE_LABELS[row.original.modalidade] : '—'}
+        </span>
+      ),
+    },
+    {
+      id: 'instituto',
+      header: 'Instituto',
+      meta: { responsiveClass: 'hidden lg:table-cell' },
+      cell: ({ row }) => (
+        <span className="text-sm">
+          {row.original.institutoNome}{' '}
+          <span className="text-muted-foreground text-xs">· {row.original.institutoCodigo}</span>
+        </span>
+      ),
+    },
+    {
+      id: 'totalCursos',
+      meta: { responsiveClass: 'hidden md:table-cell' },
+      header: () => <span className="block text-end">Cursos</span>,
+      cell: ({ row }) => <div className="text-end tabular-nums">{row.original.totalCursos}</div>,
+    },
+    {
+      id: 'ativo',
+      header: 'Status',
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      cell: ({ row }) => (
+        <Badge variant={row.original.ativo ? 'success' : 'outline'}>
+          {row.original.ativo ? 'Ativo' : 'Inativo'}
+        </Badge>
+      ),
+    },
+    {
+      id: 'acoes',
+      header: '',
+      cell: ({ row }) => <AcoesProgramaRow programa={row.original} institutos={institutos} />,
+    },
   ]
 }
 
@@ -255,8 +257,8 @@ function AcoesProgramaRow({
           <AlertDialogHeader>
             <AlertDialogTitle>Remover {programa.nome}?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação não pode ser desfeita. Se o programa tiver cursos vinculados, a remoção
-              será bloqueada — remova-os antes.
+              Esta ação não pode ser desfeita. Se o programa tiver cursos vinculados, a remoção será
+              bloqueada — remova-os antes.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -276,8 +278,7 @@ function AcoesProgramaRow({
 export default function AdminProgramas({ programas, institutos, filtros }: PageProps) {
   const semInstitutos = institutos.length === 0
   const algumFiltro = !!(filtros.q || filtros.institutoId)
-  const semDados =
-    programas.data.length === 0 && !algumFiltro && programas.metadata.total === 0
+  const semDados = programas.data.length === 0 && !algumFiltro && programas.metadata.total === 0
   const colunas = useMemo(() => montarColunas(institutos), [institutos])
 
   const subtitulo = semInstitutos
@@ -427,16 +428,13 @@ function FiltrosBar({
         />
       </InputGroup>
 
-      <Select
-        value={institutoValor}
-        onValueChange={(v) => aplicar(busca, v ?? TODOS)}
-      >
+      <Select value={institutoValor} onValueChange={(v) => aplicar(busca, v ?? TODOS)}>
         <SelectTrigger className="w-full sm:w-48">
           <SelectValue>
             {(v) =>
               !v || v === TODOS
                 ? 'Todos os institutos'
-                : institutos.find((i) => i.id.toString() === v)?.nome ?? '—'
+                : (institutos.find((i) => i.id.toString() === v)?.nome ?? '—')
             }
           </SelectValue>
         </SelectTrigger>
@@ -467,7 +465,9 @@ function EstadoVazio() {
       </EmptyMedia>
       <EmptyContent>
         <EmptyTitle>Nenhum programa cadastrado.</EmptyTitle>
-        <EmptyDescription>Use "Novo programa" para começar a montar o catálogo.</EmptyDescription>
+        <EmptyDescription>
+          Use &ldquo;Novo programa&rdquo; para começar a montar o catálogo.
+        </EmptyDescription>
       </EmptyContent>
     </Empty>
   )

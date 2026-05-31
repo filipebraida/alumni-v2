@@ -90,12 +90,10 @@ export function ProgramaDialog(props: Props) {
 function ProgramaForm(props: Props & { onSuccess: () => void }) {
   const criando = props.modo === 'criar'
   const [modalidade, setModalidade] = useState<string>(
-    criando ? SEM_MODALIDADE : props.programa.modalidade ?? SEM_MODALIDADE
+    criando ? SEM_MODALIDADE : (props.programa.modalidade ?? SEM_MODALIDADE)
   )
   const [institutoId, setInstitutoId] = useState<string>(
-    criando
-      ? props.institutos[0]?.id?.toString() ?? ''
-      : props.programa.institutoId.toString()
+    criando ? (props.institutos[0]?.id?.toString() ?? '') : props.programa.institutoId.toString()
   )
   const [ativo, setAtivo] = useState(criando ? true : props.programa.ativo)
 
@@ -149,20 +147,23 @@ function ProgramaForm(props: Props & { onSuccess: () => void }) {
                   autoComplete="off"
                   placeholder="Ex.: PPGIHD"
                   maxLength={32}
-                  defaultValue={criando ? '' : props.programa.sigla ?? ''}
+                  defaultValue={criando ? '' : (props.programa.sigla ?? '')}
                 />
                 <FieldError />
               </Field>
 
               <Field name="modalidade">
                 <FieldLabel>Modalidade</FieldLabel>
-                <Select value={modalidade} onValueChange={(v) => setModalidade(v ?? SEM_MODALIDADE)}>
+                <Select
+                  value={modalidade}
+                  onValueChange={(v) => setModalidade(v ?? SEM_MODALIDADE)}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue>
                       {(value) =>
                         !value || value === SEM_MODALIDADE
                           ? 'Não se aplica'
-                          : MODALIDADES.find((m) => m.value === value)?.label ?? ''
+                          : (MODALIDADES.find((m) => m.value === value)?.label ?? '')
                       }
                     </SelectValue>
                   </SelectTrigger>
@@ -175,9 +176,7 @@ function ProgramaForm(props: Props & { onSuccess: () => void }) {
                     ))}
                   </SelectContent>
                 </Select>
-                {enviarModalidade && (
-                  <input type="hidden" name="modalidade" value={modalidade} />
-                )}
+                {enviarModalidade && <input type="hidden" name="modalidade" value={modalidade} />}
                 <FieldError />
               </Field>
             </div>
@@ -191,18 +190,14 @@ function ProgramaForm(props: Props & { onSuccess: () => void }) {
               >
                 <SelectTrigger className="w-full">
                   <SelectValue>
-                    {(value) =>
-                      props.institutos.find((i) => i.id.toString() === value)?.nome ?? ''
-                    }
+                    {(value) => props.institutos.find((i) => i.id.toString() === value)?.nome ?? ''}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {props.institutos.map((instituto) => (
                     <SelectItem key={instituto.id} value={instituto.id.toString()}>
                       {instituto.nome}{' '}
-                      <span className="text-muted-foreground text-xs">
-                        · {instituto.codigo}
-                      </span>
+                      <span className="text-muted-foreground text-xs">· {instituto.codigo}</span>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -253,12 +248,7 @@ export function NovoProgramaButton({ institutos }: { institutos: InstitutoOption
       <Button disabled={semInstitutos} onClick={() => setAberto(true)}>
         <PlusIcon /> Novo programa
       </Button>
-      <ProgramaDialog
-        modo="criar"
-        institutos={institutos}
-        open={aberto}
-        onOpenChange={setAberto}
-      />
+      <ProgramaDialog modo="criar" institutos={institutos} open={aberto} onOpenChange={setAberto} />
     </>
   )
 }

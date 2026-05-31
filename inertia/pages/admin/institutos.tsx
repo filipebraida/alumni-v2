@@ -25,7 +25,13 @@ import {
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/ui/data_table'
-import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyMedia,
+  EmptyTitle,
+} from '~/components/ui/empty'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '~/components/ui/menu'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
@@ -92,9 +98,7 @@ const COLUNAS: ColumnDef<InstitutoRow>[] = [
     id: 'totalCursos',
     meta: { responsiveClass: 'hidden md:table-cell' },
     header: () => <span className="block text-end">Cursos</span>,
-    cell: ({ row }) => (
-      <div className="text-end tabular-nums">{row.original.totalCursos}</div>
-    ),
+    cell: ({ row }) => <div className="text-end tabular-nums">{row.original.totalCursos}</div>,
   },
   {
     id: 'ativo',
@@ -133,7 +137,11 @@ export default function AdminInstitutos({ institutos, filtros }: PageProps) {
         ) : (
           <>
             <FiltrosBar filtros={filtros} perPage={institutos.metadata.perPage} />
-            <InstitutosDataTable institutos={institutos} filtros={filtros} algumFiltro={algumFiltro} />
+            <InstitutosDataTable
+              institutos={institutos}
+              filtros={filtros}
+              algumFiltro={algumFiltro}
+            />
           </>
         )}
       </GestaoPage>
@@ -331,7 +339,9 @@ function EstadoVazio() {
       </EmptyMedia>
       <EmptyContent>
         <EmptyTitle>Nenhum instituto cadastrado.</EmptyTitle>
-        <EmptyDescription>Use "Novo instituto" para começar a montar o catálogo.</EmptyDescription>
+        <EmptyDescription>
+          Use &ldquo;Novo instituto&rdquo; para começar a montar o catálogo.
+        </EmptyDescription>
       </EmptyContent>
     </Empty>
   )

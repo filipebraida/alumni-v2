@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import Matricula from '#models/matricula'
-import Resposta from '#models/resposta'
+import RespostaPessoa from '#models/resposta_pessoa'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
 
 export type OrdenarEgressosPor = 'egresso' | 'turma' | 'situacao' | 'status'
@@ -110,7 +110,7 @@ export default class ListarEgressosDoCurso {
       // leftJoin com subquery (o Lucid/Knex 3 trata o objeto Raw como literal
       // de alias e gera SQL inválido).
       const ultimaPorEgressoExpr =
-        '(SELECT MAX(registrada_em) FROM respostas WHERE respostas.egresso_id = matriculas.egresso_id)'
+        '(SELECT MAX(registrada_em) FROM respostas_pessoa WHERE respostas_pessoa.egresso_id = matriculas.egresso_id)'
       query
         .orderByRaw(`${ultimaPorEgressoExpr} IS ${nullsFirst ? 'NOT NULL' : 'NULL'}`)
         .orderByRaw(`${ultimaPorEgressoExpr} ${dir === 'desc' ? 'DESC' : 'ASC'}`)
@@ -131,7 +131,7 @@ export default class ListarEgressosDoCurso {
       { registradaEm: DateTime; cargo: string | null; empregador: string | null }
     >()
     if (egressoIds.length > 0) {
-      const respostas = await Resposta.query()
+      const respostas = await RespostaPessoa.query()
         .whereIn('egressoId', egressoIds)
         .select('egressoId', 'registradaEm', 'cargo', 'empregador')
       for (const resposta of respostas) {
@@ -146,7 +146,7 @@ export default class ListarEgressosDoCurso {
       }
     }
 
-    const cutoff = DateTime.now().minus({ months: Resposta.JANELA_FRESCOR_MESES })
+    const cutoff = DateTime.now().minus({ months: RespostaPessoa.JANELA_FRESCOR_MESES })
 
     const data: EgressoDoCursoRow[] = matriculas.map((matricula) => {
       const egresso = matricula.egresso

@@ -4,7 +4,7 @@ import ListarTurmasDoCurso from '#queries/listar_turmas_do_curso'
 import ResumoEgressosDoCurso from '#queries/resumo_egressos_do_curso'
 import BuscarEgressoPorCpf from '#queries/buscar_egresso_por_cpf'
 import BuscarEgressoDoCurso from '#queries/buscar_egresso_do_curso'
-import RespostaTransformer from '#transformers/resposta_transformer'
+import RespostaPessoaTransformer from '#transformers/resposta_pessoa_transformer'
 import CadastrarEgressoNoCurso from '#actions/cadastrar_egresso_no_curso'
 import EnviarPedidoDeAtualizacao from '#actions/enviar_pedido_de_atualizacao'
 import VincularEgressoAoCurso from '#actions/vincular_egresso_ao_curso'
@@ -102,7 +102,7 @@ export default class EgressosController {
           instituto: matricula.curso.instituto.nome,
         },
       },
-      respostaAtual: respostaAtual ? RespostaTransformer.transform(respostaAtual) : null,
+      respostaAtual: respostaAtual ? RespostaPessoaTransformer.transform(respostaAtual) : null,
       statusFrescor,
     })
   }

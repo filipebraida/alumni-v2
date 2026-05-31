@@ -13,8 +13,7 @@ import {
 
 export default class ProgramasController {
   async index({ inertia, request }: HttpContext) {
-    const { q, institutoId, page, perPage } =
-      await request.validateUsing(listarProgramasValidator)
+    const { q, institutoId, page, perPage } = await request.validateUsing(listarProgramasValidator)
     const [programas, institutos] = await Promise.all([
       new ListarProgramas().handle({
         q,

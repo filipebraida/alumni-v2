@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import Egresso from '#models/egresso'
-import Resposta from '#models/resposta'
+import RespostaPessoa from '#models/resposta_pessoa'
 import type Matricula from '#models/matricula'
 
 export type StatusFrescor = 'em_dia' | 'desatualizado' | 'sem_registro'
@@ -13,7 +13,7 @@ export interface BuscarEgressoDoCursoInput {
 export interface EgressoDoCursoDetalhe {
   egresso: Egresso
   matricula: Matricula
-  respostaAtual: Resposta | null
+  respostaAtual: RespostaPessoa | null
   statusFrescor: StatusFrescor
 }
 
@@ -30,18 +30,16 @@ export default class BuscarEgressoDoCurso {
       .where('id', egressoId)
       .preload('user')
       .preload('matriculas', (matriculas) =>
-        matriculas
-          .where('cursoId', cursoId)
-          .preload('curso', (curso) => curso.preload('instituto'))
+        matriculas.where('cursoId', cursoId).preload('curso', (curso) => curso.preload('instituto'))
       )
-      .preload('respostas', (respostas) => respostas.orderBy('registradaEm', 'desc').limit(1))
+      .preload('respostasPessoa', (respostas) => respostas.orderBy('registradaEm', 'desc').limit(1))
       .first()
 
     const matricula = egresso?.matriculas[0]
     if (!egresso || !matricula) return null
 
-    const respostaAtual = egresso.respostas[0] ?? null
-    const cutoff = DateTime.now().minus({ months: Resposta.JANELA_FRESCOR_MESES })
+    const respostaAtual = egresso.respostasPessoa[0] ?? null
+    const cutoff = DateTime.now().minus({ months: RespostaPessoa.JANELA_FRESCOR_MESES })
     const statusFrescor: StatusFrescor = !respostaAtual
       ? 'sem_registro'
       : respostaAtual.registradaEm >= cutoff

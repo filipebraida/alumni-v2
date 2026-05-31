@@ -6,19 +6,29 @@
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
+import type EgressoTransformer from '#transformers/egresso_transformer'
+import type MatriculaTransformer from '#transformers/matricula_transformer'
 import type NotificationTransformer from '#transformers/notification_transformer'
-import type RespostaTransformer from '#transformers/resposta_transformer'
+import type RespostaPessoaTransformer from '#transformers/resposta_pessoa_transformer'
 import type UserTransformer from '#transformers/user_transformer'
 import type InertiaMiddleware from '#middleware/inertia_middleware'
 
 export namespace Data {
+  export type Egresso = InferData<EgressoTransformer>
+  export namespace Egresso {
+    export type Variants = InferVariants<EgressoTransformer>
+  }
+  export type Matricula = InferData<MatriculaTransformer>
+  export namespace Matricula {
+    export type Variants = InferVariants<MatriculaTransformer>
+  }
   export type Notification = InferData<NotificationTransformer>
   export namespace Notification {
     export type Variants = InferVariants<NotificationTransformer>
   }
-  export type Resposta = InferData<RespostaTransformer>
-  export namespace Resposta {
-    export type Variants = InferVariants<RespostaTransformer>
+  export type RespostaPessoa = InferData<RespostaPessoaTransformer>
+  export namespace RespostaPessoa {
+    export type Variants = InferVariants<RespostaPessoaTransformer>
   }
   export type User = InferData<UserTransformer>
   export namespace User {

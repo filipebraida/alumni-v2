@@ -37,7 +37,6 @@
       </mj-text>
     </mj-column>
   </mj-section>
-
   {{-- Carta --}}
   <mj-section background-color="#ffffff" padding="32px 40px 4px">
     <mj-column>
@@ -45,8 +44,7 @@
         Use o
         <strong>código abaixo</strong>
         pra entrar no Portal de Egressos. Ele é válido por
-        <strong>{{ ttlMinutes }}
-          minutos</strong>
+        <strong>{{ ttlMinutes }} minutos</strong>
         e só funciona uma vez.
       </mj-text>
       <mj-text font-size="15px" color="#656E68" line-height="1.62" padding="0">
@@ -54,22 +52,38 @@
       </mj-text>
     </mj-column>
   </mj-section>
-
   {{-- Card do código --}}
   <mj-section background-color="#ffffff" padding="22px 40px 4px">
     <mj-column>
       <mj-raw>
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #DDE3DE;border-radius:14px;border-collapse:separate;overflow:hidden;font-family:Inter,system-ui,-apple-system,sans-serif;background:#ffffff;">
+        <table
+          role="presentation"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          width="100%"
+          style="border:1px solid #DDE3DE;border-radius:14px;border-collapse:separate;overflow:hidden;font-family:Inter,system-ui,-apple-system,sans-serif;background:#ffffff;"
+        >
           <tr>
             <td style="padding:14px 18px;background:#F3F5F4;border-bottom:1px solid #DDE3DE;">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                   <td width="30" style="vertical-align:middle;">
-                    <div style="width:30px;height:30px;border-radius:8px;background:#E6EDE7;color:#1F4E27;font-size:14px;line-height:30px;text-align:center;font-weight:600;">&#128273;</div>
+                    <div
+                      style="width:30px;height:30px;border-radius:8px;background:#E6EDE7;color:#1F4E27;font-size:14px;line-height:30px;text-align:center;font-weight:600;"
+                    >
+                      &#128273;
+                    </div>
                   </td>
-                  <td style="padding-left:10px;vertical-align:middle;font-size:13.5px;font-weight:600;color:#19211B;">Código de uso único</td>
+                  <td
+                    style="padding-left:10px;vertical-align:middle;font-size:13.5px;font-weight:600;color:#19211B;"
+                  >
+                    Código de uso único
+                  </td>
                   <td align="right" style="font-size:11.5px;color:#656E68;white-space:nowrap;">
-                    <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F5C826;margin-right:6px;vertical-align:middle;"></span>
+                    <span
+                      style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F5C826;margin-right:6px;vertical-align:middle;"
+                    ></span>
                     <span style="vertical-align:middle;">expira em {{ ttlMinutes }} min</span>
                   </td>
                 </tr>
@@ -78,14 +92,20 @@
           </tr>
           <tr>
             <td align="center" style="padding:28px 18px 30px;background:#ffffff;">
-              <div style="font-family:'Courier New',Courier,monospace;font-size:38px;font-weight:700;color:#19211B;letter-spacing:14px;line-height:1;">
+              <div
+                style="font-family:'Courier New',Courier,monospace;font-size:38px;font-weight:700;color:#19211B;letter-spacing:14px;line-height:1;"
+              >
                 {{ code }}
               </div>
             </td>
           </tr>
           <tr>
-            <td style="padding:13px 18px;border-top:1px solid #DDE3DE;background:#F8FAF8;font-size:11.5px;line-height:1.5;color:#656E68;">
-              <span style="color:#1F4E27;font-size:13px;vertical-align:-1px;margin-right:6px;">&#128274;</span>
+            <td
+              style="padding:13px 18px;border-top:1px solid #DDE3DE;background:#F8FAF8;font-size:11.5px;line-height:1.5;color:#656E68;"
+            >
+              <span style="color:#1F4E27;font-size:13px;vertical-align:-1px;margin-right:6px;">
+                &#128274;
+              </span>
               Não compartilhe esse código. A equipe do SAE nunca vai te pedir o código por telefone ou e-mail.
             </td>
           </tr>
@@ -93,15 +113,25 @@
       </mj-raw>
     </mj-column>
   </mj-section>
-
   {{-- Strip de reassurance --}}
   <mj-section background-color="#ffffff" padding="22px 40px 4px">
     <mj-column>
       <mj-raw>
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #DDE3DE;border-radius:12px;background:#F8FAF8;font-family:Inter,system-ui,-apple-system,sans-serif;">
+        <table
+          role="presentation"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          width="100%"
+          style="border:1px solid #DDE3DE;border-radius:12px;background:#F8FAF8;font-family:Inter,system-ui,-apple-system,sans-serif;"
+        >
           <tr>
             <td width="54" valign="top" style="padding:18px 0 18px 20px;">
-              <div style="width:34px;height:34px;border-radius:50%;background:#FDF2C9;color:#6B5A12;font-size:16px;line-height:34px;text-align:center;font-weight:600;">?</div>
+              <div
+                style="width:34px;height:34px;border-radius:50%;background:#FDF2C9;color:#6B5A12;font-size:16px;line-height:34px;text-align:center;font-weight:600;"
+              >
+                ?
+              </div>
             </td>
             <td style="padding:18px 20px 18px 13px;font-size:13px;color:#656E68;line-height:1.55;">
               <strong style="color:#19211B;font-weight:600;">Não pediu esse código?</strong>
@@ -112,7 +142,6 @@
       </mj-raw>
     </mj-column>
   </mj-section>
-
   {{-- Sign-off --}}
   <mj-section background-color="#ffffff" padding="30px 40px 28px">
     <mj-column>
@@ -124,13 +153,25 @@
       </mj-text>
       <mj-divider border-color="#DDE3DE" border-width="1px" padding="0 0 18px 0" />
       <mj-raw>
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Inter,system-ui,-apple-system,sans-serif;">
+        <table
+          role="presentation"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="font-family:Inter,system-ui,-apple-system,sans-serif;"
+        >
           <tr>
             <td width="54" valign="middle">
-              <div style="width:42px;height:42px;border-radius:50%;background:#E6EDE7;color:#1F4E27;font-size:12px;line-height:42px;text-align:center;font-weight:700;letter-spacing:0.04em;">SAE</div>
+              <div
+                style="width:42px;height:42px;border-radius:50%;background:#E6EDE7;color:#1F4E27;font-size:12px;line-height:42px;text-align:center;font-weight:700;letter-spacing:0.04em;"
+              >
+                SAE
+              </div>
             </td>
             <td valign="middle" style="padding-left:13px;">
-              <div style="font-size:14px;font-weight:600;color:#19211B;">Serviço de Acompanhamento de Egressos</div>
+              <div style="font-size:14px;font-weight:600;color:#19211B;">
+                Serviço de Acompanhamento de Egressos
+              </div>
               <div style="font-size:12.5px;color:#656E68;margin-top:1px;">PROGRAD · UFRRJ</div>
             </td>
           </tr>

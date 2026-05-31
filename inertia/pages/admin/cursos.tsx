@@ -25,7 +25,13 @@ import {
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/ui/data_table'
-import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyMedia,
+  EmptyTitle,
+} from '~/components/ui/empty'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '~/components/ui/menu'
 import {
@@ -46,13 +52,7 @@ import {
 import { useDataTable, type PaginatorMeta } from '~/hooks/use_data_table'
 import { type InertiaProps } from '~/types'
 
-type NivelAcademico =
-  | 'graduacao'
-  | 'especializacao'
-  | 'mba'
-  | 'mestrado'
-  | 'doutorado'
-  | 'posdoc'
+type NivelAcademico = 'graduacao' | 'especializacao' | 'mba' | 'mestrado' | 'doutorado' | 'posdoc'
 
 const NIVEL_LABELS: Record<NivelAcademico, string> = {
   graduacao: 'Graduação',
@@ -93,76 +93,76 @@ function montarColunas(
   programas: ProgramaOption[]
 ): ColumnDef<CursoRow>[] {
   return [
-  {
-    id: 'codigo',
-    header: 'Código',
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    cell: ({ row }) => (
-      <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
-    ),
-  },
-  {
-    id: 'nome',
-    header: 'Nome',
-    meta: { cellClass: 'max-w-0 w-full' },
-    cell: ({ row }) => {
-      const curso = row.original
-      return (
-        <div className="min-w-0">
-          <div className="truncate font-medium text-foreground" title={curso.nome}>
-            {curso.nome}
-          </div>
-          {/* xs: absorve código + nível + instituto + status */}
-          <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
-            <span className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
-              {curso.codigo}
-            </span>
-            <span className="text-muted-foreground text-xs">{NIVEL_LABELS[curso.nivel]}</span>
-            <span className="text-muted-foreground text-xs">· {curso.instituto.codigo}</span>
-            <Badge variant={curso.ativo ? 'success' : 'outline'}>
-              {curso.ativo ? 'Ativo' : 'Inativo'}
-            </Badge>
-          </div>
-        </div>
-      )
+    {
+      id: 'codigo',
+      header: 'Código',
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      cell: ({ row }) => (
+        <span className="font-mono text-xs uppercase tracking-wide">{row.original.codigo}</span>
+      ),
     },
-  },
-  {
-    id: 'nivel',
-    header: 'Nível',
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    cell: ({ row }) => (
-      <span className="text-muted-foreground text-sm">{NIVEL_LABELS[row.original.nivel]}</span>
-    ),
-  },
-  {
-    id: 'instituto',
-    header: 'Instituto',
-    meta: { responsiveClass: 'hidden md:table-cell' },
-    cell: ({ row }) => (
-      <span className="text-sm">
-        {row.original.instituto.nome}{' '}
-        <span className="text-muted-foreground text-xs">· {row.original.instituto.codigo}</span>
-      </span>
-    ),
-  },
-  {
-    id: 'ativo',
-    header: 'Status',
-    meta: { responsiveClass: 'hidden sm:table-cell' },
-    cell: ({ row }) => (
-      <Badge variant={row.original.ativo ? 'success' : 'outline'}>
-        {row.original.ativo ? 'Ativo' : 'Inativo'}
-      </Badge>
-    ),
-  },
-  {
-    id: 'acoes',
-    header: '',
-    cell: ({ row }) => (
-      <AcoesCursoRow curso={row.original} institutos={institutos} programas={programas} />
-    ),
-  },
+    {
+      id: 'nome',
+      header: 'Nome',
+      meta: { cellClass: 'max-w-0 w-full' },
+      cell: ({ row }) => {
+        const curso = row.original
+        return (
+          <div className="min-w-0">
+            <div className="truncate font-medium text-foreground" title={curso.nome}>
+              {curso.nome}
+            </div>
+            {/* xs: absorve código + nível + instituto + status */}
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 sm:hidden">
+              <span className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+                {curso.codigo}
+              </span>
+              <span className="text-muted-foreground text-xs">{NIVEL_LABELS[curso.nivel]}</span>
+              <span className="text-muted-foreground text-xs">· {curso.instituto.codigo}</span>
+              <Badge variant={curso.ativo ? 'success' : 'outline'}>
+                {curso.ativo ? 'Ativo' : 'Inativo'}
+              </Badge>
+            </div>
+          </div>
+        )
+      },
+    },
+    {
+      id: 'nivel',
+      header: 'Nível',
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      cell: ({ row }) => (
+        <span className="text-muted-foreground text-sm">{NIVEL_LABELS[row.original.nivel]}</span>
+      ),
+    },
+    {
+      id: 'instituto',
+      header: 'Instituto',
+      meta: { responsiveClass: 'hidden md:table-cell' },
+      cell: ({ row }) => (
+        <span className="text-sm">
+          {row.original.instituto.nome}{' '}
+          <span className="text-muted-foreground text-xs">· {row.original.instituto.codigo}</span>
+        </span>
+      ),
+    },
+    {
+      id: 'ativo',
+      header: 'Status',
+      meta: { responsiveClass: 'hidden sm:table-cell' },
+      cell: ({ row }) => (
+        <Badge variant={row.original.ativo ? 'success' : 'outline'}>
+          {row.original.ativo ? 'Ativo' : 'Inativo'}
+        </Badge>
+      ),
+    },
+    {
+      id: 'acoes',
+      header: '',
+      cell: ({ row }) => (
+        <AcoesCursoRow curso={row.original} institutos={institutos} programas={programas} />
+      ),
+    },
   ]
 }
 
@@ -188,7 +188,15 @@ function AcoesCursoRow({
       programaId: curso.programaId ?? null,
       ativo: curso.ativo,
     }),
-    [curso.id, curso.codigo, curso.nome, curso.nivel, curso.instituto.id, curso.programaId, curso.ativo]
+    [
+      curso.id,
+      curso.codigo,
+      curso.nome,
+      curso.nivel,
+      curso.instituto.id,
+      curso.programaId,
+      curso.ativo,
+    ]
   )
 
   function remover() {
@@ -206,9 +214,7 @@ function AcoesCursoRow({
     <div className="text-right">
       <Menu>
         <MenuTrigger
-          render={
-            <Button variant="ghost" size="icon-sm" aria-label={`Ações de ${curso.nome}`} />
-          }
+          render={<Button variant="ghost" size="icon-sm" aria-label={`Ações de ${curso.nome}`} />}
         >
           <MoreHorizontalIcon />
         </MenuTrigger>
@@ -344,9 +350,7 @@ function CursosDataTable({
       data={cursos.data}
       remoteTableOptions={remoteTableOptions}
       paginationVariant="numbered"
-      emptyMessage={
-        algumFiltro ? 'Nenhum curso bate com os filtros.' : 'Nenhum curso cadastrado.'
-      }
+      emptyMessage={algumFiltro ? 'Nenhum curso bate com os filtros.' : 'Nenhum curso cadastrado.'}
     />
   )
 }
@@ -417,15 +421,10 @@ function FiltrosBar({
         />
       </InputGroup>
 
-      <Select
-        value={nivelValor}
-        onValueChange={(v) => aplicar(busca, v ?? TODOS, institutoValor)}
-      >
+      <Select value={nivelValor} onValueChange={(v) => aplicar(busca, v ?? TODOS, institutoValor)}>
         <SelectTrigger className="w-full sm:w-44">
           <SelectValue>
-            {(v) =>
-              !v || v === TODOS ? 'Todos os níveis' : NIVEL_LABELS[v as NivelAcademico]
-            }
+            {(v) => (!v || v === TODOS ? 'Todos os níveis' : NIVEL_LABELS[v as NivelAcademico])}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -438,16 +437,13 @@ function FiltrosBar({
         </SelectContent>
       </Select>
 
-      <Select
-        value={institutoValor}
-        onValueChange={(v) => aplicar(busca, nivelValor, v ?? TODOS)}
-      >
+      <Select value={institutoValor} onValueChange={(v) => aplicar(busca, nivelValor, v ?? TODOS)}>
         <SelectTrigger className="w-full sm:w-48">
           <SelectValue>
             {(v) =>
               !v || v === TODOS
                 ? 'Todos os institutos'
-                : institutos.find((i) => i.id.toString() === v)?.nome ?? '—'
+                : (institutos.find((i) => i.id.toString() === v)?.nome ?? '—')
             }
           </SelectValue>
         </SelectTrigger>
@@ -478,7 +474,9 @@ function EstadoVazio() {
       </EmptyMedia>
       <EmptyContent>
         <EmptyTitle>Nenhum curso cadastrado.</EmptyTitle>
-        <EmptyDescription>Use "Novo curso" para começar a montar o catálogo.</EmptyDescription>
+        <EmptyDescription>
+          Use &ldquo;Novo curso&rdquo; para começar a montar o catálogo.
+        </EmptyDescription>
       </EmptyContent>
     </Empty>
   )

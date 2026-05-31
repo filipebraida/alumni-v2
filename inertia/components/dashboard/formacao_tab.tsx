@@ -37,12 +37,7 @@ export function FormacaoTab({
           {formacao.nivel}
         </span>
         <Badge variant={concluida ? 'secondary' : 'warning'} className="shrink-0 gap-1">
-          <span
-            className={cn(
-              'size-1.5 rounded-full',
-              concluida ? 'bg-primary' : 'bg-warning'
-            )}
-          />
+          <span className={cn('size-1.5 rounded-full', concluida ? 'bg-primary' : 'bg-warning')} />
           {concluida ? 'Concluído' : 'Em curso'}
         </Badge>
       </div>

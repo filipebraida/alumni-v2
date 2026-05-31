@@ -32,10 +32,7 @@ export default class AtualizarUsuario {
     cursosIds,
   }: AtualizarUsuarioInput): Promise<AtualizarUsuarioResult> {
     return db.transaction(async (trx) => {
-      const user = await User.query({ client: trx })
-        .where('id', id)
-        .preload('egresso')
-        .first()
+      const user = await User.query({ client: trx }).where('id', id).preload('egresso').first()
       if (!user) return { status: 'nao_encontrado' as const }
 
       if (role !== 'admin' && cursosIds.length === 0 && !user.egresso) {

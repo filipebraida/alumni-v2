@@ -4,15 +4,10 @@ import { GraduationCap } from 'lucide-react'
 import AppLayout from '~/layouts/app'
 import { Card } from '~/components/ui/card'
 import { Separator } from '~/components/ui/separator'
-import { DashboardConfirmBar } from '~/components/dashboard/confirm_bar'
 import { DashboardDadosGerais } from '~/components/dashboard/dados_gerais'
 import { DashboardFormacaoDetail } from '~/components/dashboard/formacao_detail'
 import { DashboardFrescor } from '~/components/dashboard/frescor'
 import { DashboardHero } from '~/components/dashboard/hero'
-import { DashboardInsight } from '~/components/dashboard/insight'
-import { DashboardMapaTurma } from '~/components/dashboard/mapa_turma'
-import { DashboardReencontro } from '~/components/dashboard/reencontro'
-import { DashboardScopeBar } from '~/components/dashboard/scope_bar'
 import { FormacaoTab } from '~/components/dashboard/formacao_tab'
 import type { DashboardData } from '~/components/dashboard/types'
 import { type InertiaProps } from '~/types'
@@ -36,14 +31,14 @@ export default function Dashboard({
   const concluidas = formacoes.filter((f) => f.status === 'concluido').length
   const emCurso = formacoes.length - concluidas
 
-  const pendentesGerais = pendentes(camposGerais)
-  const pendentesPorFormacao = formacoes.reduce(
-    (soma, f) => soma + pendentes(f.camposMec),
-    0
-  )
-  const globalPendentes = pendentesGerais + pendentesPorFormacao
+  const pendentesPorFormacao = formacoes.reduce((soma, f) => soma + pendentes(f.camposMec), 0)
 
-  const contextoTurma = `${ativa.curto} · ${ativa.rotuloTurma}`
+  // Modo "primeira" quando ainda não houve nenhuma resposta arquivada — a
+  // snapshot é a verdade (controller marca ultimaFoto = '—' quando null).
+  const modo: 'manutencao' | 'primeira' = snapshot.ultimaFoto === '—' ? 'primeira' : 'manutencao'
+  const camposVazios =
+    camposGerais.filter((c) => c.confianca === 'ausente').length +
+    formacoes.reduce((s, f) => s + f.camposMec.filter((c) => c.confianca === 'ausente').length, 0)
 
   return (
     <>
@@ -56,15 +51,12 @@ export default function Dashboard({
             totalFormacoes={formacoes.length}
             concluidas={concluidas}
             emCurso={emCurso}
-            globalPendentes={globalPendentes}
+            globalPendentes={modo === 'primeira' ? camposVazios : pendentesPorFormacao}
+            modo={modo}
           />
         </div>
         <div className="lg:col-span-4">
-          <DashboardFrescor
-            frescor={frescor}
-            totalFormacoes={formacoes.length}
-            globalPendentes={globalPendentes}
-          />
+          <DashboardFrescor frescor={frescor} modo={modo} />
         </div>
       </section>
 
@@ -76,12 +68,15 @@ export default function Dashboard({
             <GraduationCap className="size-4 shrink-0 text-primary" /> Suas formações
           </h2>
           <p className="mt-1 text-muted-foreground text-sm">
-            Selecione uma formação — turma, colegas e insights abaixo se ajustam a ela. Os dados de
-            todas entram na mesma foto.
+            Selecione uma formação para ver a identidade e os campos próprios. Pós-graduação ainda
+            aparece com identidade-só.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 px-5 pt-4 pb-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          data-formacoes-tabs
+          className="grid grid-cols-1 gap-3 px-5 pt-4 pb-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {formacoes.map((f, i) => (
             <FormacaoTab
               key={f.id}
@@ -95,25 +90,6 @@ export default function Dashboard({
         <Separator />
         <DashboardFormacaoDetail formacao={ativa} />
       </Card>
-
-      <DashboardScopeBar formacao={ativa} />
-
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-        <div className="lg:col-span-7">
-          <DashboardMapaTurma mapa={ativa.mapa} contexto={contextoTurma} />
-        </div>
-        <div className="lg:col-span-5">
-          <DashboardReencontro
-            colegas={ativa.colegas}
-            total={ativa.totalColegas}
-            contexto={ativa.curto}
-          />
-        </div>
-      </section>
-
-      <DashboardInsight formacao={ativa} />
-
-      <DashboardConfirmBar snapshot={snapshot} globalPendentes={globalPendentes} />
     </>
   )
 }

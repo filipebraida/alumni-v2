@@ -44,7 +44,10 @@ export default class ListarProgramas {
     if (q) {
       const like = `%${q}%`
       query.where((sub) =>
-        sub.where('nome', 'like', like).orWhere('codigo', 'like', like).orWhere('sigla', 'like', like)
+        sub
+          .where('nome', 'like', like)
+          .orWhere('codigo', 'like', like)
+          .orWhere('sigla', 'like', like)
       )
     }
     if (institutoId !== undefined) query.where('instituto_id', institutoId)

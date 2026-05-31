@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+
 import { registrarRespostaValidator } from '#validators/resposta'
 import { SETORES, SETOR_LABELS } from '#enums/setor'
 import { FAIXAS_SALARIAIS, FAIXA_SALARIAL_LABELS } from '#enums/faixa_salarial'
@@ -7,35 +8,55 @@ import {
   TEMPOS_PRIMEIRO_EMPREGO,
   TEMPO_PRIMEIRO_EMPREGO_LABELS,
 } from '#enums/tempo_primeiro_emprego'
-import { NIVEIS_POS, NIVEL_LABELS } from '#enums/nivel_academico'
-import { STATUS_POS, STATUS_POS_LABELS } from '#enums/status_pos'
+
+import BuscarEgressoDoUsuario from '#queries/buscar_egresso_do_usuario'
+import BuscarUltimaRespostaPessoaDoEgresso from '#queries/buscar_ultima_resposta_pessoa_do_egresso'
+import BuscarUltimasRespostasCursoDasMatriculas from '#queries/buscar_ultimas_respostas_curso_das_matriculas'
+import RegistrarRevisaoDoEgresso from '#actions/registrar_revisao_do_egresso'
 
 /**
- * Fluxo de atualização ("Confirmar dados"): o egresso revalida/edita os campos
- * MEC e envia. Cada envio = uma nova foto (`resposta`) append-only.
- *
- * Por ora os valores atuais são fictícios e `store` apenas valida + redireciona;
- * a persistência da foto entra via `#actions` quando o lado de leitura for real.
+ * Fluxo de revisão (wizard): o egresso revisita os dados gerais + os campos
+ * de cada matrícula não-evadida e envia. Cada envio = 1 RespostaPessoa nova +
+ * N RespostaCurso (uma por matrícula). Append-only.
  */
 export default class RespostasController {
-  /** Renderiza o formulário com os valores atuais e as opções de cada campo. */
-  async create({ inertia }: HttpContext) {
+  async create({ auth, inertia }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const egresso = await new BuscarEgressoDoUsuario().handle({ userId: user.id })
+    const matriculas = egresso!.matriculas.filter((m) => m.situacao !== 'evadido')
+
+    const ultimaPessoa = await new BuscarUltimaRespostaPessoaDoEgresso().handle({
+      egressoId: egresso!.id,
+    })
+    const ultimasCurso = await new BuscarUltimasRespostasCursoDasMatriculas().handle({
+      matriculaIds: matriculas.map((m) => m.id),
+    })
+
     return inertia.render('respostas/create', {
       valores: {
-        localizacaoCidade: 'Rio de Janeiro',
-        localizacaoUf: 'RJ',
-        localizacaoPais: 'Brasil',
-        empregador: 'Embrapa Solos',
-        cargo: 'Engenheira de Software',
-        setor: 'pesquisa_publica',
-        faixaSalarial: 'de_9k_12k',
-        relacaoFormacao: 'total',
-        tempoPrimeiroEmprego: null,
-        posGrau: 'mestrado',
-        posCurso: 'Informática',
-        posInstituicao: 'UFRJ',
-        posStatus: 'cursando',
+        localizacaoCidade: ultimaPessoa?.localizacaoCidade ?? null,
+        localizacaoUf: ultimaPessoa?.localizacaoUf ?? null,
+        localizacaoPais: ultimaPessoa?.localizacaoPais ?? null,
+        empregador: ultimaPessoa?.empregador ?? null,
+        cargo: ultimaPessoa?.cargo ?? null,
+        setor: ultimaPessoa?.setor ?? null,
       },
+      matriculas: matriculas.map((m) => {
+        const rc = ultimasCurso.get(m.id) ?? null
+        return {
+          id: m.id,
+          nivel: m.curso.nivel,
+          curto: m.curso.nome,
+          ehGraduacao: m.curso.nivel === 'graduacao',
+          valoresAtuais: rc
+            ? {
+                faixaSalarial: rc.faixaSalarial,
+                relacaoFormacao: rc.relacaoFormacao,
+                tempoPrimeiroEmprego: rc.tempoPrimeiroEmprego,
+              }
+            : null,
+        }
+      }),
       opcoes: {
         setor: SETORES.map((v) => ({ valor: v, rotulo: SETOR_LABELS[v] })),
         faixaSalarial: FAIXAS_SALARIAIS.map((v) => ({
@@ -50,18 +71,20 @@ export default class RespostasController {
           valor: v,
           rotulo: TEMPO_PRIMEIRO_EMPREGO_LABELS[v],
         })),
-        posGrau: NIVEIS_POS.map((v) => ({ valor: v, rotulo: NIVEL_LABELS[v] })),
-        posStatus: STATUS_POS.map((v) => ({ valor: v, rotulo: STATUS_POS_LABELS[v] })),
       },
     })
   }
 
-  /** Valida o envio e (futuramente) grava a foto. Hoje: flash + volta ao painel. */
-  async store({ request, response, session }: HttpContext) {
-    await request.validateUsing(registrarRespostaValidator)
+  async store({ auth, request, response, session }: HttpContext) {
+    const payload = await request.validateUsing(registrarRespostaValidator)
 
-    // TODO: persistir a foto via #actions (resolver egresso do usuário + ano de
-    // referência) quando a leitura do painel deixar de ser fictícia.
+    const user = auth.getUserOrFail()
+    const egresso = await new BuscarEgressoDoUsuario().handle({ userId: user.id })
+
+    await new RegistrarRevisaoDoEgresso().handle({
+      egressoId: egresso!.id,
+      payload,
+    })
 
     session.flash(
       'success',

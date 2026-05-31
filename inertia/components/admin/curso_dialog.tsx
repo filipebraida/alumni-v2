@@ -24,13 +24,7 @@ import {
 } from '~/components/ui/select'
 import { Switch } from '~/components/ui/switch'
 
-type NivelValor =
-  | 'graduacao'
-  | 'especializacao'
-  | 'mba'
-  | 'mestrado'
-  | 'doutorado'
-  | 'posdoc'
+type NivelValor = 'graduacao' | 'especializacao' | 'mba' | 'mestrado' | 'doutorado' | 'posdoc'
 
 const NIVEIS: { value: NivelValor; label: string }[] = [
   { value: 'graduacao', label: 'Graduação' },
@@ -86,9 +80,7 @@ export function CursoDialog(props: Props) {
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <DialogPopup>
         <DialogHeader>
-          <DialogTitle>
-            {criando ? 'Cadastrar curso' : `Editar ${props.curso.nome}`}
-          </DialogTitle>
+          <DialogTitle>{criando ? 'Cadastrar curso' : `Editar ${props.curso.nome}`}</DialogTitle>
           <DialogDescription>
             {criando
               ? 'Curso da UFRRJ vinculado a um instituto. O código SIGAA é a chave natural — único no sistema.'
@@ -112,12 +104,10 @@ function CursoForm(props: Props & { onSuccess: () => void }) {
   const criando = props.modo === 'criar'
   const [nivel, setNivel] = useState<NivelValor>(criando ? 'graduacao' : props.curso.nivel)
   const [institutoId, setInstitutoId] = useState<string>(
-    criando
-      ? props.institutos[0]?.id?.toString() ?? ''
-      : props.curso.institutoId.toString()
+    criando ? (props.institutos[0]?.id?.toString() ?? '') : props.curso.institutoId.toString()
   )
   const [programaId, setProgramaId] = useState<string>(
-    criando ? '' : props.curso.programaId?.toString() ?? ''
+    criando ? '' : (props.curso.programaId?.toString() ?? '')
   )
   const [ativo, setAtivo] = useState(criando ? true : props.curso.ativo)
 
@@ -134,7 +124,9 @@ function CursoForm(props: Props & { onSuccess: () => void }) {
     // Limpa programa se não pertence ao novo instituto.
     if (
       programaId &&
-      !props.programas.some((p) => p.id.toString() === programaId && p.institutoId.toString() === prox)
+      !props.programas.some(
+        (p) => p.id.toString() === programaId && p.institutoId.toString() === prox
+      )
     ) {
       setProgramaId('')
     }
@@ -226,9 +218,7 @@ function CursoForm(props: Props & { onSuccess: () => void }) {
                     {props.institutos.map((instituto) => (
                       <SelectItem key={instituto.id} value={instituto.id.toString()}>
                         {instituto.nome}{' '}
-                        <span className="text-muted-foreground text-xs">
-                          · {instituto.codigo}
-                        </span>
+                        <span className="text-muted-foreground text-xs">· {instituto.codigo}</span>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -302,9 +292,7 @@ function CursoForm(props: Props & { onSuccess: () => void }) {
             <DialogClose render={<Button variant="ghost" type="button" />}>Cancelar</DialogClose>
             <Button
               type="submit"
-              disabled={
-                processing || (mostraPrograma && (semProgramaDisponivel || !programaId))
-              }
+              disabled={processing || (mostraPrograma && (semProgramaDisponivel || !programaId))}
             >
               {processing ? 'Salvando…' : criando ? 'Cadastrar' : 'Salvar'}
             </Button>

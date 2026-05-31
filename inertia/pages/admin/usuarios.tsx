@@ -8,7 +8,13 @@ import GestaoLayout from '~/layouts/gestao'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/ui/data_table'
-import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '~/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyMedia,
+  EmptyTitle,
+} from '~/components/ui/empty'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '~/components/ui/input_group'
 import {
   Select,
@@ -334,7 +340,7 @@ function EstadoVazio() {
       </EmptyMedia>
       <EmptyContent>
         <EmptyTitle>Nenhum usuário cadastrado.</EmptyTitle>
-        <EmptyDescription>Use "Novo usuário" para começar.</EmptyDescription>
+        <EmptyDescription>Use &ldquo;Novo usuário&rdquo; para começar.</EmptyDescription>
       </EmptyContent>
     </Empty>
   )

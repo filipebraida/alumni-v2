@@ -77,9 +77,7 @@ export function MecCard({ campo }: { campo: CampoMec }) {
         <span className="text-muted-foreground text-xs">
           {campo.confianca === 'confirmado' && <>confirmado há {campo.atualizadoEm}</>}
           {precisaRevisar && (
-            <span className="text-warning-foreground">
-              desatualizado há {campo.atualizadoEm}
-            </span>
+            <span className="text-warning-foreground">desatualizado há {campo.atualizadoEm}</span>
           )}
           {ausente && <>não informado</>}
         </span>

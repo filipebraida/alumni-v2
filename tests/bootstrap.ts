@@ -6,6 +6,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { browserClient } from '@japa/browser-client'
 import { authBrowserClient } from '@adonisjs/auth/plugins/browser_client'
 import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'
+import { dbAssertions } from '@adonisjs/lucid/plugins/db'
 
 /**
  * This file is imported by the "bin/test.ts" entrypoint file
@@ -18,6 +19,7 @@ import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'
 export const plugins: Config['plugins'] = [
   assert(),
   pluginAdonisJS(app),
+  dbAssertions(app),
   browserClient({ runInSuites: ['browser'] }),
   sessionBrowserClient(app),
   authBrowserClient(app),
@@ -31,7 +33,7 @@ export const plugins: Config['plugins'] = [
  * The teardown functions are executed after all the tests
  */
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [],
+  setup: [() => testUtils.db().migrate()],
   teardown: [],
 }
 

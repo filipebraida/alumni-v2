@@ -7,10 +7,14 @@ import { Card } from '~/components/ui/card'
 import { cn } from '~/lib/utils'
 import type { Egresso } from '~/components/dashboard/types'
 
+type Modo = 'manutencao' | 'primeira'
+
 /**
- * Faixa de boas-vindas multi-formação: avatar, saudação que conta quantas
- * formações o egresso tem e quantos itens faltam revisar antes da próxima
- * foto; CTA leva ao fluxo de atualização (não edita aqui).
+ * Faixa de boas-vindas multi-formação: avatar, saudação adaptativa (modo
+ * "manutenção" pra quem já tem resposta arquivada, modo "primeira resposta"
+ * pra quem nunca respondeu) e o CTA único de revisão. A saudação só conta
+ * pendências por formação — pendência de dados gerais vive no header daquele
+ * bloco (per brief decision).
  */
 export function DashboardHero({
   egresso,
@@ -18,12 +22,14 @@ export function DashboardHero({
   concluidas,
   emCurso,
   globalPendentes,
+  modo,
 }: {
   egresso: Egresso
   totalFormacoes: number
   concluidas: number
   emCurso: number
   globalPendentes: number
+  modo: Modo
 }) {
   const fmtFormacoes = `${totalFormacoes} ${totalFormacoes === 1 ? 'formação' : 'formações'}`
 
@@ -48,18 +54,21 @@ export function DashboardHero({
         </div>
 
         <h1 className="mt-1 font-semibold text-xl leading-tight tracking-tight sm:text-2xl">
-          {egresso.saudacao}, {egresso.primeiroNome}.{' '}
+          {modo === 'primeira' ? 'Vamos começar' : egresso.saudacao}, {egresso.primeiroNome}.{' '}
           <span className="font-normal text-muted-foreground">
             Você tem <span className="font-medium text-foreground">{fmtFormacoes}</span> na UFRRJ
-            {globalPendentes > 0 ? (
+            {modo === 'primeira' ? (
               <>
                 {' '}
-                e{' '}
-                <span className="font-medium text-foreground">{globalPendentes} itens</span> para
-                revisar antes da próxima foto.
+                e <span className="font-medium text-foreground">{globalPendentes} campos</span> para
+                preencher antes da sua primeira resposta.
               </>
             ) : (
-              <> — tudo conferido pra próxima foto.</>
+              <>
+                {' '}
+                e <span className="font-medium text-foreground">{globalPendentes} itens</span> para
+                revisar antes da próxima resposta.
+              </>
             )}
           </span>
         </h1>

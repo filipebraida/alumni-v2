@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import { ArrowLeftIcon, GraduationCap, Layers } from 'lucide-react'
 import { type ReactElement } from 'react'
 
@@ -9,13 +10,7 @@ import { Button } from '~/components/ui/button'
 import { GestaoPage, GestaoPageHeader } from '~/components/gestao/gestao_page'
 import { type InertiaProps } from '~/types'
 
-type NivelAcademico =
-  | 'graduacao'
-  | 'especializacao'
-  | 'mba'
-  | 'mestrado'
-  | 'doutorado'
-  | 'posdoc'
+type NivelAcademico = 'graduacao' | 'especializacao' | 'mba' | 'mestrado' | 'doutorado' | 'posdoc'
 
 type Modalidade = 'academico' | 'profissional'
 
@@ -107,7 +102,9 @@ export default function AdminInstitutoShow({ instituto }: PageProps) {
                   {p.modalidade && <span>· {MODALIDADE_LABELS[p.modalidade]}</span>}
                 </div>
               </div>
-              <Badge variant={p.ativo ? 'success' : 'outline'}>{p.ativo ? 'Ativo' : 'Inativo'}</Badge>
+              <Badge variant={p.ativo ? 'success' : 'outline'}>
+                {p.ativo ? 'Ativo' : 'Inativo'}
+              </Badge>
             </Link>
           ))}
         </Secao>
@@ -131,7 +128,9 @@ export default function AdminInstitutoShow({ instituto }: PageProps) {
                   <span>· {NIVEL_LABELS[c.nivel]}</span>
                 </div>
               </div>
-              <Badge variant={c.ativo ? 'success' : 'outline'}>{c.ativo ? 'Ativo' : 'Inativo'}</Badge>
+              <Badge variant={c.ativo ? 'success' : 'outline'}>
+                {c.ativo ? 'Ativo' : 'Inativo'}
+              </Badge>
             </Link>
           ))}
         </Secao>

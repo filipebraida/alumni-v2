@@ -122,7 +122,7 @@ function UsuarioForm(props: Props & { onSuccess: () => void }) {
                 autoComplete="off"
                 placeholder="Ex.: Juliana Nascente"
                 maxLength={255}
-                defaultValue={criando ? '' : props.usuario.fullName ?? ''}
+                defaultValue={criando ? '' : (props.usuario.fullName ?? '')}
                 autoFocus
               />
               <FieldError />
@@ -222,8 +222,8 @@ function UsuarioForm(props: Props & { onSuccess: () => void }) {
               <div className="flex items-start gap-2 rounded-md border border-warning/40 bg-warning/8 p-3 text-sm">
                 <AlertTriangleIcon className="mt-0.5 size-4 shrink-0 text-warning" />
                 <p>
-                  Sem curso e sem administrador, este usuário não consegue entrar em nenhuma área
-                  do SAE. Marque como administrador ou vincule pelo menos um curso.
+                  Sem curso e sem administrador, este usuário não consegue entrar em nenhuma área do
+                  SAE. Marque como administrador ou vincule pelo menos um curso.
                 </p>
               </div>
             )}

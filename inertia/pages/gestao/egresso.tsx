@@ -63,13 +63,10 @@ type RespostaAtual = {
   empregador: string | null
   cargo: string | null
   setor: string | null
-  faixaSalarial: string | null
-  relacaoFormacao: string | null
-  tempoPrimeiroEmprego: string | null
-  posGrau: string | null
-  posCurso: string | null
-  posInstituicao: string | null
-  posStatus: string | null
+  // Campos por-matrícula (faixa salarial, relação com a formação, tempo até
+  // 1º emprego, pós-graduação) saíram pra `RespostaCurso` no split D1 e
+  // ainda não estão wired nesta tela da gestão. Quando voltar, vir via
+  // RespostaCursoTransformer escopado pela matrícula do detalhe.
 }
 
 type PageProps = InertiaProps<{
@@ -187,16 +184,10 @@ export default function EgressoPerfil({
               <Linha rotulo="Empregador" valor={respostaAtual.empregador} />
               <Linha rotulo="Cargo" valor={respostaAtual.cargo} />
               <Linha rotulo="Setor" valor={respostaAtual.setor} />
-              <Linha rotulo="Faixa salarial" valor={respostaAtual.faixaSalarial} />
-              <Linha rotulo="Relação com a formação" valor={respostaAtual.relacaoFormacao} />
-              <Linha
-                rotulo="Tempo até 1º emprego"
-                valor={respostaAtual.tempoPrimeiroEmprego}
-              />
-              <Linha rotulo="Pós — nível" valor={respostaAtual.posGrau} />
-              <Linha rotulo="Pós — curso" valor={respostaAtual.posCurso} />
-              <Linha rotulo="Pós — instituição" valor={respostaAtual.posInstituicao} />
-              <Linha rotulo="Pós — status" valor={respostaAtual.posStatus} />
+              {/* Campos por matrícula (faixa salarial, relação com a formação,
+                  tempo até 1º emprego, pós-graduação) migraram para RespostaCurso
+                  no split D1 e serão re-introduzidos via um agregador
+                  por matrícula em change própria. */}
             </>
           )}
         </Bloco>
@@ -227,15 +218,7 @@ function Bloco({
   )
 }
 
-function Linha({
-  rotulo,
-  valor,
-  mono,
-}: {
-  rotulo: string
-  valor: ReactNode
-  mono?: boolean
-}) {
+function Linha({ rotulo, valor, mono }: { rotulo: string; valor: ReactNode; mono?: boolean }) {
   const vazio = valor === null || valor === undefined || valor === ''
   return (
     <div className="min-w-0">
