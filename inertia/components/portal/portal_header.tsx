@@ -78,8 +78,11 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
       <PortalContainer className="flex h-16 items-center gap-4 md:gap-8">
         <Link route="home" className="flex items-center gap-2.5">
           <PortalLogo />
-          <span className="font-semibold text-sm tracking-tight">
-            SAE <span className="font-normal text-muted-foreground">· UFRRJ</span>
+          <span className="flex flex-col leading-tight">
+            <span className="font-semibold text-base tracking-tight">alumni</span>
+            <span className="font-medium text-xs text-muted-foreground uppercase tracking-widest">
+              SAE · UFRRJ
+            </span>
           </span>
         </Link>
 
@@ -152,7 +155,12 @@ export function PortalHeader({ active }: { active?: PortalNavKey }) {
                     className="flex items-center gap-2.5"
                   >
                     <PortalLogo />
-                    <span className="font-semibold tracking-tight">SAE · UFRRJ</span>
+                    <span className="flex flex-col leading-tight">
+                      <span className="font-semibold tracking-tight">alumni</span>
+                      <span className="font-medium text-xs text-muted-foreground uppercase tracking-widest">
+                        SAE · UFRRJ
+                      </span>
+                    </span>
                   </Link>
                 </SheetTitle>
               </SheetHeader>

@@ -1,20 +1,11 @@
-import { cn } from '~/lib/utils'
+import { AlumniMark } from '~/components/alumni_mark'
 
 /**
- * SAE · UFRRJ brand mark — a rounded square monogram ("R") with the crest's
- * yellow dot. Purely visual; callers wrap it in a `<Link>` together with the
- * wordmark. `onDark` inverts it for the dark footer / CTA surfaces.
+ * SAE · UFRRJ brand mark — the alumni flower symbol (caule + folhas + flor de
+ * sete pétalas), used everywhere the portal needs an institutional anchor.
+ * Callers wrap it in a `<Link>` next to the wordmark; `onDark` swaps to the
+ * lightened palette tuned for the dark footer / CTA surfaces.
  */
 export function PortalLogo({ onDark = false }: { onDark?: boolean }) {
-  return (
-    <div
-      className={cn(
-        'relative grid size-8 place-items-center rounded-md',
-        onDark ? 'bg-white text-portal-ink' : 'bg-primary text-primary-foreground'
-      )}
-    >
-      <span className="font-bold leading-none">R</span>
-      <span className="-right-0.5 -top-0.5 absolute size-2 rounded-full bg-brand-yellow" />
-    </div>
-  )
+  return <AlumniMark variant={onDark ? 'dark' : 'light'} size={54} />
 }

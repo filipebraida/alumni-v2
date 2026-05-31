@@ -73,7 +73,12 @@ export function AppHeader() {
                   className="flex items-center gap-2.5"
                 >
                   <PortalLogo />
-                  <span className="font-semibold tracking-tight">SAE · UFRRJ</span>
+                  <span className="flex flex-col leading-tight">
+                    <span className="font-semibold tracking-tight">alumni</span>
+                    <span className="font-medium text-xs text-muted-foreground uppercase tracking-widest">
+                      SAE · UFRRJ
+                    </span>
+                  </span>
                 </Link>
               </SheetTitle>
             </SheetHeader>
@@ -89,8 +94,11 @@ export function AppHeader() {
 
         <Link route="dashboard" className="flex items-center gap-2.5">
           <PortalLogo />
-          <span className="font-semibold text-sm tracking-tight">
-            SAE <span className="font-normal text-muted-foreground">· UFRRJ</span>
+          <span className="flex flex-col leading-tight">
+            <span className="font-semibold text-base tracking-tight">alumni</span>
+            <span className="font-medium text-xs text-muted-foreground uppercase tracking-widest">
+              SAE · UFRRJ
+            </span>
           </span>
         </Link>
 

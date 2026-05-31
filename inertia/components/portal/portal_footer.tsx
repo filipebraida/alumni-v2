@@ -30,7 +30,12 @@ export function PortalFooter() {
           <div className="col-span-2 md:col-span-5">
             <div className="flex items-center gap-2.5">
               <PortalLogo onDark />
-              <span className="font-semibold text-sm tracking-tight">SAE · UFRRJ</span>
+              <span className="flex flex-col leading-tight">
+                <span className="font-semibold text-base tracking-tight">alumni</span>
+                <span className="font-medium text-xs text-white/50 uppercase tracking-widest">
+                  SAE · UFRRJ
+                </span>
+              </span>
             </div>
             <p className="mt-4 max-w-sm text-pretty text-sm leading-relaxed text-white/70">
               Serviço de Acompanhamento de Egressos da Universidade Federal Rural do Rio de Janeiro.

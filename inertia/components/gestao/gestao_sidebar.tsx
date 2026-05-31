@@ -14,6 +14,7 @@ import {
   Users,
 } from 'lucide-react'
 import { urlFor } from '~/client'
+import { AlumniMark } from '~/components/alumni_mark'
 import { CursoSwitcher } from '~/components/gestao/curso_switcher'
 import {
   Sidebar,
@@ -65,12 +66,12 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
           route="gestao.show"
           className="flex items-center gap-2.5 px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
-          <div className="relative flex size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary font-bold text-sidebar-primary-foreground text-sm">
-            R
-            <span className="-right-0.5 -top-0.5 absolute size-2 rounded-full bg-brand-yellow" />
-          </div>
-          <div className="font-semibold text-sm tracking-tight group-data-[collapsible=icon]:hidden">
-            SAE <span className="font-normal text-sidebar-foreground/55">· Coordenação</span>
+          <AlumniMark variant="dark" size={54} />
+          <div className="leading-tight group-data-[collapsible=icon]:hidden">
+            <div className="font-semibold text-base tracking-tight">alumni</div>
+            <div className="font-medium text-xs text-sidebar-foreground/55 uppercase tracking-widest">
+              SAE · Coordenação
+            </div>
           </div>
         </Link>
         <CursoSwitcher />
