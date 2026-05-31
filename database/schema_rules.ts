@@ -17,6 +17,15 @@ export default {
         },
       },
     },
+    programas: {
+      columns: {
+        modalidade: {
+          tsType: 'ModalidadePrograma',
+          decorators: [{ name: '@column' }],
+          imports: [{ source: '#enums/modalidade_programa', typeImports: ['ModalidadePrograma'] }],
+        },
+      },
+    },
     matriculas: {
       columns: {
         situacao: {

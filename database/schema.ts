@@ -9,6 +9,7 @@ import { DateTime } from 'luxon'
 import type { NivelAcademico, NivelPos } from '#enums/nivel_academico'
 import type { SituacaoMatricula } from '#enums/situacao_matricula'
 import type { NotificationStatus } from '#models/notification'
+import type { ModalidadePrograma } from '#enums/modalidade_programa'
 import type { FaixaSalarial } from '#enums/faixa_salarial'
 import type { StatusPos } from '#enums/status_pos'
 import type { RelacaoFormacao } from '#enums/relacao_formacao'
@@ -17,7 +18,7 @@ import type { TempoPrimeiroEmprego } from '#enums/tempo_primeiro_emprego'
 import type { RoleUsuario } from '#enums/role_usuario'
 
 export class CursoSchema extends BaseModel {
-  static $columns = ['ativo', 'codigo', 'createdAt', 'id', 'institutoId', 'nivel', 'nome', 'updatedAt'] as const
+  static $columns = ['ativo', 'codigo', 'createdAt', 'id', 'institutoId', 'nivel', 'nome', 'programaId', 'updatedAt'] as const
   $columns = CursoSchema.$columns
   @column()
   declare ativo: boolean
@@ -33,6 +34,8 @@ export class CursoSchema extends BaseModel {
   declare nivel: NivelAcademico
   @column()
   declare nome: string
+  @column()
+  declare programaId: number | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 }
@@ -195,6 +198,29 @@ export class NotificationSchema extends BaseModel {
   declare type: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+}
+
+export class ProgramaSchema extends BaseModel {
+  static $columns = ['ativo', 'codigo', 'createdAt', 'id', 'institutoId', 'modalidade', 'nome', 'sigla', 'updatedAt'] as const
+  $columns = ProgramaSchema.$columns
+  @column()
+  declare ativo: boolean
+  @column()
+  declare codigo: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare institutoId: number
+  @column()
+  declare modalidade: ModalidadePrograma | null
+  @column()
+  declare nome: string
+  @column()
+  declare sigla: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
 }
 
 export class RateLimitSchema extends BaseModel {

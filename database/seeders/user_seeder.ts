@@ -5,6 +5,7 @@ import Egresso from '#models/egresso'
 import Gestor from '#models/gestor'
 import Instituto from '#models/instituto'
 import Matricula from '#models/matricula'
+import Programa from '#models/programa'
 
 const INSTITUTOS = [
   { codigo: 'IA', nome: 'Instituto de Agronomia' },
@@ -42,13 +43,25 @@ export default class extends BaseSeeder {
       }
     )
 
-    const ppgihd = await Curso.updateOrCreate(
+    const ppgihd = await Programa.updateOrCreate(
       { codigo: 'PPGIHD' },
       {
         codigo: 'PPGIHD',
+        sigla: 'PPGIHD',
         nome: 'Programa de Pós-Graduação Interdisciplinar em Humanidades Digitais',
+        modalidade: 'academico',
+        institutoId: im.id,
+      }
+    )
+
+    const ppgihdMestrado = await Curso.updateOrCreate(
+      { codigo: 'PPGIHD-MA' },
+      {
+        codigo: 'PPGIHD-MA',
+        nome: 'Humanidades Digitais',
         nivel: 'mestrado',
         institutoId: im.id,
+        programaId: ppgihd.id,
       }
     )
 
@@ -79,7 +92,7 @@ export default class extends BaseSeeder {
         cargo: 'Coordenador',
       }
     )
-    await marcel.related('cursos').sync([ppgihd.id])
+    await marcel.related('cursos').sync([ppgihdMestrado.id])
 
     // Egresso de teste — pra abrir /perfil sem ter que importar CSV.
     const anaUser = await User.updateOrCreate(
