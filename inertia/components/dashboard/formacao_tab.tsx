@@ -1,14 +1,14 @@
+import { type Data } from '@generated/data'
 import { Badge } from '~/components/ui/badge'
 import { Progress, ProgressIndicator, ProgressTrack } from '~/components/ui/progress'
 import { cn } from '~/lib/utils'
-import type { Formacao } from '~/components/dashboard/types'
 
 export function FormacaoTab({
   formacao,
   selecionada,
   onSelecionar,
 }: {
-  formacao: Formacao
+  formacao: Data.Matricula.Variants['forPainel']
   selecionada: boolean
   onSelecionar: () => void
 }) {

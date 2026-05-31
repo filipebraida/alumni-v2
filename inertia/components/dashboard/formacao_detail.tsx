@@ -1,12 +1,16 @@
 import { Check } from 'lucide-react'
 import { type ReactNode } from 'react'
+import { type Data } from '@generated/data'
 import { Badge } from '~/components/ui/badge'
 import { Separator } from '~/components/ui/separator'
 import { MecCard } from '~/components/dashboard/mec_card'
 import { FormacaoCamposEmBreve } from '~/components/dashboard/formacao_campos_em_breve'
-import type { Formacao } from '~/components/dashboard/types'
 
-export function DashboardFormacaoDetail({ formacao }: { formacao: Formacao }) {
+export function DashboardFormacaoDetail({
+  formacao,
+}: {
+  formacao: Data.Matricula.Variants['forPainel']
+}) {
   const pendentes = formacao.camposMec.filter((c) => c.confianca !== 'confirmado').length
 
   return (

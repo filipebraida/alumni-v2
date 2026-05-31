@@ -6,17 +6,28 @@
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
+import type CampoMecTransformer from '#transformers/campo_mec_transformer'
 import type EgressoTransformer from '#transformers/egresso_transformer'
+import type FrescorTransformer from '#transformers/frescor_transformer'
 import type MatriculaTransformer from '#transformers/matricula_transformer'
 import type NotificationTransformer from '#transformers/notification_transformer'
 import type RespostaPessoaTransformer from '#transformers/resposta_pessoa_transformer'
+import type SnapshotPainelTransformer from '#transformers/snapshot_painel_transformer'
 import type UserTransformer from '#transformers/user_transformer'
 import type InertiaMiddleware from '#middleware/inertia_middleware'
 
 export namespace Data {
+  export type CampoMec = InferData<CampoMecTransformer>
+  export namespace CampoMec {
+    export type Variants = InferVariants<CampoMecTransformer>
+  }
   export type Egresso = InferData<EgressoTransformer>
   export namespace Egresso {
     export type Variants = InferVariants<EgressoTransformer>
+  }
+  export type Frescor = InferData<FrescorTransformer>
+  export namespace Frescor {
+    export type Variants = InferVariants<FrescorTransformer>
   }
   export type Matricula = InferData<MatriculaTransformer>
   export namespace Matricula {
@@ -29,6 +40,10 @@ export namespace Data {
   export type RespostaPessoa = InferData<RespostaPessoaTransformer>
   export namespace RespostaPessoa {
     export type Variants = InferVariants<RespostaPessoaTransformer>
+  }
+  export type SnapshotPainel = InferData<SnapshotPainelTransformer>
+  export namespace SnapshotPainel {
+    export type Variants = InferVariants<SnapshotPainelTransformer>
   }
   export type User = InferData<UserTransformer>
   export namespace User {

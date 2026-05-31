@@ -1,14 +1,21 @@
 import type Matricula from '#models/matricula'
 import { BaseTransformer } from '@adonisjs/core/transformers'
 import { NIVEL_LABELS } from '#enums/nivel_academico'
+import CampoMecTransformer, { type CampoMec } from '#transformers/campo_mec_transformer'
 
-/**
- * Resumo de uma matrícula (= "Formação" na view): nível, diploma, campus e
- * status. Espera `curso` e `curso.instituto` preloaded. NÃO carrega dados
- * agregados de turma/colegas/insight — esses vêm de queries próprias e podem
- * ser anexados pelo controller quando existirem.
- */
+export type MatriculaPainelExtras = {
+  frescor: number
+  camposMec: CampoMec[]
+}
+
 export default class MatriculaTransformer extends BaseTransformer<Matricula> {
+  constructor(
+    resource: Matricula,
+    protected painelExtras?: Map<number, MatriculaPainelExtras>
+  ) {
+    super(resource)
+  }
+
   toObject() {
     const m = this.resource
     const concluida = m.situacao === 'formado'
@@ -18,13 +25,25 @@ export default class MatriculaTransformer extends BaseTransformer<Matricula> {
       codigo: m.codigo,
       nivel: NIVEL_LABELS[m.curso.nivel],
       diploma: m.curso.nome,
-      // Por enquanto `curto` espelha `diploma`. Quando o domínio ganhar um
-      // nome curto (sem modalidade), trocar aqui sem mexer na view.
       curto: m.curso.nome,
       campus: m.curso.instituto?.nome ?? '—',
       rotuloTurma: concluida ? `Turma ${m.periodoFormatura ?? '—'}` : 'Em curso',
       periodo: m.periodoFormatura ?? '—',
       status: concluida ? ('concluido' as const) : ('em_curso' as const),
+    }
+  }
+
+  forPainel() {
+    const extras = this.painelExtras?.get(this.resource.id)
+    if (!extras) {
+      throw new Error(
+        `MatriculaTransformer.forPainel: faltam extras para matrícula ${this.resource.id}`
+      )
+    }
+    return {
+      ...this.toObject(),
+      frescor: extras.frescor,
+      camposMec: CampoMecTransformer.transform(extras.camposMec),
     }
   }
 }

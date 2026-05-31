@@ -4,8 +4,11 @@ import { DateTime } from 'luxon'
 import BuscarEgressoDoUsuario from '#queries/buscar_egresso_do_usuario'
 import BuscarUltimaRespostaPessoaDoEgresso from '#queries/buscar_ultima_resposta_pessoa_do_egresso'
 import BuscarUltimasRespostasCursoDasMatriculas from '#queries/buscar_ultimas_respostas_curso_das_matriculas'
+import CampoMecTransformer from '#transformers/campo_mec_transformer'
 import EgressoTransformer from '#transformers/egresso_transformer'
+import FrescorTransformer from '#transformers/frescor_transformer'
 import MatriculaTransformer from '#transformers/matricula_transformer'
+import SnapshotPainelTransformer from '#transformers/snapshot_painel_transformer'
 import {
   calcularFrescor,
   camposDaFormacao,
@@ -19,21 +22,12 @@ function saudacao(hora: number) {
   return 'Boa noite'
 }
 
-/**
- * Painel do egresso ("Início") — proposta multi-formação. Identidade do
- * egresso e das formações vêm dos transformers (`EgressoTransformer`,
- * `MatriculaTransformer`); a foto MEC (camposGerais + camposMec por formação
- * + frescor + snapshot) vem do `painel_egresso` aplicado à última `Resposta`
- * do egresso. Mapa, colegas e insights agregados ficam em placeholder até
- * existirem queries de turma.
- */
 export default class DashboardController {
   async show({ auth, inertia }: HttpContext) {
     const user = auth.getUserOrFail()
     const egresso = await new BuscarEgressoDoUsuario().handle({ userId: user.id })
 
-    // O egresso_middleware garante que chegamos aqui só com vínculo real;
-    // o `!` reflete essa invariante sem precisar ramificar a view.
+    // egresso_middleware garante vínculo real; `!` reflete a invariante
     const todasMatriculas = egresso!.matriculas
     const matriculas = todasMatriculas
       .filter((m) => m.situacao !== 'evadido')
@@ -53,32 +47,38 @@ export default class DashboardController {
       matriculaIds: matriculas.map((m) => m.id),
     })
 
-    const identidade = new EgressoTransformer(egresso!).toObject()
     const frescor = calcularFrescor(ultimaResposta, agora)
 
+    // Frescor uniforme nesta entrega — a foto é consolidada na RespostaPessoa
+    const extrasPorMatricula = new Map(
+      matriculas.map((m) => [
+        m.id,
+        {
+          frescor: frescor.geral,
+          camposMec: camposDaFormacao(
+            ultimasRespostasCurso.get(m.id) ?? null,
+            ultimaResposta?.registradaEm ?? null,
+            m.curso.nivel,
+            agora
+          ),
+        },
+      ])
+    )
+
     return inertia.render('dashboard', {
-      egresso: {
-        ...identidade,
-        campus: ancora.curso.instituto?.nome ?? '—',
+      egresso: EgressoTransformer.transform(egresso!, {
         saudacao: saudacao(agora.hour),
         agora: agora.toFormat("cccc, d 'de' LLLL · HH:mm"),
-      },
+        campus: ancora.curso.instituto?.nome ?? '—',
+      }).useVariant('forPainel'),
 
-      frescor,
-      snapshot: montarSnapshot(ultimaResposta, agora),
-      camposGerais: camposGeraisDaResposta(ultimaResposta, agora),
+      frescor: FrescorTransformer.transform(frescor),
+      snapshot: SnapshotPainelTransformer.transform(montarSnapshot(ultimaResposta, agora)),
+      camposGerais: CampoMecTransformer.transform(camposGeraisDaResposta(ultimaResposta, agora)),
 
-      formacoes: matriculas.map((m) => ({
-        ...new MatriculaTransformer(m).toObject(),
-        // Frescor uniforme nesta entrega — a foto é consolidada na RespostaPessoa.
-        frescor: frescor.geral,
-        camposMec: camposDaFormacao(
-          ultimasRespostasCurso.get(m.id) ?? null,
-          ultimaResposta?.registradaEm ?? null,
-          m.curso.nivel,
-          agora
-        ),
-      })),
+      formacoes: MatriculaTransformer.transform(matriculas, extrasPorMatricula).useVariant(
+        'forPainel'
+      ),
     })
   }
 }

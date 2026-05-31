@@ -1,6 +1,12 @@
 import type Egresso from '#models/egresso'
 import { BaseTransformer } from '@adonisjs/core/transformers'
 
+export type EgressoPainelExtras = {
+  saudacao: string
+  agora: string
+  campus: string
+}
+
 function iniciais(nome: string) {
   const [primeiro, segundo] = nome.trim().split(/\s+/)
   return `${primeiro?.[0] ?? ''}${segundo?.[0] ?? ''}`.toUpperCase()
@@ -10,12 +16,14 @@ function primeiroNome(nome: string) {
   return nome.trim().split(/\s+/)[0] ?? ''
 }
 
-/**
- * Identidade pública do egresso — usada em qualquer tela autenticada (painel,
- * perfil, breadcrumb, modais). NÃO inclui matrículas/respostas; esses ficam em
- * transformers próprios (`MatriculaTransformer`, `RespostaTransformer`).
- */
 export default class EgressoTransformer extends BaseTransformer<Egresso> {
+  constructor(
+    resource: Egresso,
+    protected painelExtras?: EgressoPainelExtras
+  ) {
+    super(resource)
+  }
+
   toObject() {
     const egresso = this.resource
     return {
@@ -24,6 +32,18 @@ export default class EgressoTransformer extends BaseTransformer<Egresso> {
       primeiroNome: primeiroNome(egresso.nomeCompleto),
       iniciais: iniciais(egresso.nomeCompleto),
       verificada: !!egresso.consentimentoEm,
+    }
+  }
+
+  forPainel() {
+    if (!this.painelExtras) {
+      throw new Error('EgressoTransformer.forPainel exige painelExtras no constructor')
+    }
+    return {
+      ...this.toObject(),
+      saudacao: this.painelExtras.saudacao,
+      agora: this.painelExtras.agora,
+      campus: this.painelExtras.campus,
     }
   }
 }

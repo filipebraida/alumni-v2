@@ -138,8 +138,8 @@ test.group('DashboardController.show', (group) => {
 
     const page = await visit(route('dashboard'))
 
-    // Diploma aparece em 3 lugares — tab, sidebar identidade, header "Dados de".
-    await page.assertElementsCount('text=Bacharelado em Ciência da Computação · UFRRJ', 3)
+    // Diploma aparece em 2 lugares — tab e header "Detalhes da formação".
+    await page.assertElementsCount('text=Bacharelado em Ciência da Computação · UFRRJ', 2)
     await page.assertVisible('text=R$ 9.000 — R$ 12.000')
     await page.assertVisible('text=Sim, totalmente relacionado')
     await page.assertVisible('text=Menos de 3 meses')

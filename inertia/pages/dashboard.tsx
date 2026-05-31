@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react'
 import { type ReactElement, useState } from 'react'
 import { GraduationCap } from 'lucide-react'
+import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import { Card } from '~/components/ui/card'
 import { Separator } from '~/components/ui/separator'
@@ -9,10 +10,15 @@ import { DashboardFormacaoDetail } from '~/components/dashboard/formacao_detail'
 import { DashboardFrescor } from '~/components/dashboard/frescor'
 import { DashboardHero } from '~/components/dashboard/hero'
 import { FormacaoTab } from '~/components/dashboard/formacao_tab'
-import type { DashboardData } from '~/components/dashboard/types'
 import { type InertiaProps } from '~/types'
 
-type PageProps = InertiaProps<DashboardData>
+type PageProps = InertiaProps<{
+  egresso: Data.Egresso.Variants['forPainel']
+  frescor: Data.Frescor
+  snapshot: Data.SnapshotPainel
+  camposGerais: Data.CampoMec[]
+  formacoes: Data.Matricula.Variants['forPainel'][]
+}>
 
 const pendentes = (campos: { confianca: string }[]) =>
   campos.filter((c) => c.confianca !== 'confirmado').length

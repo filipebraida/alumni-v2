@@ -1,11 +1,11 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Leaf, RefreshCw } from 'lucide-react'
+import { type Data } from '@generated/data'
 import { Avatar, AvatarFallback } from '~/components/ui/avatar'
 import { Badge } from '~/components/ui/badge'
 import { buttonVariants } from '~/components/ui/button'
 import { Card } from '~/components/ui/card'
 import { cn } from '~/lib/utils'
-import type { Egresso } from '~/components/dashboard/types'
 
 type Modo = 'manutencao' | 'primeira'
 
@@ -19,7 +19,7 @@ export function DashboardHero({
   globalPendentes,
   modo,
 }: {
-  egresso: Egresso
+  egresso: Data.Egresso.Variants['forPainel']
   totalFormacoes: number
   concluidas: number
   emCurso: number

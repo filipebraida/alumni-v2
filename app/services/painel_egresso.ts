@@ -6,26 +6,9 @@ import { FAIXA_SALARIAL_LABELS } from '#enums/faixa_salarial'
 import { RELACAO_FORMACAO_LABELS } from '#enums/relacao_formacao'
 import { SETOR_LABELS } from '#enums/setor'
 import { TEMPO_PRIMEIRO_EMPREGO_LABELS } from '#enums/tempo_primeiro_emprego'
-
-/**
- * Funções puras que transformam a última `Resposta` do egresso no formato que
- * o painel consome. Centraliza a tradução de enums + mapa de campos MEC e a
- * régua de caducidade (`Resposta.JANELA_FRESCOR_MESES`), pra que o controller
- * fique fino e a página não conheça os labels do domínio.
- */
+import { type CampoMec, type Confianca } from '#transformers/campo_mec_transformer'
 
 const JANELA_MESES = 12
-
-type Confianca = 'confirmado' | 'desatualizado' | 'ausente'
-
-export interface CampoMec {
-  chave: string
-  icone: string
-  rotulo: string
-  valor: string
-  atualizadoEm: string
-  confianca: Confianca
-}
 
 function idadeMeses(d: DateTime, agora: DateTime): number {
   return Math.floor(agora.diff(d, 'months').months)

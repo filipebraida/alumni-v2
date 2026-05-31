@@ -1,11 +1,11 @@
 import { Check, User } from 'lucide-react'
+import { type Data } from '@generated/data'
 import { Badge } from '~/components/ui/badge'
 import { Card } from '~/components/ui/card'
 import { Separator } from '~/components/ui/separator'
 import { MecCard } from '~/components/dashboard/mec_card'
-import type { CampoMec } from '~/components/dashboard/types'
 
-export function DashboardDadosGerais({ campos }: { campos: CampoMec[] }) {
+export function DashboardDadosGerais({ campos }: { campos: Data.CampoMec[] }) {
   const pendentes = campos.filter((c) => c.confianca !== 'confirmado').length
 
   return (
@@ -15,9 +15,7 @@ export function DashboardDadosGerais({ campos }: { campos: CampoMec[] }) {
           <h2 className="flex items-center gap-2 font-semibold text-base tracking-tight">
             <User className="size-4 shrink-0 text-primary" /> Dados gerais
           </h2>
-          <p className="mt-1 text-muted-foreground text-sm">
-            Seus dados pessoais e profissionais.
-          </p>
+          <p className="mt-1 text-muted-foreground text-sm">Seus dados pessoais e profissionais.</p>
         </div>
         {pendentes > 0 ? (
           <Badge variant="warning">{pendentes}&nbsp;a revisar</Badge>
