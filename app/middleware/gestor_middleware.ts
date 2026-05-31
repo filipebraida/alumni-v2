@@ -2,9 +2,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import type Gestor from '#models/gestor'
 import type Curso from '#models/curso'
-import BuscarGestorDoUsuario from '#queries/buscar_gestor_do_usuario'
 import ListarTodosOsCursos from '#queries/listar_todos_os_cursos'
-import { IS_ADMIN_KEY, IS_EGRESSO_KEY } from '#controllers/session_controller'
+import { loadPerfilFlags } from '#services/perfil_flags'
 import { NIVEL_LABELS } from '#enums/nivel_academico'
 
 /** Chave de sessão do curso ativo na área de gestão. */
@@ -26,16 +25,25 @@ declare module '@adonisjs/core/http' {
 export default class GestorMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     const user = ctx.auth.getUserOrFail()
-    const isAdmin = ctx.session.get(IS_ADMIN_KEY, false) as boolean
+    await loadPerfilFlags(user)
 
-    const gestor = await new BuscarGestorDoUsuario().handle({ userId: user.id })
-    const cursos = isAdmin ? await new ListarTodosOsCursos().handle() : (gestor?.cursos ?? [])
-
-    if (cursos.length === 0) {
+    if (!user.isGestor) {
       ctx.session.flash('error', 'Área restrita à coordenação de curso.')
-      const isEgresso = ctx.session.get(IS_EGRESSO_KEY, false)
-      return ctx.response.redirect().toRoute(isEgresso ? 'dashboard' : 'home')
+      return ctx.response.redirect().toRoute(user.isEgresso ? 'dashboard' : 'home')
     }
+
+    // Admin vê todos os cursos da UFRRJ; gestor regular vê só os da própria
+    // pivot. `loadFlags` já preloadou `gestor.cursos`, mas precisamos do
+    // instituto pra exibir no switcher — recarrega só nesse caso.
+    const isAdmin = user.isAdmin
+    let cursos: Curso[]
+    if (isAdmin) {
+      cursos = await new ListarTodosOsCursos().handle()
+    } else {
+      await user.gestor.load('cursos', (c) => c.preload('instituto'))
+      cursos = user.gestor.cursos
+    }
+    const gestor = user.gestor ?? null
 
     const salvo = ctx.session.get(CURSO_GESTAO_ATIVO_KEY, null)
     const cursoAtivo = cursos.find((curso) => curso.id === salvo) ?? cursos[0] ?? null
@@ -43,7 +51,7 @@ export default class GestorMiddleware {
       ctx.session.put(CURSO_GESTAO_ATIVO_KEY, cursoAtivo.id)
     }
 
-    ctx.gestao = { gestor: gestor ?? null, cursos, cursoAtivo, isAdmin }
+    ctx.gestao = { gestor, cursos, cursoAtivo, isAdmin }
     ctx.inertia.share({
       gestao: {
         cursoAtivoId: cursoAtivo?.id ?? null,

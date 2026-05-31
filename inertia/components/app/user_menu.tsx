@@ -28,8 +28,8 @@ export function UserMenu() {
   const primeiroNome = nomeCompleto.split(' ')[0]
   const iniciais = user?.initials ?? '·'
   const sair = () => router.post(urlFor('session.destroy'))
-  // Admin entra na gestão como super-gestor — a sidebar expõe a área administrativa.
-  const podeIrParaGestao = perfil?.isGestor || perfil?.isAdmin
+  // `isGestor` já inclui admin (que entra como super-gestor no `gestor_middleware`).
+  const podeIrParaGestao = perfil?.isGestor ?? false
   const irParaGestao = () => router.visit(urlFor('gestao.show'))
   const irParaPerfil = () => router.visit(urlFor('perfil.show'))
 

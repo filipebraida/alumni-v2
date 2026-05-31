@@ -1,8 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import ContarNotificacoesNaoVistas from '#queries/contar_notificacoes_nao_vistas'
+import { loadPerfilFlags } from '#services/perfil_flags'
 import UserTransformer from '#transformers/user_transformer'
-import { IS_ADMIN_KEY, IS_EGRESSO_KEY, IS_GESTOR_KEY } from '#controllers/session_controller'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -24,13 +24,15 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     const success = session?.flashMessages.get('success') as string
 
     /**
-     * Perfis do usuário, gravados na sessão no login. Alimentam os menus (ex.:
-     * link para a gestão no menu do egresso) sem consultar o banco a cada page.
+     * Perfis do usuário, lidos direto do model (`User.isEgresso/isGestor/isAdmin`).
+     * `loadPerfilFlags` carrega egresso/matriculas + gestor/cursos uma vez
+     * por request — barato pra app interno, evita o cache em sessão stale.
      */
+    if (auth?.user) await loadPerfilFlags(auth.user)
     const perfil = {
-      isEgresso: (session?.get(IS_EGRESSO_KEY, false) ?? false) as boolean,
-      isGestor: (session?.get(IS_GESTOR_KEY, false) ?? false) as boolean,
-      isAdmin: (session?.get(IS_ADMIN_KEY, false) ?? false) as boolean,
+      isEgresso: auth?.user?.isEgresso ?? false,
+      isGestor: auth?.user?.isGestor ?? false,
+      isAdmin: auth?.user?.isAdmin ?? false,
     }
 
     // Badge do sino: contador de nao-vistas por usuario. Avalia so quando ha

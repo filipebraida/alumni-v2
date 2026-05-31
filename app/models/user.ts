@@ -15,6 +15,25 @@ export default class User extends UserSchema {
     return this.role === 'admin'
   }
 
+  /**
+   * Pode acessar a área do egresso? True quando tem registro de Egresso COM
+   * matrícula. Requer `egresso.matriculas` preloaded — chame `loadFlags()`
+   * antes de ler.
+   */
+  get isEgresso() {
+    return !!this.egresso && this.egresso.matriculas?.length > 0
+  }
+
+  /**
+   * Pode acessar a área de gestão? True para gestores com curso OU para
+   * admins (que entram como super-gestores via bypass no `gestor_middleware`).
+   * Requer `gestor.cursos` preloaded pro caso gestor — chame `loadFlags()`.
+   */
+  get isGestor() {
+    if (this.isAdmin) return true
+    return !!this.gestor && this.gestor.cursos?.length > 0
+  }
+
   get initials() {
     const [first, last] = this.fullName ? this.fullName.split(' ') : this.email.split('@')
     if (first && last) {
