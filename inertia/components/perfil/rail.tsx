@@ -3,6 +3,7 @@ import { PerfilCompletude } from '~/components/perfil/completude'
 import {
   SECOES,
   TOTAL_CAMPOS_PUBLICOS,
+  type PerfilSecao,
   type PerfilSecaoId,
   irParaSecao,
 } from '~/components/perfil/secoes'
@@ -12,6 +13,8 @@ type Props = {
   descricao: string
   ativo: PerfilSecaoId
   preenchidos: number
+  /** Lista de seções a exibir no nav (default: todas). */
+  secoes?: readonly PerfilSecao[]
   /** Override do destino do clique (default: scroll na própria página). */
   onIrPara?: (id: PerfilSecaoId) => void
 }
@@ -22,7 +25,14 @@ type Props = {
  * card de completude. Escondida abaixo de `lg` — a navegação por âncora
  * ainda funciona via scroll natural da página.
  */
-export function PerfilRail({ titulo, descricao, ativo, preenchidos, onIrPara }: Props) {
+export function PerfilRail({
+  titulo,
+  descricao,
+  ativo,
+  preenchidos,
+  secoes = SECOES,
+  onIrPara,
+}: Props) {
   const navegar = onIrPara ?? irParaSecao
 
   return (
@@ -34,7 +44,7 @@ export function PerfilRail({ titulo, descricao, ativo, preenchidos, onIrPara }: 
         </div>
 
         <nav className="-mx-2 flex flex-col gap-0.5">
-          {SECOES.map((s) => {
+          {secoes.map((s) => {
             const Icon = s.icon
             const isActive = ativo === s.id
             return (

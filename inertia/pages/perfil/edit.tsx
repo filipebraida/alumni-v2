@@ -1,8 +1,7 @@
-import { Head, router } from '@inertiajs/react'
-import { type ReactElement, useMemo, useRef, useState } from 'react'
+import { Head } from '@inertiajs/react'
+import { useMemo } from 'react'
 
 import { urlFor } from '~/client'
-import AppLayout from '~/layouts/app'
 import {
   AlertDialog,
   AlertDialogClose,
@@ -15,33 +14,38 @@ import {
 import { Button } from '~/components/ui/button'
 import { PerfilAcademico } from '~/components/perfil/academico'
 import { PerfilContato } from '~/components/perfil/contato'
+import { PerfilCoordenacao } from '~/components/perfil/coordenacao'
 import { PerfilFoto } from '~/components/perfil/foto'
 import { PerfilIds } from '~/components/perfil/ids'
+import { PerfilLayout } from '~/components/perfil/layout'
 import { PerfilPrivacidade } from '~/components/perfil/privacidade'
 import { PerfilRail } from '~/components/perfil/rail'
 import { PerfilSaveBar } from '~/components/perfil/save_bar'
-import { contarPreenchidos, useSecaoAtiva } from '~/components/perfil/secoes'
-import {
-  type Perfil,
-  type PerfilFormState,
-  type Vinculo,
-  estadoInicialDoPerfil,
-  payloadParaSalvar,
-} from '~/components/perfil/types'
+import { contarPreenchidos, secoesParaPerfil, useSecaoAtiva } from '~/components/perfil/secoes'
+import { type Perfil, type PerfilEgresso, type PerfilGestor } from '~/components/perfil/types'
+import { usePerfilForm } from '~/components/perfil/use_perfil_form'
 import { type InertiaProps } from '~/types'
 
 type PageProps = InertiaProps<{
   perfil: Perfil
-  vinculos: Vinculo[]
+  egresso: PerfilEgresso | null
+  gestor: PerfilGestor | null
 }>
 
-export default function PerfilEdit({ perfil, vinculos }: PageProps) {
-  const formApi = usePerfilForm(perfil)
-  const ativo = useSecaoAtiva()
+export default function PerfilEdit({ perfil, egresso, gestor }: PageProps) {
+  const formApi = usePerfilForm(perfil, {
+    update: urlFor('perfil.update'),
+    voltar: urlFor('perfil.show'),
+  })
+  const secoes = useMemo(
+    () => secoesParaPerfil({ temEgresso: !!egresso, temGestor: !!gestor }),
+    [egresso, gestor]
+  )
+  const ativo = useSecaoAtiva(secoes)
   const preenchidos = contarPreenchidos(formApi.form, formApi.foto)
 
   return (
-    <>
+    <PerfilLayout temEgresso={!!egresso}>
       <Head title="Editar perfil · SAE UFRRJ" />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
@@ -51,6 +55,7 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
             descricao="Mantenha seus dados frescos — a UFRRJ usa só em análises agregadas."
             ativo={ativo}
             preenchidos={preenchidos}
+            secoes={secoes}
           />
         </div>
 
@@ -70,9 +75,10 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
             iniciais={perfil.iniciais}
           />
           <PerfilContato form={formApi.form} set={formApi.set} emailLogin={perfil.emailLogin} />
-          <PerfilAcademico vinculos={vinculos} />
+          {egresso && <PerfilAcademico vinculos={egresso.vinculos} />}
+          {gestor && <PerfilCoordenacao gestor={gestor} />}
           <PerfilIds form={formApi.form} set={formApi.set} />
-          <PerfilPrivacidade form={formApi.form} set={formApi.set} />
+          {egresso && <PerfilPrivacidade form={formApi.form} set={formApi.set} />}
         </div>
       </div>
 
@@ -103,83 +109,6 @@ export default function PerfilEdit({ perfil, vinculos }: PageProps) {
           </AlertDialogFooter>
         </AlertDialogPopup>
       </AlertDialog>
-    </>
+    </PerfilLayout>
   )
-}
-
-PerfilEdit.layout = (page: ReactElement) => <AppLayout>{page}</AppLayout>
-
-/**
- * Hook que encapsula o estado do formulário, dirty tracking, ações de
- * salvar/descartar/voltar e o flash de "salvo". Mantém o componente
- * principal focado no layout.
- */
-function usePerfilForm(perfil: Perfil) {
-  const inicial = useMemo(() => estadoInicialDoPerfil(perfil), [perfil])
-  const [form, setForm] = useState<PerfilFormState>(inicial)
-  const [foto, setFotoState] = useState<string | null>(perfil.fotoUrl)
-  const [processando, setProcessando] = useState(false)
-  const [salvo, setSalvo] = useState(false)
-  const [confirmandoSaida, setConfirmandoSaida] = useState(false)
-  const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const set = <K extends keyof PerfilFormState>(k: K, v: PerfilFormState[K]) => {
-    setForm((f) => ({ ...f, [k]: v }))
-    setSalvo(false)
-  }
-
-  const setFoto = (f: string | null) => {
-    setFotoState(f)
-    setSalvo(false)
-  }
-
-  const dirty = useMemo(
-    () => JSON.stringify(form) !== JSON.stringify(inicial) || foto !== perfil.fotoUrl,
-    [form, inicial, foto, perfil.fotoUrl]
-  )
-
-  const salvar = () => {
-    setProcessando(true)
-    router.put(urlFor('perfil.update'), payloadParaSalvar(form), {
-      preserveScroll: true,
-      onSuccess: () => {
-        setSalvo(true)
-        if (flashTimer.current) clearTimeout(flashTimer.current)
-        flashTimer.current = setTimeout(() => setSalvo(false), 3500)
-      },
-      onFinish: () => setProcessando(false),
-    })
-  }
-
-  const descartar = () => {
-    setForm(inicial)
-    setFotoState(perfil.fotoUrl)
-    setSalvo(false)
-  }
-
-  const voltar = () => {
-    if (dirty) setConfirmandoSaida(true)
-    else router.visit(urlFor('perfil.show'))
-  }
-
-  const sairSemSalvar = () => {
-    setConfirmandoSaida(false)
-    router.visit(urlFor('perfil.show'))
-  }
-
-  return {
-    form,
-    set,
-    foto,
-    setFoto,
-    dirty,
-    salvo,
-    processando,
-    salvar,
-    descartar,
-    voltar,
-    sairSemSalvar,
-    confirmandoSaida,
-    setConfirmandoSaida,
-  }
 }

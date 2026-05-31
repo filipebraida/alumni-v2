@@ -38,12 +38,8 @@ export class CursoSchema extends BaseModel {
 }
 
 export class EgressoSchema extends BaseModel {
-  static $columns = ['bio', 'cidade', 'consentimentoEm', 'cpf', 'createdAt', 'emailPessoal', 'fotoUrl', 'github', 'headline', 'id', 'lattes', 'linkedin', 'nomeCompleto', 'nomeSocial', 'orcid', 'pais', 'scholar', 'site', 'telefone', 'uf', 'updatedAt', 'userId', 'visEmail', 'visEncontrar', 'visMapa'] as const
+  static $columns = ['consentimentoEm', 'cpf', 'createdAt', 'emailPessoal', 'id', 'nomeCompleto', 'updatedAt', 'userId'] as const
   $columns = EgressoSchema.$columns
-  @column()
-  declare bio: string | null
-  @column()
-  declare cidade: string | null
   @column.dateTime()
   declare consentimentoEm: DateTime | null
   @column()
@@ -52,44 +48,14 @@ export class EgressoSchema extends BaseModel {
   declare createdAt: DateTime
   @column()
   declare emailPessoal: string | null
-  @column()
-  declare fotoUrl: string | null
-  @column()
-  declare github: string | null
-  @column()
-  declare headline: string | null
   @column({ isPrimary: true })
   declare id: number
   @column()
-  declare lattes: string | null
-  @column()
-  declare linkedin: string | null
-  @column()
   declare nomeCompleto: string
-  @column()
-  declare nomeSocial: string | null
-  @column()
-  declare orcid: string | null
-  @column()
-  declare pais: string | null
-  @column()
-  declare scholar: string | null
-  @column()
-  declare site: string | null
-  @column()
-  declare telefone: string | null
-  @column()
-  declare uf: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
   @column()
   declare userId: number
-  @column()
-  declare visEmail: boolean
-  @column()
-  declare visEncontrar: boolean
-  @column()
-  declare visMapa: boolean
 }
 
 export class GestorCursoSchema extends BaseModel {
@@ -286,18 +252,52 @@ export class RespostaSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'role', 'updatedAt'] as const
+  static $columns = ['bio', 'cidade', 'createdAt', 'email', 'fotoUrl', 'fullName', 'github', 'headline', 'id', 'lattes', 'linkedin', 'nomeSocial', 'orcid', 'pais', 'role', 'scholar', 'site', 'telefone', 'uf', 'updatedAt', 'visEmail', 'visEncontrar', 'visMapa'] as const
   $columns = UserSchema.$columns
+  @column()
+  declare bio: string | null
+  @column()
+  declare cidade: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
   declare email: string
   @column()
+  declare fotoUrl: string | null
+  @column()
   declare fullName: string | null
+  @column()
+  declare github: string | null
+  @column()
+  declare headline: string | null
   @column({ isPrimary: true })
   declare id: number
   @column()
+  declare lattes: string | null
+  @column()
+  declare linkedin: string | null
+  @column()
+  declare nomeSocial: string | null
+  @column()
+  declare orcid: string | null
+  @column()
+  declare pais: string | null
+  @column()
   declare role: RoleUsuario
+  @column()
+  declare scholar: string | null
+  @column()
+  declare site: string | null
+  @column()
+  declare telefone: string | null
+  @column()
+  declare uf: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column()
+  declare visEmail: boolean
+  @column()
+  declare visEncontrar: boolean
+  @column()
+  declare visMapa: boolean
 }

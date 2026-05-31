@@ -1,6 +1,6 @@
 import { router, usePage } from '@inertiajs/react'
 import { type Data } from '@generated/data'
-import { ChevronDown, GraduationCap, LogOut, Settings, User } from 'lucide-react'
+import { ChevronDown, GraduationCap, LogOut, User } from 'lucide-react'
 
 import { urlFor } from '~/client'
 import { ThemeSelector } from '~/components/app/theme_selector'
@@ -46,11 +46,8 @@ export function GestaoUserMenu() {
 
         <MenuSeparator />
 
-        <MenuItem>
+        <MenuItem onClick={() => router.visit(urlFor('perfil.show'))}>
           <User /> Meu perfil
-        </MenuItem>
-        <MenuItem>
-          <Settings /> Configurações da conta
         </MenuItem>
 
         {perfil?.isEgresso && (

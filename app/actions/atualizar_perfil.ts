@@ -1,86 +1,67 @@
-import db from '@adonisjs/lucid/services/db'
-
 import User from '#models/user'
 
 export interface AtualizarPerfilInput {
   userId: number
-  // Persistido em User + Egresso.
-  nomeCompleto: string
-  // Persistidos em Egresso.
+  fullName: string
+  // Identidade visível.
   nomeSocial: string | null
   headline: string | null
   bio: string | null
-  emailPessoal: string | null
+  // Contato.
   telefone: string | null
   cidade: string | null
   uf: string | null
   pais: string | null
+  // Identificadores acadêmicos / redes.
   lattes: string | null
   orcid: string | null
   scholar: string | null
   linkedin: string | null
   github: string | null
   site: string | null
+  // Privacidade.
   visEmail: boolean
   visMapa: boolean
   visEncontrar: boolean
 }
 
-export type AtualizarPerfilResult = { status: 'atualizado' } | { status: 'sem_egresso' }
+export type AtualizarPerfilResult = { status: 'atualizado' } | { status: 'nao_encontrado' }
 
 /**
- * Persiste o "Perfil" do egresso. Nome completo vai em `users.full_name` (pra
- * saudação no app) e `egressos.nome_completo` (fonte canônica acadêmica) —
- * mantidos em sincronia via transação. Demais campos só em `egressos`.
- *
- * `fotoUrl` está propositalmente fora: upload de imagem ainda não tem fluxo
- * (storage + URL); a UI mantém preview client-side até lá.
+ * Persiste o "Perfil" do usuário. Todos os campos vivem em `users` (perfil
+ * é role-agnostic). `fotoUrl` está propositalmente fora: upload de imagem
+ * é outro fluxo (storage + URL assinada).
  */
 export default class AtualizarPerfil {
   async handle(input: AtualizarPerfilInput): Promise<AtualizarPerfilResult> {
-    return db.transaction(async (trx) => {
-      const user = await User.query({ client: trx })
-        .where('id', input.userId)
-        .preload('egresso')
-        .first()
+    const user = await User.find(input.userId)
+    if (!user) return { status: 'nao_encontrado' as const }
 
-      if (!user || !user.egresso) return { status: 'sem_egresso' as const }
-
-      const nome = input.nomeCompleto.trim()
-
-      user.useTransaction(trx)
-      user.fullName = nome
-      await user.save()
-
-      user.egresso.useTransaction(trx)
-      user.egresso.merge({
-        nomeCompleto: nome,
-        nomeSocial: blank(input.nomeSocial),
-        headline: blank(input.headline),
-        bio: blank(input.bio),
-        emailPessoal: blank(input.emailPessoal),
-        telefone: blank(input.telefone),
-        cidade: blank(input.cidade),
-        uf: input.uf ? input.uf.toUpperCase() : null,
-        pais: blank(input.pais),
-        lattes: blank(input.lattes),
-        orcid: input.orcid ? input.orcid.toUpperCase() : null,
-        scholar: blank(input.scholar),
-        linkedin: blank(input.linkedin),
-        github: blank(input.github),
-        site: blank(input.site),
-        visEmail: input.visEmail,
-        visMapa: input.visMapa,
-        visEncontrar: input.visEncontrar,
-      })
-      await user.egresso.save()
-
-      return { status: 'atualizado' as const }
+    user.merge({
+      fullName: input.fullName.trim(),
+      nomeSocial: blank(input.nomeSocial),
+      headline: blank(input.headline),
+      bio: blank(input.bio),
+      telefone: blank(input.telefone),
+      cidade: blank(input.cidade),
+      uf: input.uf ? input.uf.toUpperCase() : null,
+      pais: blank(input.pais),
+      lattes: blank(input.lattes),
+      orcid: input.orcid ? input.orcid.toUpperCase() : null,
+      scholar: blank(input.scholar),
+      linkedin: blank(input.linkedin),
+      github: blank(input.github),
+      site: blank(input.site),
+      visEmail: input.visEmail,
+      visMapa: input.visMapa,
+      visEncontrar: input.visEncontrar,
     })
+    await user.save()
+
+    return { status: 'atualizado' as const }
   }
 }
 
-/** Strings vazias viram NULL — o validador transforma `''` em `''` (trim), não em null. */
 function blank(value: string | null | undefined): string | null {
   const v = (value ?? '').trim()
   return v === '' ? null : v

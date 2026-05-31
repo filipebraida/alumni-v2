@@ -66,6 +66,17 @@ router
   })
   .use(middleware.auth())
 
+// Perfil self-service — qualquer usuário autenticado (egresso, coordenador,
+// admin). O `PerfilLayout` no frontend escolhe o shell pelo papel: top bar
+// do egresso pra quem tem matrícula, top bar enxuto (sem sidebar) pra os demais.
+router
+  .group(() => {
+    router.get('/perfil', [controllers.Perfil, 'show']).as('perfil.show')
+    router.get('/perfil/editar', [controllers.Perfil, 'edit']).as('perfil.edit')
+    router.put('/perfil', [controllers.Perfil, 'update']).as('perfil.update')
+  })
+  .use(middleware.auth())
+
 // Área do egresso. Exige autenticação + perfil de egresso (vínculo com matrícula).
 router
   .group(() => {
@@ -74,11 +85,6 @@ router
     router.post('onboarding', [controllers.Onboarding, 'update'])
 
     router.get('/dashboard', [controllers.Dashboard, 'show']).as('dashboard')
-
-    // Perfil self-service do egresso (nome, contato, vínculos, identificadores).
-    router.get('/perfil', [controllers.Perfil, 'show']).as('perfil.show')
-    router.get('/perfil/editar', [controllers.Perfil, 'edit']).as('perfil.edit')
-    router.put('/perfil', [controllers.Perfil, 'update']).as('perfil.update')
 
     // Atualizar dados = criar uma nova foto da entidade Resposta (append-only).
     router.resource('respostas', controllers.Respostas).only(['create', 'store'])

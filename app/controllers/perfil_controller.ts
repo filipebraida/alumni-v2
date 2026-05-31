@@ -4,70 +4,103 @@ import BuscarPerfil, { type PerfilDetalhe } from '#queries/buscar_perfil'
 import AtualizarPerfil from '#actions/atualizar_perfil'
 import { atualizarPerfilValidator } from '#validators/perfil'
 import { NIVEL_LABELS } from '#enums/nivel_academico'
+import type User from '#models/user'
+
+const ROLE_LABEL: Record<string, string> = {
+  admin: 'Administrador',
+  usuario: 'Usuário',
+}
 
 function iniciais(nome: string) {
   const [primeiro, segundo] = nome.trim().split(/\s+/)
   return `${primeiro?.[0] ?? ''}${segundo?.[0] ?? ''}`.toUpperCase()
 }
 
-function viewPayload(perfil: PerfilDetalhe, emailLogin: string) {
-  const e = perfil.egresso
+function nomeExibido(user: User) {
+  return user.fullName?.trim() || user.email
+}
+
+function viewPayload(detalhe: PerfilDetalhe) {
+  const { user, egresso, matriculas, gestor, cursosCoordenados } = detalhe
+  const nome = nomeExibido(user)
+
   return {
     perfil: {
-      nomeCompleto: e.nomeCompleto,
-      iniciais: iniciais(e.nomeCompleto),
-      cpf: e.cpf,
-      emailLogin,
-      emailPessoal: e.emailPessoal,
-      nomeSocial: e.nomeSocial,
-      headline: e.headline,
-      bio: e.bio,
-      fotoUrl: e.fotoUrl,
-      telefone: e.telefone,
-      cidade: e.cidade,
-      uf: e.uf,
-      pais: e.pais,
-      lattes: e.lattes,
-      orcid: e.orcid,
-      scholar: e.scholar,
-      linkedin: e.linkedin,
-      github: e.github,
-      site: e.site,
-      visEmail: e.visEmail,
-      visMapa: e.visMapa,
-      visEncontrar: e.visEncontrar,
+      // Identidade visível (sempre presente, role-agnostic).
+      fullName: user.fullName ?? '',
+      iniciais: iniciais(nome),
+      emailLogin: user.email,
+      role: user.role,
+      roleLabel: ROLE_LABEL[user.role] ?? user.role,
+      nomeSocial: user.nomeSocial,
+      headline: user.headline,
+      bio: user.bio,
+      fotoUrl: user.fotoUrl,
+      telefone: user.telefone,
+      cidade: user.cidade,
+      uf: user.uf,
+      pais: user.pais,
+      lattes: user.lattes,
+      orcid: user.orcid,
+      scholar: user.scholar,
+      linkedin: user.linkedin,
+      github: user.github,
+      site: user.site,
+      visEmail: user.visEmail,
+      visMapa: user.visMapa,
+      visEncontrar: user.visEncontrar,
     },
-    vinculos: perfil.matriculas.map((matricula) => ({
-      id: matricula.id,
-      nivel: NIVEL_LABELS[matricula.curso.nivel],
-      curso: matricula.curso.nome,
-      instituto: matricula.curso.instituto.nome,
-      codigo: matricula.codigo,
-      periodoFormatura: matricula.periodoFormatura,
-      situacao: matricula.situacao,
-    })),
+    // Bloco opcional pra quem é egresso (identidade acadêmica + vínculos).
+    egresso: egresso
+      ? {
+          cpf: egresso.cpf,
+          nomeAcademico: egresso.nomeCompleto,
+          emailPessoal: egresso.emailPessoal,
+          vinculos: matriculas.map((m) => ({
+            id: m.id,
+            nivel: NIVEL_LABELS[m.curso.nivel],
+            curso: m.curso.nome,
+            instituto: m.curso.instituto.nome,
+            codigo: m.codigo,
+            periodoFormatura: m.periodoFormatura,
+            situacao: m.situacao,
+          })),
+        }
+      : null,
+    // Bloco opcional pra quem é coordenador (cargo + cursos coordenados).
+    gestor: gestor
+      ? {
+          cargo: gestor.cargo,
+          cursos: cursosCoordenados.map((c) => ({
+            id: c.id,
+            nome: c.nome,
+            codigo: c.codigo,
+            nivel: NIVEL_LABELS[c.nivel],
+            instituto: c.instituto.nome,
+          })),
+        }
+      : null,
   }
 }
 
 /**
- * Perfil self-service do egresso. Separado do `EgressosController` (gestão)
- * porque é a mesma linha vista por outro ator — o próprio dono. `show` é a
- * tela enxuta de aterrissagem; `edit` é o formulário do design; `update`
- * persiste as alterações via `AtualizarPerfil`.
+ * Perfil self-service — visível a qualquer usuário autenticado, com seções
+ * extras pra quem também é egresso e/ou coordenador. Separado do
+ * `EgressosController` (que é a visão da gestão sobre os egressos).
  */
 export default class PerfilController {
   async show({ auth, inertia, response }: HttpContext) {
     const user = auth.getUserOrFail()
     const perfil = await new BuscarPerfil().handle(user.id)
-    if (!perfil) return response.redirect().toRoute('onboarding.show')
-    return inertia.render('perfil/show', viewPayload(perfil, user.email))
+    if (!perfil) return response.notFound()
+    return inertia.render('perfil/show', viewPayload(perfil))
   }
 
   async edit({ auth, inertia, response }: HttpContext) {
     const user = auth.getUserOrFail()
     const perfil = await new BuscarPerfil().handle(user.id)
-    if (!perfil) return response.redirect().toRoute('onboarding.show')
-    return inertia.render('perfil/edit', viewPayload(perfil, user.email))
+    if (!perfil) return response.notFound()
+    return inertia.render('perfil/edit', viewPayload(perfil))
   }
 
   async update({ auth, request, response, session }: HttpContext) {
@@ -76,11 +109,10 @@ export default class PerfilController {
 
     const result = await new AtualizarPerfil().handle({
       userId: user.id,
-      nomeCompleto: data.nomeCompleto,
+      fullName: data.fullName,
       nomeSocial: data.nomeSocial ?? null,
       headline: data.headline ?? null,
       bio: data.bio ?? null,
-      emailPessoal: data.emailPessoal ?? null,
       telefone: data.telefone ?? null,
       cidade: data.cidade ?? null,
       uf: data.uf ?? null,
@@ -96,9 +128,7 @@ export default class PerfilController {
       visEncontrar: data.visEncontrar,
     })
 
-    if (result.status === 'sem_egresso') {
-      return response.redirect().toRoute('onboarding.show')
-    }
+    if (result.status === 'nao_encontrado') return response.notFound()
 
     session.flash('success', 'Perfil atualizado.')
     return response.redirect().toRoute('perfil.show')

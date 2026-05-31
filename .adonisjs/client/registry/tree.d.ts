@@ -27,16 +27,16 @@ export interface ApiDefinition {
     lerTodas: typeof routes['notificacoes.ler_todas']
     ler: typeof routes['notificacoes.ler']
   }
-  onboarding: {
-    show: typeof routes['onboarding.show']
-    update: typeof routes['onboarding.update']
-  }
-  dashboard: typeof routes['dashboard']
   perfil: {
     show: typeof routes['perfil.show']
     edit: typeof routes['perfil.edit']
     update: typeof routes['perfil.update']
   }
+  onboarding: {
+    show: typeof routes['onboarding.show']
+    update: typeof routes['onboarding.update']
+  }
+  dashboard: typeof routes['dashboard']
   respostas: {
     create: typeof routes['respostas.create']
     store: typeof routes['respostas.store']

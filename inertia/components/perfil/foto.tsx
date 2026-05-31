@@ -33,11 +33,12 @@ export function PerfilFoto({ form, set, foto, setFoto, iniciais }: Props) {
         <AvatarUpload foto={foto} setFoto={setFoto} iniciais={iniciais} />
 
         <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2">
-          <PerfilField label="Nome completo" className="sm:col-span-2">
-            <PerfilInput
-              value={form.nomeCompleto}
-              onChange={(e) => set('nomeCompleto', e.target.value)}
-            />
+          <PerfilField
+            label="Nome completo"
+            hint="Como você quer ser exibido no SAE — pode ser nome social."
+            className="sm:col-span-2"
+          >
+            <PerfilInput value={form.fullName} onChange={(e) => set('fullName', e.target.value)} />
           </PerfilField>
 
           <PerfilField label="Como prefere ser chamado(a)" hint="Opcional — usado em saudações.">

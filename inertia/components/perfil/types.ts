@@ -1,15 +1,13 @@
 /**
- * Estado do formulário "Editar perfil" do egresso. Todos os campos persistem
- * em `egressos` (menos `foto`, que continua client-side enquanto o upload
- * real não existe). Field names refletem o snake_case do schema convertido
- * pra camelCase pelo Lucid (`nomeSocial`, `visEmail`, etc.).
+ * Estado do formulário de "Editar perfil" — role-agnostic. Tudo persiste em
+ * `users` (a identidade visível é do usuário, não do papel). Foto continua
+ * client-side enquanto upload real não existe.
  */
 export type PerfilFormState = {
-  nomeCompleto: string
+  fullName: string
   nomeSocial: string
   headline: string
   bio: string
-  emailPessoal: string
   telefone: string
   cidade: string
   uf: string
@@ -35,12 +33,21 @@ export type Vinculo = {
   situacao: 'cursando' | 'formado' | 'evadido'
 }
 
+export type CursoCoordenado = {
+  id: number
+  nome: string
+  codigo: string
+  nivel: string
+  instituto: string
+}
+
+/** Identidade visível, válida pra qualquer role. */
 export type Perfil = {
-  nomeCompleto: string
+  fullName: string
   iniciais: string
-  cpf: string
   emailLogin: string
-  emailPessoal: string | null
+  role: string
+  roleLabel: string
   nomeSocial: string | null
   headline: string | null
   bio: string | null
@@ -60,13 +67,26 @@ export type Perfil = {
   visEncontrar: boolean
 }
 
+/** Bloco extra quando o user também é egresso. */
+export type PerfilEgresso = {
+  cpf: string
+  nomeAcademico: string
+  emailPessoal: string | null
+  vinculos: Vinculo[]
+}
+
+/** Bloco extra quando o user também é coordenador. */
+export type PerfilGestor = {
+  cargo: string | null
+  cursos: CursoCoordenado[]
+}
+
 export function estadoInicialDoPerfil(perfil: Perfil): PerfilFormState {
   return {
-    nomeCompleto: perfil.nomeCompleto,
+    fullName: perfil.fullName,
     nomeSocial: perfil.nomeSocial ?? '',
     headline: perfil.headline ?? '',
     bio: perfil.bio ?? '',
-    emailPessoal: perfil.emailPessoal ?? '',
     telefone: perfil.telefone ?? '',
     cidade: perfil.cidade ?? '',
     uf: perfil.uf ?? '',
@@ -83,15 +103,14 @@ export function estadoInicialDoPerfil(perfil: Perfil): PerfilFormState {
   }
 }
 
-/** Vai pro `router.put`. Strings vazias viram `null` no server; UF e ORCID em uppercase. */
+/** Vai pro `router.put`. Strings vazias viram `null`; UF e ORCID em uppercase. */
 export function payloadParaSalvar(form: PerfilFormState) {
   const nulled = (v: string) => (v.trim() === '' ? null : v.trim())
   return {
-    nomeCompleto: form.nomeCompleto,
+    fullName: form.fullName,
     nomeSocial: nulled(form.nomeSocial),
     headline: nulled(form.headline),
     bio: nulled(form.bio),
-    emailPessoal: nulled(form.emailPessoal),
     telefone: nulled(form.telefone),
     cidade: nulled(form.cidade),
     uf: form.uf.trim() === '' ? null : form.uf.toUpperCase(),

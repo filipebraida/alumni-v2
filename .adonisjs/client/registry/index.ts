@@ -108,24 +108,6 @@ const routes = {
     tokens: [{"old":"/notificacoes/:id/ler","type":0,"val":"notificacoes","end":""},{"old":"/notificacoes/:id/ler","type":1,"val":"id","end":""},{"old":"/notificacoes/:id/ler","type":0,"val":"ler","end":""}],
     types: placeholder as Registry['notificacoes.ler']['types'],
   },
-  'onboarding.show': {
-    methods: ["GET","HEAD"],
-    pattern: '/onboarding',
-    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
-    types: placeholder as Registry['onboarding.show']['types'],
-  },
-  'onboarding.update': {
-    methods: ["POST"],
-    pattern: '/onboarding',
-    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
-    types: placeholder as Registry['onboarding.update']['types'],
-  },
-  'dashboard': {
-    methods: ["GET","HEAD"],
-    pattern: '/dashboard',
-    tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
-    types: placeholder as Registry['dashboard']['types'],
-  },
   'perfil.show': {
     methods: ["GET","HEAD"],
     pattern: '/perfil',
@@ -143,6 +125,24 @@ const routes = {
     pattern: '/perfil',
     tokens: [{"old":"/perfil","type":0,"val":"perfil","end":""}],
     types: placeholder as Registry['perfil.update']['types'],
+  },
+  'onboarding.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/onboarding',
+    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
+    types: placeholder as Registry['onboarding.show']['types'],
+  },
+  'onboarding.update': {
+    methods: ["POST"],
+    pattern: '/onboarding',
+    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
+    types: placeholder as Registry['onboarding.update']['types'],
+  },
+  'dashboard': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard',
+    tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
+    types: placeholder as Registry['dashboard']['types'],
   },
   'respostas.create': {
     methods: ["GET","HEAD"],

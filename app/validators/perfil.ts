@@ -1,14 +1,13 @@
 import vine from '@vinejs/vine'
 
 /**
- * Edição do "Perfil" self-service do egresso. Tudo opcional+nullable (campos
- * em branco viram NULL no banco) menos `nomeCompleto`, que mantém o registro
- * acadêmico vivo. `fotoUrl` fica fora — upload real é outro fluxo (storage +
- * URL assinada); por enquanto a UI guarda só a preview local.
+ * Edição do "Perfil" self-service — role-agnostic. Tudo persiste em `users`.
+ * `fullName` é o nome de exibição; campo separado do `egressos.nome_completo`
+ * (fonte acadêmica). `fotoUrl` ainda não vem por aqui — upload é outro fluxo.
  */
 export const atualizarPerfilValidator = vine.compile(
   vine.object({
-    nomeCompleto: vine.string().trim().minLength(2).maxLength(180),
+    fullName: vine.string().trim().minLength(2).maxLength(180),
 
     // Identidade visível.
     nomeSocial: vine.string().trim().maxLength(80).nullable().optional(),
@@ -16,7 +15,6 @@ export const atualizarPerfilValidator = vine.compile(
     bio: vine.string().trim().maxLength(280).nullable().optional(),
 
     // Contato.
-    emailPessoal: vine.string().trim().toLowerCase().email().maxLength(254).nullable().optional(),
     telefone: vine.string().trim().maxLength(32).nullable().optional(),
     cidade: vine.string().trim().maxLength(80).nullable().optional(),
     uf: vine

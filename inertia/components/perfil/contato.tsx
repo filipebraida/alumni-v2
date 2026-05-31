@@ -26,15 +26,6 @@ export function PerfilContato({ form, set, emailLogin }: Props) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <EmailInstitucional email={emailLogin} className="sm:col-span-2" />
 
-        <PerfilField label="E-mail alternativo" hint="Para quando perder acesso ao institucional.">
-          <PerfilInput
-            type="email"
-            value={form.emailPessoal}
-            placeholder="seu@email.com"
-            onChange={(e) => set('emailPessoal', e.target.value)}
-          />
-        </PerfilField>
-
         <PerfilField label="Telefone / WhatsApp">
           <PerfilInput
             value={form.telefone}

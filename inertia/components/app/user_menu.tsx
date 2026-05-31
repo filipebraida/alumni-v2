@@ -1,6 +1,6 @@
 import { router, usePage } from '@inertiajs/react'
 import { type Data } from '@generated/data'
-import { Briefcase, LogOut, Settings, User } from 'lucide-react'
+import { Briefcase, LogOut, User } from 'lucide-react'
 import { type ReactNode } from 'react'
 import { urlFor } from '~/client'
 import { ThemeSelector } from '~/components/app/theme_selector'
@@ -59,9 +59,6 @@ export function UserMenu() {
           <MenuItem onClick={irParaPerfil}>
             <User /> Meu perfil
           </MenuItem>
-          <MenuItem>
-            <Settings /> Configurações
-          </MenuItem>
           {podeIrParaGestao && (
             <>
               <MenuSeparator />
@@ -106,7 +103,6 @@ export function UserMenu() {
             <ItemSheet icon={<User className="size-4" />} onClick={irParaPerfil}>
               Meu perfil
             </ItemSheet>
-            <ItemSheet icon={<Settings className="size-4" />}>Configurações</ItemSheet>
             {podeIrParaGestao && (
               <ItemSheet icon={<Briefcase className="size-4" />} onClick={irParaGestao}>
                 Área de gestão

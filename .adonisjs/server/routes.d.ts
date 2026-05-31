@@ -21,12 +21,12 @@ export type ScannedRoutes = {
     'notificacoes.visualizar': { paramsTuple?: []; params?: {} }
     'notificacoes.ler_todas': { paramsTuple?: []; params?: {} }
     'notificacoes.ler': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'onboarding.show': { paramsTuple?: []; params?: {} }
-    'onboarding.update': { paramsTuple?: []; params?: {} }
-    'dashboard': { paramsTuple?: []; params?: {} }
     'perfil.show': { paramsTuple?: []; params?: {} }
     'perfil.edit': { paramsTuple?: []; params?: {} }
     'perfil.update': { paramsTuple?: []; params?: {} }
+    'onboarding.show': { paramsTuple?: []; params?: {} }
+    'onboarding.update': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'respostas.store': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
@@ -56,10 +56,10 @@ export type ScannedRoutes = {
     'portal.transparencia': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'notificacoes.index': { paramsTuple?: []; params?: {} }
-    'onboarding.show': { paramsTuple?: []; params?: {} }
-    'dashboard': { paramsTuple?: []; params?: {} }
     'perfil.show': { paramsTuple?: []; params?: {} }
     'perfil.edit': { paramsTuple?: []; params?: {} }
+    'onboarding.show': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos': { paramsTuple?: []; params?: {} }
@@ -79,10 +79,10 @@ export type ScannedRoutes = {
     'portal.transparencia': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'notificacoes.index': { paramsTuple?: []; params?: {} }
-    'onboarding.show': { paramsTuple?: []; params?: {} }
-    'dashboard': { paramsTuple?: []; params?: {} }
     'perfil.show': { paramsTuple?: []; params?: {} }
     'perfil.edit': { paramsTuple?: []; params?: {} }
+    'onboarding.show': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
     'respostas.create': { paramsTuple?: []; params?: {} }
     'gestao.show': { paramsTuple?: []; params?: {} }
     'gestao.egressos': { paramsTuple?: []; params?: {} }

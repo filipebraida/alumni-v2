@@ -1,41 +1,47 @@
 import { Head } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { Award, Camera, Check, Lock, Mail, MapPin, PencilIcon, Phone } from 'lucide-react'
-import { type ReactElement, type ReactNode } from 'react'
+import { type ReactNode, useMemo } from 'react'
 
 import { urlFor } from '~/client'
 import { formatarCpf } from '~/lib/cpf'
-import AppLayout from '~/layouts/app'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { PerfilAcademico } from '~/components/perfil/academico'
+import { PerfilCoordenacao } from '~/components/perfil/coordenacao'
 import { PerfilIdentificadoresShow } from '~/components/perfil/identificadores_show'
+import { PerfilLayout } from '~/components/perfil/layout'
 import { PerfilLinha } from '~/components/perfil/linha'
 import { PerfilPrivacidadeShow } from '~/components/perfil/privacidade_show'
 import { PerfilRail } from '~/components/perfil/rail'
 import { PerfilSectionCard } from '~/components/perfil/section_card'
-import { contarPreenchidos, useSecaoAtiva } from '~/components/perfil/secoes'
-import { type Perfil, type Vinculo } from '~/components/perfil/types'
+import { contarPreenchidos, secoesParaPerfil, useSecaoAtiva } from '~/components/perfil/secoes'
+import { type Perfil, type PerfilEgresso, type PerfilGestor } from '~/components/perfil/types'
 import { type InertiaProps } from '~/types'
 
 type PageProps = InertiaProps<{
   perfil: Perfil
-  vinculos: Vinculo[]
+  egresso: PerfilEgresso | null
+  gestor: PerfilGestor | null
 }>
 
 /**
- * "Meu perfil" — vista read-only do que está cadastrado. Espelha o layout
- * do `edit` (rail + 5 SectionCards na mesma ordem). Campos não preenchidos
- * aparecem como "—".
+ * "Meu perfil" — vista read-only. Identidade visível sempre presente; seções
+ * "Vínculos acadêmicos" (se egresso) e "Coordenação" (se gestor) aparecem
+ * condicionais ao papel do usuário.
  */
-export default function PerfilShow({ perfil, vinculos }: PageProps) {
-  const ativo = useSecaoAtiva()
+export default function PerfilShow({ perfil, egresso, gestor }: PageProps) {
+  const secoes = useMemo(
+    () => secoesParaPerfil({ temEgresso: !!egresso, temGestor: !!gestor }),
+    [egresso, gestor]
+  )
+  const ativo = useSecaoAtiva(secoes)
   const preenchidos = contarPreenchidos(perfil)
   const localizacao = formatarLocalizacao(perfil)
 
   return (
-    <>
+    <PerfilLayout temEgresso={!!egresso}>
       <Head title="Meu perfil · SAE UFRRJ" />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
@@ -45,11 +51,12 @@ export default function PerfilShow({ perfil, vinculos }: PageProps) {
             descricao="Como você aparece para colegas e para a coordenação."
             ativo={ativo}
             preenchidos={preenchidos}
+            secoes={secoes}
           />
         </div>
 
         <div className="min-w-0 space-y-6 lg:col-span-9">
-          <HeaderPerfil perfil={perfil} />
+          <HeaderPerfil perfil={perfil} egresso={egresso} />
 
           <PerfilSectionCard
             id="foto"
@@ -58,7 +65,7 @@ export default function PerfilShow({ perfil, vinculos }: PageProps) {
             description="Como você aparece para colegas e para a coordenação."
           >
             <dl className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-              <PerfilLinha rotulo="Nome completo" valor={perfil.nomeCompleto} />
+              <PerfilLinha rotulo="Nome de exibição" valor={perfil.fullName} />
               <PerfilLinha rotulo="Como prefere ser chamado(a)" valor={perfil.nomeSocial} />
               <PerfilLinha
                 rotulo="Título / headline"
@@ -93,16 +100,18 @@ export default function PerfilShow({ perfil, vinculos }: PageProps) {
                   </ValorComIcone>
                 }
               />
-              <PerfilLinha
-                rotulo="E-mail alternativo"
-                valor={
-                  perfil.emailPessoal && (
-                    <ValorComIcone icon={<Mail className="size-3.5 text-muted-foreground" />}>
-                      {perfil.emailPessoal}
-                    </ValorComIcone>
-                  )
-                }
-              />
+              {egresso && (
+                <PerfilLinha
+                  rotulo="E-mail alternativo"
+                  valor={
+                    egresso.emailPessoal && (
+                      <ValorComIcone icon={<Mail className="size-3.5 text-muted-foreground" />}>
+                        {egresso.emailPessoal}
+                      </ValorComIcone>
+                    )
+                  }
+                />
+              )}
               <PerfilLinha
                 rotulo="Telefone / WhatsApp"
                 valor={
@@ -127,7 +136,9 @@ export default function PerfilShow({ perfil, vinculos }: PageProps) {
             </dl>
           </PerfilSectionCard>
 
-          <PerfilAcademico vinculos={vinculos} />
+          {egresso && <PerfilAcademico vinculos={egresso.vinculos} />}
+
+          {gestor && <PerfilCoordenacao gestor={gestor} />}
 
           <PerfilSectionCard
             id="ids"
@@ -138,23 +149,23 @@ export default function PerfilShow({ perfil, vinculos }: PageProps) {
             <PerfilIdentificadoresShow perfil={perfil} />
           </PerfilSectionCard>
 
-          <PerfilSectionCard
-            id="privacidade"
-            icon={Lock}
-            title="Privacidade"
-            description="O que está sendo compartilhado com colegas."
-          >
-            <PerfilPrivacidadeShow perfil={perfil} />
-          </PerfilSectionCard>
+          {egresso && (
+            <PerfilSectionCard
+              id="privacidade"
+              icon={Lock}
+              title="Privacidade"
+              description="O que está sendo compartilhado com colegas."
+            >
+              <PerfilPrivacidadeShow perfil={perfil} />
+            </PerfilSectionCard>
+          )}
         </div>
       </div>
-    </>
+    </PerfilLayout>
   )
 }
 
-PerfilShow.layout = (page: ReactElement) => <AppLayout>{page}</AppLayout>
-
-function HeaderPerfil({ perfil }: { perfil: Perfil }) {
+function HeaderPerfil({ perfil, egresso }: { perfil: Perfil; egresso: PerfilEgresso | null }) {
   return (
     <header className="flex flex-col gap-4 sm:flex-row sm:items-start">
       <Avatar className="size-16 bg-primary font-semibold text-lg text-primary-foreground">
@@ -164,10 +175,13 @@ function HeaderPerfil({ perfil }: { perfil: Perfil }) {
         </AvatarFallback>
       </Avatar>
       <div className="min-w-0 flex-1">
-        <h1 className="font-semibold text-xl tracking-tight">{perfil.nomeCompleto}</h1>
+        <h1 className="font-semibold text-xl tracking-tight">
+          {perfil.fullName || perfil.emailLogin}
+        </h1>
         {perfil.headline && <p className="mt-0.5 text-foreground text-sm">{perfil.headline}</p>}
         <p className="mt-0.5 text-muted-foreground text-xs">
-          CPF {formatarCpf(perfil.cpf)} · {perfil.emailLogin}
+          {egresso && <>CPF {formatarCpf(egresso.cpf)} · </>}
+          {perfil.emailLogin}
         </p>
       </div>
       <Button className="w-full sm:w-auto" render={<Link href={urlFor('perfil.edit')} />}>

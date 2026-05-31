@@ -9,7 +9,6 @@ import {
   GraduationCap,
   LayoutDashboard,
   LogOut,
-  Settings,
   ShieldUser,
   Users,
 } from 'lucide-react'
@@ -116,13 +115,6 @@ export function GestaoSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
               <SidebarMenuButton disabled tooltip="Em breve">
                 <FileBarChart />
                 <span>Relatórios MEC</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton disabled tooltip="Em breve">
-                <Settings />
-                <span>Configurações</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

@@ -29,8 +29,8 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { label: 'Início', route: 'dashboard' },
-  { label: 'Egressos' },
-  { label: 'Análises' },
+  { label: 'Egressos', soon: true },
+  { label: 'Análises', soon: true },
   { label: 'Empresas', soon: true },
 ]
 
